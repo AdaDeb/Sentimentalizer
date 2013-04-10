@@ -10,8 +10,7 @@ public class NaiveBayes implements Classifier {
 
 	@Override
 	public ClassificationResult classify(String text) {
-		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

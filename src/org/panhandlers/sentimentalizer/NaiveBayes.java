@@ -9,7 +9,7 @@ public class NaiveBayes implements Classifier {
 	}
 
 	@Override
-	public void classify(String text) {
+	public ClassificationResult classify(String text) {
 		// TODO Auto-generated method stub
 		
 	}

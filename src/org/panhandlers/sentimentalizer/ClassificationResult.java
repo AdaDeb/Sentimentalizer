@@ -3,6 +3,12 @@ package org.panhandlers.sentimentalizer;
 public class ClassificationResult {
 	private float p;
 	private String category;
+	
+	public ClassificationResult() {}
+	public ClassificationResult(String category, float p) {
+		this.category = category;
+		this.p = p;
+	}
 	public float getP() {
 		return p;
 	}

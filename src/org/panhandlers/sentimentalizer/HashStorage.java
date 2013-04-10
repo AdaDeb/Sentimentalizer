@@ -1,6 +1,7 @@
 package org.panhandlers.sentimentalizer;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class HashStorage implements ClassifierStorage {
 	private HashMap<String, Integer> categoryCount;
@@ -65,6 +66,20 @@ public class HashStorage implements ClassifierStorage {
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public int getTotalCount() {
+		int sum = 0;
+		for(Integer value: categoryCount.values()) {
+			sum += value; 
+		}
+		return sum;
+	}
+
+	@Override
+	public Set<String> getCategories() {
+		return this.categoryCount.keySet();
 	}
 
 }

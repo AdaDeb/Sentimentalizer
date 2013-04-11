@@ -1,5 +1,7 @@
 package org.panhandlers.sentimentalizer;
 
+import java.util.ArrayList;
+
 public interface Tokenizer {
-	public String[] tokenize(String input);
+	public ArrayList<String> tokenize(String input);
 }

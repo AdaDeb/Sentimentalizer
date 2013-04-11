@@ -1,6 +1,7 @@
 package org.panhandlers.sentimentalizer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Set;
 
 public class NaiveBayes implements Classifier {
@@ -29,7 +30,8 @@ public class NaiveBayes implements Classifier {
 			result = new ClassificationResult(category, prob);
 			results.add(result);
 		}
-		return null;
+		Collections.sort(results, Collections.reverseOrder());
+		return results.get(0);
 	}
 	
 	private String[] parse(String text) {

@@ -2,6 +2,7 @@ package org.panhandlers.sentimentalizer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public class NaiveBayes implements Classifier {
@@ -12,40 +13,35 @@ public class NaiveBayes implements Classifier {
 	}
 	
 	@Override
-	public void train(String category, String text) {
-		// TODO: need to split strings and maybe stemming and stuff like that...
-		storage.addFeature(category, text);
+	public void train(String category, List<Feature> features) {
+		for(Feature f : features) {
+			storage.addFeature(category, f);
+		}
 	}
 
 	@Override
-	public ClassificationResult classify(String text) {
-		String[] parsedText = parse(text); 
+	public ClassificationResult classify(List<Feature> features) {
 		Set<String> categories = storage.getCategories();
 		ArrayList<ClassificationResult> results = new ArrayList<ClassificationResult>(categories.size());
 		ClassificationResult result;
 		float prob;
 		for (String category : categories)
 		{
-			prob = pOfCategoryGivenFeatures(category, parsedText) * pOfCategory(category);
+			prob = pOfCategoryGivenFeatures(category, features) * pOfCategory(category);
 			result = new ClassificationResult(category, prob);
 			results.add(result);
 		}
 		Collections.sort(results, Collections.reverseOrder());
 		return results.get(0);
 	}
-	
-	private String[] parse(String text) {
-		String[] parsed = text.trim().split("\\s");
-		return parsed;
-	}
 
-	private float pOfFeatureGivenCategory(String feature, String category) {
+	private float pOfFeatureGivenCategory(Feature feature, String category) {
 		return storage.getFeatureCount(category, feature) / storage.getCategoryCount(category);
 	}
 	
-	private float pOfCategoryGivenFeatures(String category, String[] features) {
+	private float pOfCategoryGivenFeatures(String category, List<Feature> features) {
 		float sum = 1f;
-		for (String feature : features) {
+		for (Feature feature : features) {
 			float probability = pOfFeatureGivenCategory(feature, category);
 			sum *= probability;
 		}

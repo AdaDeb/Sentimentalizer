@@ -24,7 +24,7 @@ public class HashStorage implements ClassifierStorage {
 	}
 		
 	private void setFeatureCount(String category, Feature feature) throws Exception {
-		HashMap<String, Integer> mapForCategory = featureCount.get(category);
+		HashMap<Feature, Integer> mapForCategory = featureCount.get(category);
 		if (mapForCategory == null) {
 			throw new Exception("Could not find category");
 		}
@@ -47,7 +47,7 @@ public class HashStorage implements ClassifierStorage {
 
 	private void addCategory(String category) {
 		categoryCount.put(category, 1);
-		featureCount.put(category, new HashMap<String, Integer>());
+		featureCount.put(category, new HashMap<Feature, Integer>());
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class HashStorage implements ClassifierStorage {
 	}
 
 	@Override
-	public int getFeatureCount(String category, String feature) {
+	public int getFeatureCount(String category, Feature feature) {
 		if (featureCount.containsKey(category) && featureCount.get(category).containsKey(feature)){
 			return featureCount.get(category).get(feature);
 		} else {

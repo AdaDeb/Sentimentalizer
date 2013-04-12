@@ -15,6 +15,8 @@ public class DataDivider {
 	private int ratio;
 	
 	public DataDivider(int ratio, HashMap<String, ArrayList<ArrayList<String>>> data) {
+		trainingData = new HashMap<String, ArrayList<ArrayList<String>>>();
+		testData = new HashMap<String, ArrayList<ArrayList<String>>>();
 		this.ratio = ratio;
 		divide(data);
 	}

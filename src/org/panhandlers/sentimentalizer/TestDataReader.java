@@ -8,7 +8,9 @@ public interface TestDataReader {
 	public abstract void read();
 
 	public abstract void read(String path);
-	
-	public abstract HashMap<String, ArrayList<String>> getData();
+	/**
+	 * @return Map Category => List of Tokenized Items 
+	 */
+	public abstract HashMap<String, ArrayList<ArrayList<String>>> getData();
 
 }

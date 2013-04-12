@@ -5,15 +5,15 @@ import java.util.Set;
 
 public class HashStorage implements ClassifierStorage {
 	private HashMap<String, Integer> categoryCount;
-	private HashMap<String,HashMap<String, Integer>> featureCount;
+	private HashMap<String,HashMap<Feature, Integer>> featureCount;
 	
 	public HashStorage() {
 		categoryCount = new HashMap<String, Integer>();
-		featureCount = new HashMap<String, HashMap<String, Integer>>();
+		featureCount = new HashMap<String, HashMap<Feature, Integer>>();
 	}
 	
 	@Override
-	public void addFeature(String category, String feature) {
+	public void addFeature(String category, Feature feature) {
 		setCategoryCount(category);
 		try {
 			setFeatureCount(category, feature);
@@ -23,7 +23,7 @@ public class HashStorage implements ClassifierStorage {
 		}
 	}
 		
-	private void setFeatureCount(String category, String feature) throws Exception {
+	private void setFeatureCount(String category, Feature feature) throws Exception {
 		HashMap<String, Integer> mapForCategory = featureCount.get(category);
 		if (mapForCategory == null) {
 			throw new Exception("Could not find category");

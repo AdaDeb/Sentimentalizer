@@ -63,5 +63,10 @@ public class ClassificationResult implements Comparable<ClassificationResult> {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return category + " with probability " + p;
+	}
+	
 	
 }

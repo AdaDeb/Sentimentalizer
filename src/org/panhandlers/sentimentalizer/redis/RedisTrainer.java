@@ -1,4 +1,6 @@
-package org.panhandlers.sentimentalizer;
+package org.panhandlers.sentimentalizer.redis;
+
+import org.panhandlers.sentimentalizer.Trainer;
 
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;

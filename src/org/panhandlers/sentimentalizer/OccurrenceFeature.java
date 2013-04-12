@@ -3,6 +3,12 @@ package org.panhandlers.sentimentalizer;
 public class OccurrenceFeature implements Feature {
 	private String text;
 	private int occurrences;
+	public OccurrenceFeature(int n) {
+		this.occurrences = n;
+	}
+	public OccurrenceFeature() {
+		this.occurrences = 0;
+	}
 	public String getText() {
 		return text;
 	}
@@ -40,6 +46,9 @@ public class OccurrenceFeature implements Feature {
 		} else if (!text.equals(other.text))
 			return false;
 		return true;
+	}
+	public void increment() {
+		occurrences++;
 	}
 	
 	

@@ -1,6 +1,10 @@
 package org.panhandlers.sentimentalizer;
 import redis.clients.johm.*;
-
+/**
+ * Incomplete class for possible future Redis implementation
+ * @author jesjos
+ *
+ */
 @Model
 public class TrainingItem {
 	@Id

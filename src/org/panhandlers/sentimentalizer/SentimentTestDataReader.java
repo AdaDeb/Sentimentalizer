@@ -10,11 +10,13 @@ import org.apache.commons.io.IOUtils;
 
 public class SentimentTestDataReader implements TestDataReader {
 	private String path;
-	private HashMap<String, ArrayList<String>> data;
+	private HashMap<String, ArrayList<ArrayList<String>>> data;
+	private GeneralTokenizer tokenizer;
 	public SentimentTestDataReader() {}
 	public SentimentTestDataReader(String path) {
-		this.data = new HashMap<String, ArrayList<String>>();
+		this.data = new HashMap<String, ArrayList<ArrayList<String>>>();
 		this.path = path;
+		this.tokenizer = new LuceneTokenizer();
 	}
 	
 	@Override
@@ -29,9 +31,9 @@ public class SentimentTestDataReader implements TestDataReader {
 	private void readCategoryDirectory(File categoryDir) {
 		if(categoryDir.listFiles() != null) {
 			String category = categoryDir.getName();
-			ArrayList<String> texts = data.get(category);
+			ArrayList<ArrayList<String>> texts = data.get(category);
 			if (texts == null) {
-				texts = new ArrayList<String>();
+				texts = new ArrayList<ArrayList<String>>();
 				data.put(category, texts);
 			}
 			for (File sentimentDir : categoryDir.listFiles()) {
@@ -40,14 +42,15 @@ public class SentimentTestDataReader implements TestDataReader {
 		}
 	}
 	
-	private void readSentimentDir(File sentimentDir, ArrayList<String> texts) {
+	private void readSentimentDir(File sentimentDir, ArrayList<ArrayList<String>> texts) {
 		if (sentimentDir.listFiles() != null) {
 			FileInputStream fileStream = null;
 			for(File file : sentimentDir.listFiles()) {
 				try {
 					fileStream = new FileInputStream(file);
 					String text = IOUtils.toString(fileStream);
-					texts.add(text);
+					ArrayList<String> tokenizedText = tokenizer.tokenize(text);
+					texts.add(tokenizedText);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -71,7 +74,7 @@ public class SentimentTestDataReader implements TestDataReader {
 		read();
 	}
 	@Override
-	public HashMap<String, ArrayList<String>> getData() {
+	public HashMap<String, ArrayList<ArrayList<String>>> getData() {
 		return data;
 	}
 	
@@ -82,9 +85,10 @@ public class SentimentTestDataReader implements TestDataReader {
 	public static void main (String[] args) {
 		TestDataReader r = new SentimentTestDataReader("amazon-balanced-6cats");
 		r.read();
-		for (ArrayList<String> list : r.getData().values()) {
-			for (String s : list) {
-				System.out.println(s);
+		for (ArrayList<ArrayList<String>> lists : r.getData().values()) {
+			for (ArrayList<String> list : lists) {
+				for (String s : list) 
+					System.out.println(s);
 			}
 		}
 	}

@@ -8,15 +8,16 @@ import java.util.HashMap;
 
 import org.apache.commons.io.IOUtils;
 
-public class SentimentDataReader implements DataReader {
+public class CategoryDataReader implements DataReader {
 	private String path;
 	private HashMap<String, ArrayList<ArrayList<String>>> data;
 	private GeneralTokenizer tokenizer;
-	public SentimentDataReader() {}
-	public SentimentDataReader(String path) {
+	public CategoryDataReader() {}
+	public CategoryDataReader(String path) {
 		this.data = new HashMap<String, ArrayList<ArrayList<String>>>();
 		this.path = path;
 		this.tokenizer = new LuceneTokenizer();
+		read();
 	}
 	
 	@Override
@@ -45,11 +46,12 @@ public class SentimentDataReader implements DataReader {
 	private void readSentimentDir(File sentimentDir, ArrayList<ArrayList<String>> texts) {
 		if (sentimentDir.listFiles() != null) {
 			FileInputStream fileStream = null;
+			ArrayList<String> tokenizedText;
 			for(File file : sentimentDir.listFiles()) {
 				try {
 					fileStream = new FileInputStream(file);
 					String text = IOUtils.toString(fileStream);
-					ArrayList<String> tokenizedText = tokenizer.tokenize(text);
+					tokenizedText = tokenizer.tokenize(text);
 					texts.add(tokenizedText);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -83,7 +85,7 @@ public class SentimentDataReader implements DataReader {
 	 * @param args
 	 */
 	public static void main (String[] args) {
-		DataReader r = new SentimentDataReader("amazon-balanced-6cats");
+		DataReader r = new CategoryDataReader("amazon-balanced-6cats");
 		r.read();
 		for (ArrayList<ArrayList<String>> lists : r.getData().values()) {
 			for (ArrayList<String> list : lists) {

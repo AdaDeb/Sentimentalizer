@@ -8,12 +8,12 @@ import java.util.HashMap;
 
 import org.apache.commons.io.IOUtils;
 
-public class SentimentTestDataReader implements TestDataReader {
+public class SentimentDataReader implements DataReader {
 	private String path;
 	private HashMap<String, ArrayList<ArrayList<String>>> data;
 	private GeneralTokenizer tokenizer;
-	public SentimentTestDataReader() {}
-	public SentimentTestDataReader(String path) {
+	public SentimentDataReader() {}
+	public SentimentDataReader(String path) {
 		this.data = new HashMap<String, ArrayList<ArrayList<String>>>();
 		this.path = path;
 		this.tokenizer = new LuceneTokenizer();
@@ -83,7 +83,7 @@ public class SentimentTestDataReader implements TestDataReader {
 	 * @param args
 	 */
 	public static void main (String[] args) {
-		TestDataReader r = new SentimentTestDataReader("amazon-balanced-6cats");
+		DataReader r = new SentimentDataReader("amazon-balanced-6cats");
 		r.read();
 		for (ArrayList<ArrayList<String>> lists : r.getData().values()) {
 			for (ArrayList<String> list : lists) {

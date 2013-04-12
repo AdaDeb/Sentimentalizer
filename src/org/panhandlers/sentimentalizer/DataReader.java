@@ -3,7 +3,7 @@ package org.panhandlers.sentimentalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface TestDataReader {
+public interface DataReader {
 
 	public abstract void read();
 

@@ -5,11 +5,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.panhandlers.sentimentalizer.redis.RedisStorage;
+
 public class NaiveBayes implements Classifier {
 	private ClassifierStorage storage;
 	
 	public NaiveBayes() {
-		storage = new HashStorage();
+		storage = new RedisStorage();
+	}
+	
+	public NaiveBayes(ClassifierStorage storage) {
+		this.storage = storage;
 	}
 	
 	@Override
@@ -32,6 +38,11 @@ public class NaiveBayes implements Classifier {
 			results.add(result);
 		}
 		Collections.sort(results, Collections.reverseOrder());
+		System.out.println("Results: >>> ");
+		for(ClassificationResult r : results) {
+			System.out.println(r);
+		}
+		System.out.println("Results: >>> end");
 		return results.get(0);
 	}
 

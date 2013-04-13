@@ -2,6 +2,7 @@ package org.panhandlers.sentimentalizer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 /**
@@ -10,24 +11,40 @@ import java.util.Map.Entry;
  *
  */
 public class DataDivider {
-	private HashMap<String, ArrayList<ArrayList<String>>> trainingData;
-	private HashMap<String, ArrayList<ArrayList<String>>> testData;
+	private HashMap<String, List<List<String>>> trainingData;
+	private HashMap<String, List<List<String>>> testData;
 	private int ratio;
 	
-	public DataDivider(int ratio, HashMap<String, ArrayList<ArrayList<String>>> data) {
-		trainingData = new HashMap<String, ArrayList<ArrayList<String>>>();
-		testData = new HashMap<String, ArrayList<ArrayList<String>>>();
+	public DataDivider(int ratio) {
 		this.ratio = ratio;
+		init();
+	}
+	
+	public DataDivider(int ratio, HashMap<String, List<List<String>>> data) {
+		this.ratio = ratio;
+		init();
 		divide(data);
 	}
 	
-	private void divide(HashMap<String, ArrayList<ArrayList<String>>> data) {
-		int i;
-		ArrayList<ArrayList<String>> testDataList;
-		ArrayList<ArrayList<String>> trainingDataList;
-		for (Entry<String, ArrayList<ArrayList<String>>> category : data.entrySet()) {
-			testDataList = new ArrayList<ArrayList<String>>();
-			trainingDataList = new ArrayList<ArrayList<String>>();
+	private void init() {
+		trainingData = new HashMap<String, List<List<String>>>();
+		testData = new HashMap<String, List<List<String>>>();
+	}
+	
+	/**
+	 * Divides each category into two slices according to the given ratio
+	 * @param data
+	 */
+	public void divide(HashMap<String, List<List<String>>> data) {
+		int i, testSize, trainingSize;
+		ArrayList<List<String>> testDataList;
+		ArrayList<List<String>> trainingDataList;
+		for (Entry<String, List<List<String>>> category : data.entrySet()) {
+			// Establishing sane list sizes from the outset should give us some performance gains
+			testSize = category.getValue().size() / ratio;
+			trainingSize = category.getValue().size();
+			testDataList = new ArrayList<List<String>>(testSize);
+			trainingDataList = new ArrayList<List<String>>(trainingSize);
 			testData.put(category.getKey(), testDataList);
 			trainingData.put(category.getKey(), trainingDataList);
 			for(i = 0; i < category.getValue().size(); i++) {
@@ -40,11 +57,11 @@ public class DataDivider {
 		}
 	}
 
-	public HashMap<String, ArrayList<ArrayList<String>>> getTrainingData() {
+	public HashMap<String, List<List<String>>> getTrainingData() {
 		return trainingData;
 	}
 	
-	public HashMap<String, ArrayList<ArrayList<String>>> getTestData() {
+	public HashMap<String, List<List<String>>> getTestData() {
 		return testData;
 	}
 }

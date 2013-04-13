@@ -9,16 +9,20 @@ public class OccurrenceFeatureExtractor implements FeatureExtractor {
 	private Set<String> dictionary;
 	private HashMap<String, OccurrenceFeature> tokensToFeatures;
 	private ArrayList<Feature> features;
+	
 	public OccurrenceFeatureExtractor (Set<String> dictionary) {
-		this.dictionary = dictionary;
+		this.setDictionary(dictionary);
 	}
+	
+	public OccurrenceFeatureExtractor() {}
+	
 	@Override
-	public List<Feature> extractFeatures(ArrayList<String> input) {
+	public List<Feature> extractFeatures(List<String> input) {
 		tokensToFeatures = new HashMap<String, OccurrenceFeature>();
 		features = new ArrayList<Feature>();
 		// Initialize with 0 occurrences for each token in dictionary
 		OccurrenceFeature feature;
-		for (String token : dictionary) {
+		for (String token : getDictionary()) {
 			feature = new OccurrenceFeature();
 			features.add(feature);
 			tokensToFeatures.put(token, new OccurrenceFeature());
@@ -29,6 +33,14 @@ public class OccurrenceFeatureExtractor implements FeatureExtractor {
 			}
 		}
 		return features;
+	}
+
+	public Set<String> getDictionary() {
+		return dictionary;
+	}
+
+	public void setDictionary(Set<String> dictionary) {
+		this.dictionary = dictionary;
 	}
 
 }

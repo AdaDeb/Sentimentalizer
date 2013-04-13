@@ -1,7 +1,7 @@
 package org.panhandlers.sentimentalizer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public interface DataReader {
 
@@ -11,6 +11,6 @@ public interface DataReader {
 	/**
 	 * @return Map Category => List of Tokenized Items 
 	 */
-	public abstract HashMap<String, ArrayList<ArrayList<String>>> getData();
+	public abstract HashMap<String, List<List<String>>> getData();
 
 }

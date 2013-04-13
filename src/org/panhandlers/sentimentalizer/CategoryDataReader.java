@@ -5,16 +5,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
 public class CategoryDataReader implements DataReader {
 	private String path;
-	private HashMap<String, ArrayList<ArrayList<String>>> data;
+	private HashMap<String, List<List<String>>> data;
 	private GeneralTokenizer tokenizer;
 	public CategoryDataReader() {}
 	public CategoryDataReader(String path) {
-		this.data = new HashMap<String, ArrayList<ArrayList<String>>>();
+		this.data = new HashMap<String, List<List<String>>>();
 		this.path = path;
 		this.tokenizer = new LuceneTokenizer();
 		read();
@@ -32,9 +33,9 @@ public class CategoryDataReader implements DataReader {
 	private void readCategoryDirectory(File categoryDir) {
 		if(categoryDir.listFiles() != null) {
 			String category = categoryDir.getName();
-			ArrayList<ArrayList<String>> texts = data.get(category);
+			List<List<String>> texts = data.get(category);
 			if (texts == null) {
-				texts = new ArrayList<ArrayList<String>>();
+				texts = new ArrayList<List<String>>();
 				data.put(category, texts);
 			}
 			for (File sentimentDir : categoryDir.listFiles()) {
@@ -43,7 +44,7 @@ public class CategoryDataReader implements DataReader {
 		}
 	}
 	
-	private void readSentimentDir(File sentimentDir, ArrayList<ArrayList<String>> texts) {
+	private void readSentimentDir(File sentimentDir, List<List<String>> texts) {
 		if (sentimentDir.listFiles() != null) {
 			FileInputStream fileStream = null;
 			ArrayList<String> tokenizedText;
@@ -76,7 +77,7 @@ public class CategoryDataReader implements DataReader {
 		read();
 	}
 	@Override
-	public HashMap<String, ArrayList<ArrayList<String>>> getData() {
+	public HashMap<String, List<List<String>>> getData() {
 		return data;
 	}
 	
@@ -87,8 +88,8 @@ public class CategoryDataReader implements DataReader {
 	public static void main (String[] args) {
 		DataReader r = new CategoryDataReader("amazon-balanced-6cats");
 		r.read();
-		for (ArrayList<ArrayList<String>> lists : r.getData().values()) {
-			for (ArrayList<String> list : lists) {
+		for (List<List<String>> lists : r.getData().values()) {
+			for (List<String> list : lists) {
 				for (String s : list) 
 					System.out.println(s);
 			}

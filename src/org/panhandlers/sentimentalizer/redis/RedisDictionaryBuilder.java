@@ -1,10 +1,10 @@
 package org.panhandlers.sentimentalizer.redis;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-import org.panhandlers.sentimentalizer.DataReader;
 import org.panhandlers.sentimentalizer.CategoryDataReader;
+import org.panhandlers.sentimentalizer.DataReader;
 
 import redis.clients.jedis.Jedis;
 
@@ -15,10 +15,10 @@ public class RedisDictionaryBuilder {
 		jedis = RedisConfig.getJedisPool().getResource();
 	}
 	
-	public void buildDictionary(HashMap<String, ArrayList<ArrayList<String>>> data) {
+	public void buildDictionary(HashMap<String, List<List<String>>> data) {
 		jedis.del(JedisKey);
-		for (ArrayList<ArrayList<String>> categoryItems : data.values()) {
-			for(ArrayList<String> itemTokens : categoryItems) {
+		for (List<List<String>> categoryItems : data.values()) {
+			for(List<String> itemTokens : categoryItems) {
 				for(String token : itemTokens) {
 					jedis.sadd(JedisKey, token);
 				}

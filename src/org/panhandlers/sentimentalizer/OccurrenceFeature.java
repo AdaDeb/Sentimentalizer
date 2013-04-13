@@ -26,6 +26,7 @@ public class OccurrenceFeature implements Feature {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + occurrences;
+		result = prime * result + "occurence".hashCode();
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
 		return result;
 	}
@@ -47,9 +48,12 @@ public class OccurrenceFeature implements Feature {
 			return false;
 		return true;
 	}
+	
 	public void increment() {
 		occurrences++;
 	}
 	
-	
+	public String toString() {
+		return "occurrence" + text + occurrences;
+	}
 }

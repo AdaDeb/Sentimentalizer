@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.panhandlers.sentimentalizer.ClassificationResult;
 import org.panhandlers.sentimentalizer.DataDivider;
 import org.panhandlers.sentimentalizer.DictionaryBuilder;
 import org.panhandlers.sentimentalizer.Feature;
@@ -24,6 +25,30 @@ public class RedisBayesTester {
 	}
 	
 	private void run() {
+		train();
+		test();
+	}
+	
+	private void test() {
+		ClassificationResult result;
+		List<Feature> features;
+		int successes = 0;
+		int failures = 0;
+		for (Entry<String, List<List <String>>> cat : divider.getTestData().entrySet()) {
+			for (List<String> item : cat.getValue()) {
+				features = extractor.extractFeatures(item);
+				result = classifier.classify(features);
+				if (result.getCategory().equals(cat.getKey())) {
+					successes++;
+				} else {
+					failures++;
+				}
+			}
+		}
+		System.out.println("Successes: " + successes + " Failures: " + failures);
+	}
+
+	private void train() {
 		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("software", "pos");
 		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("software", "neg");
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
@@ -40,7 +65,7 @@ public class RedisBayesTester {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		RedisBayesTester t = new RedisBayesTester();
 		t.run();

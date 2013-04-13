@@ -10,8 +10,6 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.panhandlers.sentimentalizer.GeneralTokenizer;
 import org.panhandlers.sentimentalizer.LuceneTokenizer;
-import org.tartarus.snowball.SnowballProgram;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Response;

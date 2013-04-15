@@ -1,11 +1,13 @@
 package org.panhandlers.sentimentalizer.redis;
 
+import java.util.List;
 import java.util.Set;
 
 import org.panhandlers.sentimentalizer.ClassifierStorage;
 import org.panhandlers.sentimentalizer.Feature;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
 
 public class RedisStorage implements ClassifierStorage {
 	private static final String FEATURE = "bayes:feature:";
@@ -22,6 +24,15 @@ public class RedisStorage implements ClassifierStorage {
 		jedis.hincrBy(CATEGORY_COUNTS, category, 1);
 		jedis.hincrBy(getFeatureCountKey(category), feature.toString(), 1);
 		jedis.incr(TOTAL_COUNT);
+	}
+	public void addFeatures(String category, List<Feature> features) {
+		Pipeline p = jedis.pipelined();
+		for (Feature feature : features) {
+			p.hincrBy(CATEGORY_COUNTS, category, 1);
+			p.hincrBy(getFeatureCountKey(category), feature.toString(), 1);
+			p.incr(TOTAL_COUNT);
+		}
+		p.sync();
 	}
 	
 	private String getFeatureCountKey(String category) {
@@ -45,7 +56,17 @@ public class RedisStorage implements ClassifierStorage {
 
 	@Override
 	public Set<String> getCategories() {
-		return jedis.hkeys(CATEGORY_COUNTS);
+		return 	jedis.hkeys(CATEGORY_COUNTS);
+	}
+	
+	public void reset() {
+		Set<String> keys = jedis.keys("bayes*");
+		Pipeline p = jedis.pipelined();
+		for (String key : keys) {
+			p.del(key);
+		}
+		p.sync();
+		System.out.println("RedisStorage: did reset");
 	}
 
 }

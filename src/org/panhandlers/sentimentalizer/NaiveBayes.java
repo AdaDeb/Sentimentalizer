@@ -20,9 +20,7 @@ public class NaiveBayes implements Classifier {
 	
 	@Override
 	public void train(String category, List<Feature> features) {
-		for(Feature f : features) {
-			storage.addFeature(category, f);
-		}
+		storage.addFeatures(category, features);
 	}
 
 	@Override

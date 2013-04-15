@@ -1,6 +1,7 @@
 package org.panhandlers.sentimentalizer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class HashStorage implements ClassifierStorage {
@@ -80,6 +81,14 @@ public class HashStorage implements ClassifierStorage {
 	@Override
 	public Set<String> getCategories() {
 		return this.categoryCount.keySet();
+	}
+
+	@Override
+	public void addFeatures(String category, List<Feature> features) {
+		for (Feature feature : features) {
+			addFeature(category, feature);
+		}
+		
 	}
 
 }

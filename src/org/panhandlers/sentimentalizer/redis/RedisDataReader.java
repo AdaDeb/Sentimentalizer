@@ -40,12 +40,19 @@ public class RedisDataReader {
 	}
 	
 	public void read() {
-		// Purge dictionary
-		jedis.del(DICTIONARY_KEY);
-		File folder = new File(path);
-		File[] categoryList = folder.listFiles();
-		for (File categoryDir: categoryList) {
-			readCategoryDirectory(categoryDir);
+		String loaded = jedis.get("data_loaded");
+		if(loaded == null || (loaded != null && loaded.equals("false"))) {
+			// Purge dictionary
+			jedis.del(DICTIONARY_KEY);
+			File folder = new File(path);
+			File[] categoryList = folder.listFiles();
+			for (File categoryDir: categoryList) {
+				readCategoryDirectory(categoryDir);
+			}
+			jedis.set("data_loaded", "true");
+			System.out.println("DataReader: loaded data");
+		} else {
+			System.out.println("DataReader: data already loaded");
 		}
 	}
 	

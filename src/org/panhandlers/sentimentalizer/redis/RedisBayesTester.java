@@ -17,9 +17,11 @@ public class RedisBayesTester {
 	private DataDivider divider;
 	private OccurrenceFeatureExtractor extractor;
 	private NaiveBayes classifier;
+	private RedisStorage storage;
 	RedisBayesTester() {
-		classifier = new NaiveBayes(new RedisStorage());
-		reader = new RedisDataReader();
+		storage = new RedisStorage();
+		classifier = new NaiveBayes(storage);
+		reader = new RedisDataReader("amazon-balanced-6cats");
 		divider = new DataDivider(9);
 		extractor = new OccurrenceFeatureExtractor();
 	}
@@ -49,21 +51,31 @@ public class RedisBayesTester {
 	}
 
 	private void train() {
-		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("software", "pos");
-		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("software", "neg");
+		storage.reset();
+		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("books", "pos");
+		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("books", "neg");
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("pos", positive);
 		data.put("neg", negative);
 		divider.divide(data);
 		Set<String> dictionary = DictionaryBuilder.buildDictionary(divider.getTrainingData());
+		System.out.println("Dictionary built with length: " + dictionary.size());
 		extractor.setDictionary(dictionary);
 		List<Feature> features;
 		for (Entry<String, List<List<String>>> cat: divider.getTrainingData().entrySet()) {
-			for(List<String> item : cat.getValue()) {
+			System.out.println("Training for: " + cat.getKey() + " with " + cat.getValue().size() + " items");
+			for(List<String> item : cat.getValue()) {	    
+				System.out.println("Training item with length: " + item.size());
 				features = extractor.extractFeatures(item);
+			    long startTime = System.currentTimeMillis();
+				System.out.println("Extraction complete with length: " + features.size());
 				classifier.train(cat.getKey(), features);
+				long stopTime = System.currentTimeMillis();
+			    long elapsedTime = stopTime - startTime;
+			    System.out.println("Training  completed in " + elapsedTime);
 			}
 		}
+		System.out.println("Training complete");
 	}
 
 	public static void main(String[] args) {

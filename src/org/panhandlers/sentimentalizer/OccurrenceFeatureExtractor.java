@@ -25,7 +25,7 @@ public class OccurrenceFeatureExtractor implements FeatureExtractor {
 		for (String token : getDictionary()) {
 			feature = new OccurrenceFeature();
 			features.add(feature);
-			tokensToFeatures.put(token, new OccurrenceFeature());
+			tokensToFeatures.put(token, feature);
 		}
 		for (String token : input) {
 			if (tokensToFeatures.containsKey(token)) {

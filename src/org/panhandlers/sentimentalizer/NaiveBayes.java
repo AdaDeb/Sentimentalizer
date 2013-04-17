@@ -63,7 +63,8 @@ public class NaiveBayes implements Classifier {
 		double probability;
 		for (Feature feature : features) {
 			probability = pOfFeatureGivenCategory(feature, category);
-			sum *= probability;
+			sum += Math.log(probability);
+			// System.out.println("Sum is" + sum);
 		}
 		return sum;
 	}

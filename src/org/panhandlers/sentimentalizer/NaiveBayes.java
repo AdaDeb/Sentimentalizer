@@ -20,7 +20,7 @@ public class NaiveBayes implements Classifier {
 	
 	@Override
 	public void train(String category, List<Feature> features) {
-		storage.addFeatures(category, features);
+		storage.addItem(category, features);
 	}
 
 	@Override
@@ -28,37 +28,49 @@ public class NaiveBayes implements Classifier {
 		Set<String> categories = storage.getCategories();
 		ArrayList<ClassificationResult> results = new ArrayList<ClassificationResult>(categories.size());
 		ClassificationResult result;
-		float prob;
+		double prob;
 		for (String category : categories)
 		{
-			prob = pOfCategoryGivenFeatures(category, features) * pOfCategory(category);
+			prob = pOfFeaturesGivenCategory(category, features) * pOfCategory(category);
 			result = new ClassificationResult(category, prob);
 			results.add(result);
 		}
 		Collections.sort(results, Collections.reverseOrder());
-		System.out.println("Results: >>> ");
+		System.out.println("Result vector:");
 		for(ClassificationResult r : results) {
 			System.out.println(r);
 		}
-		System.out.println("Results: >>> end");
 		return results.get(0);
 	}
 
-	private float pOfFeatureGivenCategory(Feature feature, String category) {
-		return storage.getFeatureCount(category, feature) / storage.getCategoryCount(category);
+	private double pOfFeatureGivenCategory(Feature feature, String category) {
+		double featureCount = (double) storage.getFeatureCount(category, feature);
+		if (featureCount == 0.0d) {
+			return defaultProbability();
+		} else {
+			double categoryCount = (double) storage.getTotalFeaturesInCategoryCount(category);
+			return featureCount/categoryCount;
+		}
 	}
 	
-	private float pOfCategoryGivenFeatures(String category, List<Feature> features) {
-		float sum = 1f;
+	private double defaultProbability() {
+		return 0.5d / ((double) storage.getTotalCount() / 2);
+	}
+	
+	private double pOfFeaturesGivenCategory(String category, List<Feature> features) {
+		double sum = 1f;
+		double probability;
 		for (Feature feature : features) {
-			float probability = pOfFeatureGivenCategory(feature, category);
+			probability = pOfFeatureGivenCategory(feature, category);
 			sum *= probability;
 		}
 		return sum;
 	}
 	
-	private float pOfCategory(String category) {
-		return storage.getCategoryCount(category) / storage.getTotalCount();
+	private double pOfCategory(String category) {
+		double categoryCount = (double) storage.getItemsInCategoryCount(category);
+		double totalCount = (double) storage.getTotalItemsCount();
+		return categoryCount/totalCount;
 	}
 	
 

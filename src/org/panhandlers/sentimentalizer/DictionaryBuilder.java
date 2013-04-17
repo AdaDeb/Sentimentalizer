@@ -1,5 +1,6 @@
 package org.panhandlers.sentimentalizer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -34,9 +35,11 @@ public class DictionaryBuilder {
 				tokensInItem = new HashSet<String>();
 				rawFrequency = new HashMap<String, Integer>();
 				for(String token : itemTokens) {
-					tokensInItem.add(token);
-					updateFrequency(token, rawFrequency);
-					dictionary.add(token);
+					if (sane(token)) {
+						tokensInItem.add(token);
+						updateFrequency(token, rawFrequency);
+						dictionary.add(token);
+					}
 				}
 				for(String token : tokensInItem) {
 					updateExistenceSet(token, itemsWithToken);
@@ -46,6 +49,13 @@ public class DictionaryBuilder {
 		}
 		return tdifFilter(rawFrequenciesForItem, idf(dictionary, totalItems, itemsWithToken));
 	}
+	
+	private boolean sane(String token) {
+		if (token.length() < 3) return false;
+		if (token.matches("\\d+.*")) return false;
+		return true;
+	}
+
 	private HashMap<String, Double> idf(Set<String> tokens, int totalItems, HashMap<String, Integer> itemsWithToken) {
 		double quota;
 		double idf;
@@ -60,23 +70,32 @@ public class DictionaryBuilder {
 	private Set<String> tdifFilter(
 			List<HashMap<String, Integer>> rawFrequenciesForItem, 
 			HashMap<String, Double> idfValues) {
-		TreeMap<String, Double> sortedTokens = new TreeMap<String, Double>();
+		HashMap<String, Double> tfdifValueMap = new HashMap<String, Double>();
 		double tfidfValue;
 		for(HashMap<String, Integer> frequencies : rawFrequenciesForItem) {
 			for(Entry<String, Integer> pair : frequencies.entrySet()) {
 				tfidfValue = ((double) pair.getValue()) * idfValues.get(pair.getKey());
-				updateTfidf(pair.getKey(), tfidfValue, sortedTokens);
+				updateTfidf(pair.getKey(), tfidfValue, tfdifValueMap);
 			}
 		}
 		Set<String> dictionary = new HashSet<String>(idfValues.size());
-		Iterator<String> it = sortedTokens.descendingKeySet().iterator();
-		for (int count = 0; count < max && count < sortedTokens.size() ; count++) {
-			dictionary.add(it.next());			
+		TreeMap<Double, String> sortedMap = new TreeMap<Double, String>();
+		for (Entry<String, Double> entry : tfdifValueMap.entrySet()) {
+			sortedMap.put(entry.getValue(), entry.getKey());
+		}
+		Iterator<String> it = sortedMap.descendingMap().values().iterator();
+		String token;
+		for (int count = 0; count < max && count < sortedMap.size() ; count++) {
+			token = it.next();
+			dictionary.add(token);			
+		}
+		for (Entry<Double, String> entry : sortedMap.descendingMap().entrySet()) {
+			System.out.println(entry.getKey() + " => " + entry.getValue());
 		}
 		return dictionary;
 	}
 	private void updateTfidf(String token, double tfidfValue,
-			TreeMap<String, Double> sortedTokens) {
+			HashMap<String, Double> sortedTokens) {
 		Double value = sortedTokens.get(token);
 		if (value == null) {
 			sortedTokens.put(token, tfidfValue);
@@ -92,8 +111,7 @@ public class DictionaryBuilder {
 			itemsWithToken.put(token, count + 1);
 		}
 	}
-	private static void updateFrequency(String token,
-			HashMap<String, Integer> rawFrequency) {
+	private static void updateFrequency(String token, HashMap<String, Integer> rawFrequency) {
 		Integer count = rawFrequency.get(token);
 		if(count == null) {
 			rawFrequency.put(token, 1);

@@ -10,12 +10,12 @@ import org.panhandlers.sentimentalizer.DataDivider;
 import org.panhandlers.sentimentalizer.DictionaryBuilder;
 import org.panhandlers.sentimentalizer.Feature;
 import org.panhandlers.sentimentalizer.NaiveBayes;
-import org.panhandlers.sentimentalizer.OccurrenceFeatureExtractor;
+import org.panhandlers.sentimentalizer.ExistenceFeatureExtractor;
 
 public class RedisBayesTester {
 	private RedisDataReader reader;
 	private DataDivider divider;
-	private OccurrenceFeatureExtractor extractor;
+	private ExistenceFeatureExtractor extractor;
 	private NaiveBayes classifier;
 	private RedisStorage storage;
 	private DictionaryBuilder dictionaryBuilder;
@@ -23,9 +23,9 @@ public class RedisBayesTester {
 		storage = new RedisStorage();
 		classifier = new NaiveBayes(storage);
 		reader = new RedisDataReader("amazon-balanced-6cats");
-		divider = new DataDivider(9);
-		extractor = new OccurrenceFeatureExtractor();
-		dictionaryBuilder = new DictionaryBuilder();
+		divider = new DataDivider(20);
+		extractor = new ExistenceFeatureExtractor();
+		dictionaryBuilder = new DictionaryBuilder(2000);
 	}
 	
 	private void run() {
@@ -46,7 +46,7 @@ public class RedisBayesTester {
 					System.out.println("Succeeded for: " + detokenize(item) +"\n which was supposed to be " + cat.getKey());
 					successes++;
 				} else {
-					System.out.println("Failed for: " + detokenize(item));
+					System.out.println("Failed for: " + detokenize(item) +"\n which was supposed to be " + cat.getKey());
 					failures++;
 				}
 			}
@@ -66,8 +66,8 @@ public class RedisBayesTester {
 
 	private void train() {
 		storage.reset();
-		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("software", "pos");
-		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("software", "neg");
+		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("music", "pos");
+		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("music", "neg");
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("pos", positive);
 		data.put("neg", negative);
@@ -79,14 +79,14 @@ public class RedisBayesTester {
 		for (Entry<String, List<List<String>>> cat: divider.getTrainingData().entrySet()) {
 			System.out.println("Training for: " + cat.getKey() + " with " + cat.getValue().size() + " items");
 			for(List<String> item : cat.getValue()) {	    
-				System.out.println("Training item with length: " + item.size());
+//				System.out.println("Training item with length: " + item.size());
 				features = extractor.extractFeatures(item);
 			    long startTime = System.currentTimeMillis();
-				System.out.println("Extraction complete with length: " + features.size());
+//				System.out.println("Extraction complete with length: " + features.size());
 				classifier.train(cat.getKey(), features);
 				long stopTime = System.currentTimeMillis();
 			    long elapsedTime = stopTime - startTime;
-			    System.out.println("Training  completed in " + elapsedTime);
+//			    System.out.println("Training  completed in " + elapsedTime);
 			}
 		}
 		System.out.println("Training complete");

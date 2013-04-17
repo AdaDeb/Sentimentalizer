@@ -34,3 +34,5 @@ local.properties
 
 # Ignore Redis dumps
 *.rdb
+
+*.jpage

@@ -1,5 +1,6 @@
 package org.panhandlers.sentimentalizer.redis;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -11,27 +12,26 @@ import redis.clients.jedis.Pipeline;
 
 public class RedisStorage implements ClassifierStorage {
 	private static final String FEATURE = "bayes:feature:";
-	private static final String CATEGORY_COUNTS = "bayes:category_counts";
+	private static final String CATEGORY_FEATURE_COUNTS = "bayes:category_feature_counts";
+	private static final String CATEGORY_ITEM_COUNTS = "bayes:category_item_counts";
+	private static final String TOTAL_ITEM_COUNT = "bayes:total_item_count";
 	private static final String FEATURE_COUNTS = "bayes:feature_counts:";
-	private static final String TOTAL_COUNT = "bayes:total_count";
+	private static final String ALL_FEATURES = "bayes:all_features";
 	private Jedis jedis;
 	
 	public RedisStorage() {
 		jedis = RedisConfig.getJedisPool().getResource();
 	}
-	@Override
-	public void addFeature(String category, Feature feature) {
-		jedis.hincrBy(CATEGORY_COUNTS, category, 1);
-		jedis.hincrBy(getFeatureCountKey(category), feature.toString(), 1);
-		jedis.incr(TOTAL_COUNT);
-	}
-	public void addFeatures(String category, List<Feature> features) {
+
+	public void addItem(String category, List<Feature> features) {
 		Pipeline p = jedis.pipelined();
 		for (Feature feature : features) {
-			p.hincrBy(CATEGORY_COUNTS, category, 1);
+			p.hincrBy(CATEGORY_FEATURE_COUNTS, category, 1);
 			p.hincrBy(getFeatureCountKey(category), feature.toString(), 1);
-			p.incr(TOTAL_COUNT);
+			p.sadd(ALL_FEATURES, feature.toString());
 		}
+		p.incr(TOTAL_ITEM_COUNT);
+		p.hincrBy(CATEGORY_ITEM_COUNTS, category, 1);
 		p.sync();
 	}
 	
@@ -40,23 +40,28 @@ public class RedisStorage implements ClassifierStorage {
 	}
 
 	@Override
-	public int getCategoryCount(String category) {
-		return Integer.parseInt(jedis.hget(CATEGORY_COUNTS, category));
+	public int getTotalFeaturesInCategoryCount(String category) {
+		return Integer.parseInt(jedis.hget(CATEGORY_FEATURE_COUNTS, category));
 	}
 
 	@Override
 	public int getFeatureCount(String category, Feature feature) {
-		return Integer.parseInt(jedis.hget(getFeatureCountKey(category), feature.toString()));
+		String output = jedis.hget(getFeatureCountKey(category), feature.toString());
+		if (output == null) {
+			return 0;
+		} else {
+			return Integer.parseInt(output);
+		}
 	}
 
 	@Override
 	public int getTotalCount() {
-		return Integer.parseInt(jedis.get(TOTAL_COUNT));
+		return (int) new BigDecimal(jedis.scard(ALL_FEATURES)).intValueExact();
 	}
 
 	@Override
 	public Set<String> getCategories() {
-		return 	jedis.hkeys(CATEGORY_COUNTS);
+		return 	jedis.hkeys(CATEGORY_FEATURE_COUNTS);
 	}
 	
 	public void reset() {
@@ -67,6 +72,14 @@ public class RedisStorage implements ClassifierStorage {
 		}
 		p.sync();
 		System.out.println("RedisStorage: did reset");
+	}
+	@Override
+	public int getItemsInCategoryCount(String category) {
+		return Integer.parseInt(jedis.hget(CATEGORY_ITEM_COUNTS, category));
+	}
+	@Override
+	public int getTotalItemsCount() {
+		return Integer.parseInt(jedis.get(TOTAL_ITEM_COUNT));
 	}
 
 }

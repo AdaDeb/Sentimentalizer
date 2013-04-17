@@ -14,14 +14,30 @@ public class DataDivider {
 	private HashMap<String, List<List<String>>> trainingData;
 	private HashMap<String, List<List<String>>> testData;
 	private int ratio;
+	private int offset;
 	
 	public DataDivider(int ratio) {
+		this.ratio = ratio;
+		this.offset = 0;
+		init();
+	}
+	
+	public DataDivider(int ratio, int offset) {
+		this.offset = offset;
 		this.ratio = ratio;
 		init();
 	}
 	
 	public DataDivider(int ratio, HashMap<String, List<List<String>>> data) {
 		this.ratio = ratio;
+		this.offset = 0;
+		init();
+		divide(data);
+	}
+	
+	public DataDivider(int ratio, int offset, HashMap<String, List<List<String>>> data) {
+		this.ratio = ratio;
+		this.offset = offset;
 		init();
 		divide(data);
 	}
@@ -48,7 +64,7 @@ public class DataDivider {
 			testData.put(category.getKey(), testDataList);
 			trainingData.put(category.getKey(), trainingDataList);
 			for(i = 0; i < category.getValue().size(); i++) {
-				if(i % ratio == 0) {
+				if((i % ratio) - offset == 0) {
 					testDataList.add(category.getValue().get(i));
 				} else {
 					trainingDataList.add(category.getValue().get(i));

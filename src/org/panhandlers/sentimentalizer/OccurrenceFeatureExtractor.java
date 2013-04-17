@@ -30,10 +30,6 @@ public class OccurrenceFeatureExtractor implements FeatureExtractor {
 		for (String token : input) {
 			if (tokensToFeatures.containsKey(token)) {
 				tokensToFeatures.get(token).increment();
-			} else {
-				feature = new OccurrenceFeature(token, 1);
-				features.add(feature);
-				tokensToFeatures.put(token, feature);
 			}
 		}
 		return features;

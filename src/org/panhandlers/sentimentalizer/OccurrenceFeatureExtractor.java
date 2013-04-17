@@ -23,13 +23,17 @@ public class OccurrenceFeatureExtractor implements FeatureExtractor {
 		// Initialize with 0 occurrences for each token in dictionary
 		OccurrenceFeature feature;
 		for (String token : getDictionary()) {
-			feature = new OccurrenceFeature();
+			feature = new OccurrenceFeature(token);
 			features.add(feature);
 			tokensToFeatures.put(token, feature);
 		}
 		for (String token : input) {
 			if (tokensToFeatures.containsKey(token)) {
 				tokensToFeatures.get(token).increment();
+			} else {
+				feature = new OccurrenceFeature(token, 1);
+				features.add(feature);
+				tokensToFeatures.put(token, feature);
 			}
 		}
 		return features;

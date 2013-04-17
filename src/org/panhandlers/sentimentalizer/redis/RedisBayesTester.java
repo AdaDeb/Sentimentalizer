@@ -8,7 +8,6 @@ import java.util.Set;
 import org.panhandlers.sentimentalizer.ClassificationResult;
 import org.panhandlers.sentimentalizer.DataDivider;
 import org.panhandlers.sentimentalizer.DictionaryBuilder;
-import org.panhandlers.sentimentalizer.ExistenceFeatureExtractor;
 import org.panhandlers.sentimentalizer.Feature;
 import org.panhandlers.sentimentalizer.NaiveBayes;
 import org.panhandlers.sentimentalizer.OccurrenceFeatureExtractor;
@@ -16,15 +15,17 @@ import org.panhandlers.sentimentalizer.OccurrenceFeatureExtractor;
 public class RedisBayesTester {
 	private RedisDataReader reader;
 	private DataDivider divider;
-	private ExistenceFeatureExtractor extractor;
+	private OccurrenceFeatureExtractor extractor;
 	private NaiveBayes classifier;
 	private RedisStorage storage;
+	private DictionaryBuilder dictionaryBuilder;
 	RedisBayesTester() {
 		storage = new RedisStorage();
 		classifier = new NaiveBayes(storage);
 		reader = new RedisDataReader("amazon-balanced-6cats");
 		divider = new DataDivider(9);
-		extractor = new ExistenceFeatureExtractor();
+		extractor = new OccurrenceFeatureExtractor();
+		dictionaryBuilder = new DictionaryBuilder();
 	}
 	
 	private void run() {
@@ -51,6 +52,8 @@ public class RedisBayesTester {
 			}
 		}
 		System.out.println("Successes: " + successes + " Failures: " + failures);
+		double percentage = (double) successes / ((double) successes + failures);
+		System.out.println("Percentage: " + percentage * 100);	
 	}
 	
 	private String detokenize(List<String> item) {
@@ -63,13 +66,13 @@ public class RedisBayesTester {
 
 	private void train() {
 		storage.reset();
-		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("music", "pos");
-		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("music", "neg");
+		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("software", "pos");
+		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("software", "neg");
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("pos", positive);
 		data.put("neg", negative);
 		divider.divide(data);
-		Set<String> dictionary = DictionaryBuilder.buildDictionary(divider.getTrainingData());
+		Set<String> dictionary = dictionaryBuilder.buildDictionary(divider.getTrainingData());
 		System.out.println("Dictionary built with length: " + dictionary.size());
 		extractor.setDictionary(dictionary);
 		List<Feature> features;

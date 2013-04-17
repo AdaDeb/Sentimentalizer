@@ -66,8 +66,8 @@ public class RedisBayesTester {
 
 	private void train() {
 		storage.reset();
-		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("music", "pos");
-		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("music", "neg");
+		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("dvd", "pos");
+		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("dvd", "neg");
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("pos", positive);
 		data.put("neg", negative);

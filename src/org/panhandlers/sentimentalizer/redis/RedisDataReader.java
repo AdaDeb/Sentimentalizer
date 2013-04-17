@@ -14,6 +14,15 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Response;
 
+/**
+ * Reads ALL of the test data and saves it into Redis.
+ * Keeps track of whether data has already been loaded, 
+ * so that it doesn't unnecessarily load everything again.
+ * Stores all items as lists.
+ * Stores lists of item keys for each category and sentiment to enable quick fetching. 
+ * @author jesjos
+ *
+ */
 public class RedisDataReader {
 	private static final String DICTIONARY_KEY = "dictionary";
 	private static final String CATEGORIES_KEY = "categories";
@@ -66,6 +75,9 @@ public class RedisDataReader {
 		return getLists(keys);
 	}
 	
+	/*
+	 *  Gets a items for a list of keys
+	 */
 	private List<List<String>> getLists(List<String> keys) {
 		List<List<String>> items = new LinkedList<List<String>>();
 		Pipeline p = jedis.pipelined();
@@ -80,14 +92,23 @@ public class RedisDataReader {
 		return items;
 	}
 	
+	/*
+	 * Constructs a key that is used to store and fetch a single item
+	 */
 	private String itemKey(String category, String sentiment, String id) {
 		return category + ":" + sentiment + ":" + id;
 	}
 	
+	/*
+	 * Constructs a key that is used to store and fetch a list of item keys by category
+	 */
 	private String itemsByCategoryKey(String category) {
 		return CATEGORIES_ITEMS + category;
 	}
 	
+	/*
+	 * Constructs a key that is used to store and fetch a list of item keys by category and sentiment
+	 */
 	private String itemsByCategoryAndSentimentKey(String category, String sentiment) {
 		return category + ":" + sentiment;
 	}

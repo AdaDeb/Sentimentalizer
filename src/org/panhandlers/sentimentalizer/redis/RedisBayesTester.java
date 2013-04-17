@@ -8,6 +8,7 @@ import java.util.Set;
 import org.panhandlers.sentimentalizer.ClassificationResult;
 import org.panhandlers.sentimentalizer.DataDivider;
 import org.panhandlers.sentimentalizer.DictionaryBuilder;
+import org.panhandlers.sentimentalizer.ExistenceFeatureExtractor;
 import org.panhandlers.sentimentalizer.Feature;
 import org.panhandlers.sentimentalizer.NaiveBayes;
 import org.panhandlers.sentimentalizer.OccurrenceFeatureExtractor;
@@ -15,7 +16,7 @@ import org.panhandlers.sentimentalizer.OccurrenceFeatureExtractor;
 public class RedisBayesTester {
 	private RedisDataReader reader;
 	private DataDivider divider;
-	private OccurrenceFeatureExtractor extractor;
+	private ExistenceFeatureExtractor extractor;
 	private NaiveBayes classifier;
 	private RedisStorage storage;
 	RedisBayesTester() {
@@ -23,7 +24,7 @@ public class RedisBayesTester {
 		classifier = new NaiveBayes(storage);
 		reader = new RedisDataReader("amazon-balanced-6cats");
 		divider = new DataDivider(9);
-		extractor = new OccurrenceFeatureExtractor();
+		extractor = new ExistenceFeatureExtractor();
 	}
 	
 	private void run() {
@@ -41,19 +42,29 @@ public class RedisBayesTester {
 				features = extractor.extractFeatures(item);
 				result = classifier.classify(features);
 				if (result.getCategory().equals(cat.getKey())) {
+					System.out.println("Succeeded for: " + detokenize(item) +"\n which was supposed to be " + cat.getKey());
 					successes++;
 				} else {
+					System.out.println("Failed for: " + detokenize(item));
 					failures++;
 				}
 			}
 		}
 		System.out.println("Successes: " + successes + " Failures: " + failures);
 	}
+	
+	private String detokenize(List<String> item) {
+		StringBuilder b = new StringBuilder();
+		for (String s : item) {
+			b.append(s);
+		}
+		return b.toString();
+	}
 
 	private void train() {
 		storage.reset();
-		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("books", "pos");
-		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("books", "neg");
+		List<List<String>> positive = reader.getItemsByCategoryAndSentiment("music", "pos");
+		List<List<String>> negative = reader.getItemsByCategoryAndSentiment("music", "neg");
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("pos", positive);
 		data.put("neg", negative);

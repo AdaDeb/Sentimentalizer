@@ -46,6 +46,7 @@ public class NaiveBayes implements Classifier {
 	private double pOfFeatureGivenCategory(Feature feature, String category) {
 		double featureCount = (double) storage.getFeatureCount(category, feature);
 		if (featureCount == 0.0d) {
+			System.out.println("Feature count is zero");
 			return defaultProbability();
 		} else {
 			double categoryCount = (double) storage.getTotalFeaturesInCategoryCount(category);

@@ -54,6 +54,7 @@ public class Perceptron implements Classifier {
 			output[j] = 1; //negative doc/ output
 			//weights[j] = 0;
 		}
+		System.out.println("===============>>>>> EXIEXITISIS!!!");
 		
 	//	System.out.println("Weights array size: " + weights.length);
 	//	for(int k=0; k < trainingDataSet.length; k++){

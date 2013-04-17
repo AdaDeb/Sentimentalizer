@@ -29,6 +29,7 @@ public class OccurrenceFeatureExtractor implements FeatureExtractor {
 		}
 		for (String token : input) {
 			if (tokensToFeatures.containsKey(token)) {
+				System.out.println("Did increment!");
 				tokensToFeatures.get(token).increment();
 			}
 		}

@@ -11,11 +11,12 @@ import org.panhandlers.sentimentalizer.DictionaryBuilder;
 import org.panhandlers.sentimentalizer.Feature;
 import org.panhandlers.sentimentalizer.NaiveBayes;
 import org.panhandlers.sentimentalizer.ExistenceFeatureExtractor;
+import org.panhandlers.sentimentalizer.OccurrenceFeatureExtractor;
 
 public class RedisBayesTester {
 	private RedisDataReader reader;
 	private DataDivider divider;
-	private ExistenceFeatureExtractor extractor;
+	private OccurrenceFeatureExtractor extractor;
 	private NaiveBayes classifier;
 	private RedisStorage storage;
 	private DictionaryBuilder dictionaryBuilder;
@@ -23,9 +24,9 @@ public class RedisBayesTester {
 		storage = new RedisStorage();
 		classifier = new NaiveBayes(storage);
 		reader = new RedisDataReader("amazon-balanced-6cats");
-		divider = new DataDivider(20);
-		extractor = new ExistenceFeatureExtractor();
-		dictionaryBuilder = new DictionaryBuilder(2000);
+		divider = new DataDivider(9);
+		extractor = new OccurrenceFeatureExtractor();
+		dictionaryBuilder = new DictionaryBuilder(500);
 	}
 	
 	private void run() {

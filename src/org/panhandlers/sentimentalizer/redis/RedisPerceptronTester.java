@@ -22,6 +22,7 @@ public class RedisPerceptronTester {
 	private OccurrenceFeatureExtractor extractor;
 	private Perceptron classifier;
 	private RedisStorage storage;
+	private DictionaryBuilder dictionaryBuilder;
 	
 	public RedisPerceptronTester(){
 		storage = new RedisStorage();
@@ -29,6 +30,7 @@ public class RedisPerceptronTester {
 		reader = new RedisDataReader("amazon-balanced-6cats");
 		divider = new DataDivider(9);
 		extractor = new OccurrenceFeatureExtractor();
+		dictionaryBuilder = new DictionaryBuilder(500);
 		
 	}
 	
@@ -69,7 +71,7 @@ public class RedisPerceptronTester {
 	
 	
 	private HashMap<String, Integer> percepInput(Set<String> dict){
-		HashMap<String, Integer> dictHash = new HashMap<>();
+		HashMap<String, Integer> dictHash = new HashMap<String, Integer>();
 		int pos = 0;
 		for (String item : dict) {
 			//System.out.println(item);
@@ -91,8 +93,7 @@ public class RedisPerceptronTester {
 		data.put("pos", positive);
 		data.put("neg", negative);
 		divider.divide(data);
-		DictionaryBuilder build = new DictionaryBuilder(500);
-		Set<String> dictionary = build.buildDictionary(divider.getTrainingData());
+		Set<String> dictionary = dictionaryBuilder.buildDictionary(divider.getTrainingData());
 	   System.out.println();
 		HashMap<String, Integer> dictHash = percepInput(dictionary);
 		//percepInput(dictionary);
@@ -114,12 +115,12 @@ public class RedisPerceptronTester {
 				System.out.println("Extraction complete with length: " + features.size());
 				classifier.createInput(dictHash, features);
 				
-				classifier.train();
+//				classifier.train();
 				classifier.print();
 				long stopTime = System.currentTimeMillis();
 			    long elapsedTime = stopTime - startTime;
 			    System.out.println("Training  completed in " + elapsedTime);
-			    break;
+			   
 			}
 		}
 		System.out.println("Training complete");

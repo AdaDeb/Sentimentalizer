@@ -1,7 +1,7 @@
 package org.panhandlers.sentimentalizer;
 
 public class OccurrenceFeature implements Feature {
-	private String text;
+	private String token;
 	private int occurrences;
 	public OccurrenceFeature(int n) {
 		this.occurrences = n;
@@ -9,11 +9,21 @@ public class OccurrenceFeature implements Feature {
 	public OccurrenceFeature() {
 		this.occurrences = 0;
 	}
-	public String getText() {
-		return text;
+	
+	public OccurrenceFeature(String token) {
+		this.token = token;
+		this.occurrences = 0;
 	}
-	public void setText(String text) {
-		this.text = text;
+	
+	public OccurrenceFeature(String token, int n) {
+		this.token = token;
+		this.occurrences = n;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	public int getOccurrences() {
 		return occurrences;
@@ -27,7 +37,7 @@ public class OccurrenceFeature implements Feature {
 		int result = 1;
 		result = prime * result + occurrences;
 		result = prime * result + "occurence".hashCode();
-		result = prime * result + ((text == null) ? 0 : text.hashCode());
+		result = prime * result + ((token == null) ? 0 : token.hashCode());
 		return result;
 	}
 	@Override
@@ -41,10 +51,10 @@ public class OccurrenceFeature implements Feature {
 		OccurrenceFeature other = (OccurrenceFeature) obj;
 		if (occurrences != other.occurrences)
 			return false;
-		if (text == null) {
-			if (other.text != null)
+		if (token == null) {
+			if (other.token != null)
 				return false;
-		} else if (!text.equals(other.text))
+		} else if (!token.equals(other.token))
 			return false;
 		return true;
 	}
@@ -54,6 +64,6 @@ public class OccurrenceFeature implements Feature {
 	}
 	
 	public String toString() {
-		return "occurrence" + text + occurrences;
+		return "occurrence" + token + occurrences;
 	}
 }

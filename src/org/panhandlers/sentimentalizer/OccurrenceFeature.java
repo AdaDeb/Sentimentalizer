@@ -1,6 +1,6 @@
 package org.panhandlers.sentimentalizer;
 
-public class OccurrenceFeature implements Feature {
+public class OccurrenceFeature implements Feature, TokenFeature {
 	private String token;
 	private int occurrences;
 	public OccurrenceFeature(int n) {
@@ -65,5 +65,9 @@ public class OccurrenceFeature implements Feature {
 	
 	public String toString() {
 		return "occurrence" + token + occurrences;
+	}
+	@Override
+	public int getValue() {
+		return occurrences;
 	}
 }

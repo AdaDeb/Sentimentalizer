@@ -1,6 +1,6 @@
 package org.panhandlers.sentimentalizer;
 
-public class ExistenceFeature implements Feature{
+public class ExistenceFeature implements Feature, TokenFeature {
 	private boolean exists;
 	private String token;
 	public ExistenceFeature(String token) {
@@ -24,5 +24,9 @@ public class ExistenceFeature implements Feature{
 	}
 	public void setExists(boolean exists) {
 		this.exists = exists;
+	}
+	
+	public int getValue() {
+		return exists ? 1 : 0;
 	}
 }

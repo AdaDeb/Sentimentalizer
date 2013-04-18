@@ -1,5 +1,6 @@
 package org.panhandlers.sentimentalizer.testing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class SentimentTest extends Test {
 	private HashMap<String, List<List<String>>> testData;
 	private HashMap<String, List<List<String>>> trainingData;
 	private Test.Type type;
+	private Set<String> dictionary;
 
 	public SentimentTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, String category) {
 		super(env, classifier, ratio, dictSize);
@@ -68,6 +70,7 @@ public class SentimentTest extends Test {
 		 */
 		testData = trainingData = null;
 		extractor = null;
+		dictionary = null;
 	}
 	
 	private void loadData() {
@@ -105,7 +108,7 @@ public class SentimentTest extends Test {
 		/*
 		 * Construct dictionary
 		 */
-		Set<String> dictionary = getDictionaryBuilder().buildDictionary(trainingData);
+		dictionary = getDictionaryBuilder().buildDictionary(trainingData);
 		System.out.println("Dictionary built with length: " + dictionary.size());
 		extractor.setDictionary(dictionary);
 	}
@@ -114,20 +117,16 @@ public class SentimentTest extends Test {
 	void train() {
 		System.out.println("Starting test: " + toString());
 		loadData();
-		List<Feature> features;
+		List<List<Feature>> features;
+		HashMap<String, List<List<Feature>>> featureMap = new HashMap<String, List<List<Feature>>>();
 		for (Entry<String, List<List<String>>> cat : trainingData.entrySet()) {
-			System.out.println("Training for: " + cat.getKey() + " with " + cat.getValue().size() + " items");
-			for(List<String> item : cat.getValue()) {	    
-//				System.out.println("Training item with length: " + item.size());
-				features = extractor.extractFeatures(item);
-			    long startTime = System.currentTimeMillis();
-//				System.out.println("Extraction complete with length: " + features.size());
-				getClassifier().train(cat.getKey(), features);
-				long stopTime = System.currentTimeMillis();
-			    long elapsedTime = stopTime - startTime;
-//			    System.out.println("Training  completed in " + elapsedTime);
+			features = new ArrayList<List<Feature>>();
+			for(List<String> item : cat.getValue()) {
+				features.add(extractor.extractFeatures(item));
 			}
+			featureMap.put(cat.getKey(), features);
 		}
+		getClassifier().multipleTrain(featureMap, dictionary);
 	}
 	@Override
 	public String getResults() {

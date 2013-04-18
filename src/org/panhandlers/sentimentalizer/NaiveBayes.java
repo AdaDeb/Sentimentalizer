@@ -2,7 +2,9 @@ package org.panhandlers.sentimentalizer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.panhandlers.sentimentalizer.redis.RedisStorage;
@@ -73,6 +75,15 @@ public class NaiveBayes implements Classifier {
 		double categoryCount = (double) storage.getItemsInCategoryCount(category);
 		double totalCount = (double) storage.getTotalItemsCount();
 		return categoryCount/totalCount;
+	}
+
+	@Override
+	public void multipleTrain(HashMap<String, List<List<Feature>>> trainingSet, Set<String> dictionary) {
+		for(Entry<String, List<List<Feature>>> entry : trainingSet.entrySet()) {
+			for(List<Feature> item : entry.getValue()) {
+				train(entry.getKey(), item);
+			}
+		}
 	}
 	
 

@@ -2,15 +2,16 @@ package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
 
+import org.panhandlers.sentimentalizer.AlternatePerceptron;
 import org.panhandlers.sentimentalizer.Classifier;
 import org.panhandlers.sentimentalizer.NaiveBayes;
 
 
 
 public class TestRunner {
-	private static final String[] CATEGORIES = new String[]{"books", "camera", "dvd", "health", "music", "software"};
+	private static final String[] CATEGORIES = new String[]{"books"};//, "camera", "dvd", "health", "music", "software"};
 	private static final int RATIO = 10;
-	private static final int DICTIONARY_SIZE = 500;
+	private static final int DICTIONARY_SIZE = 2000;
 	private ArrayList<Test> tests;
 	private TestEnvironment env;
 	
@@ -23,7 +24,7 @@ public class TestRunner {
 	private void createTests() {
 		Test t;
 		int i = 1;
-		Classifier[] classifiers = new Classifier[]{new NaiveBayes(env.getStorage())};
+		Classifier[] classifiers = new Classifier[]{new AlternatePerceptron()};
 		for (Classifier classifier : classifiers) {
 			/*
 			 * Run in-domain tests
@@ -31,10 +32,10 @@ public class TestRunner {
 			for (String category : CATEGORIES) {
 				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 				tests.add(t);
-				for(; i < CATEGORIES.length; i++) {
-					t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category, CATEGORIES[i]);
-					tests.add(t);
-				}
+//				for(; i < CATEGORIES.length; i++) {
+//					t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category, CATEGORIES[i]);
+//					tests.add(t);
+//				}
 			}
 		}
 	}

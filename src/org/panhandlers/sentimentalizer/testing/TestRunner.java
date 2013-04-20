@@ -9,7 +9,7 @@ import org.panhandlers.sentimentalizer.NaiveBayes;
 
 
 public class TestRunner {
-	private static final String[] CATEGORIES = new String[]{"books"};//, "camera", "dvd", "health", "music", "software"};
+	private static final String[] CATEGORIES = new String[]{"software"};//, "camera", "dvd", "health", "music", "software"};
 	private static final int RATIO = 10;
 	private static final int DICTIONARY_SIZE = 2000;
 	private ArrayList<Test> tests;

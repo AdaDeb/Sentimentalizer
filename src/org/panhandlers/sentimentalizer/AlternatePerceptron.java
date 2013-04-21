@@ -48,7 +48,7 @@ public class AlternatePerceptron implements Classifier {
 				}
 			}
 			System.err.println("Errors: " + errors);
-			if (errors == 0 || i > 2000)
+			if (errors == 0 || i > 2000 )
 				break;
 			i++;
 			// if(errors > previousErrors) break;

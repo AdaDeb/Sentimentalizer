@@ -3,13 +3,14 @@ package org.panhandlers.sentimentalizer.testing;
 import java.util.ArrayList;
 
 import org.panhandlers.sentimentalizer.AlternatePerceptron;
+import org.panhandlers.sentimentalizer.AveragedPerceptron;
 import org.panhandlers.sentimentalizer.Classifier;
 import org.panhandlers.sentimentalizer.NaiveBayes;
 
 
 
 public class TestRunner {
-	private static final String[] CATEGORIES = new String[]{"software"};//, "camera", "dvd", "health", "music", "software"};
+	private static final String[] CATEGORIES = new String[]{"dvd"};//, "camera", "dvd", "health", "music", "software"};
 	private static final int RATIO = 10;
 	private static final int DICTIONARY_SIZE = 2000;
 	private ArrayList<Test> tests;

@@ -63,7 +63,7 @@ public class SentimentTest extends Test {
 		}
 		report += ("Successes: " + successes + " Failures: " + failures);
 		double percentage = (double) successes / ((double) successes + failures);
-		report += ("Percentage: " + percentage * 100);	
+		report += (" Percentage: " + percentage * 100);	
 		
 		/*
 		 * Unload data

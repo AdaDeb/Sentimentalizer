@@ -3,6 +3,7 @@ package org.panhandlers.sentimentalizer.testing;
 import java.util.ArrayList;
 
 import org.panhandlers.sentimentalizer.AlternatePerceptron;
+import org.panhandlers.sentimentalizer.AveragedPerceptron;
 import org.panhandlers.sentimentalizer.Classifier;
 import org.panhandlers.sentimentalizer.NaiveBayes;
 

@@ -2,6 +2,7 @@ package org.panhandlers.sentimentalizer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class Perceptron implements Classifier {
 	
@@ -125,6 +126,15 @@ public class Perceptron implements Classifier {
 	public ClassificationResult classify(List<Feature> features) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+
+	@Override
+	public void multipleTrain(HashMap<String, List<List<Feature>>> trainingSet,
+			Set<String> dictionary) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

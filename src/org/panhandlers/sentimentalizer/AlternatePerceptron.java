@@ -205,5 +205,13 @@ public class AlternatePerceptron implements Classifier {
 		public double[] vector;
 		public int category;
 	}
+	
+	public String toString(){
+		
+		
+		return "Perceptron ";
+		
+		
+	}
 
 }

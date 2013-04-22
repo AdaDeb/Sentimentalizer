@@ -1,0 +1,180 @@
+package org.panhandlers.sentimentalizer.testing;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import org.panhandlers.sentimentalizer.ClassificationResult;
+import org.panhandlers.sentimentalizer.Classifier;
+import org.panhandlers.sentimentalizer.ExistenceFeatureExtractor;
+import org.panhandlers.sentimentalizer.Feature;
+import org.panhandlers.sentimentalizer.testing.Test.Type;
+
+public class CategoryTest extends Test{
+	
+	private String report;
+	private String testCategory;
+	private String trainingCategory;
+	private ExistenceFeatureExtractor extractor;
+	private HashMap<String, List<List<String>>> testData;
+	private HashMap<String, List<List<String>>> trainingData;
+	private Test.Type type;
+	private Set<String> dictionary;
+
+	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, String category) {
+		super(env, classifier, ratio, dictSize);
+		this.extractor = new ExistenceFeatureExtractor();
+		this.testCategory = this.trainingCategory = category;
+		this.report = "";
+		this.type = Test.Type.IN_DOMAIN;
+	}
+	
+	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, String trainingCategory, String testCategory) {
+		super(env, classifier, ratio, dictSize);
+		this.extractor = new ExistenceFeatureExtractor();
+		this.testCategory = testCategory; 
+		this.trainingCategory = trainingCategory;
+		this.report = "";
+		this.type = Test.Type.IN_DOMAIN;
+	}
+
+	@Override
+	void test() {
+		ClassificationResult result;
+		List<Feature> features;
+		int successes = 0;
+		int failures = 0;
+		for (Entry<String, List<List <String>>> cat : testData.entrySet()) {
+			for (List<String> item : cat.getValue()) {
+				features = extractor.extractFeatures(item);
+				result = getClassifier().classify(features);
+				if (result.getCategory().equals(cat.getKey())) {
+					successes++;
+				} else {
+					failures++;
+				}
+			}
+		}
+		report += ("Successes: " + successes + " Failures: " + failures);
+		double percentage = (double) successes / ((double) successes + failures);
+		report += (" Percentage: " + percentage * 100);	
+		
+		/*
+		 * Unload data
+		 */
+		testData = trainingData = null;
+		extractor = null;
+		dictionary = null;
+	}
+	
+	private void loadData() {
+		/*
+		 * Load data
+		 */
+		TestEnvironment env = getEnv();
+		env.getStorage().reset();
+		
+		List<List<String>> positive = env.getReader().getItemsByCategoryAndSentiment(trainingCategory, "pos");
+		List<List<String>> negative = env.getReader().getItemsByCategoryAndSentiment(trainingCategory, "neg");
+		
+		List<List<String>> musicCategory = env.getReader().getItemsByCategory("music");
+		List<List<String>> dvdCategory = env.getReader().getItemsByCategory("dvd");
+		List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
+		List<List<String>> booksCategory = env.getReader().getItemsByCategory("books");
+		List<List<String>> healthCategory = env.getReader().getItemsByCategory("health");
+		List<List<String>> cameraCategory = env.getReader().getItemsByCategory("camera");
+
+		
+		if (this.type == Test.Type.CATEGORY) {
+			HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
+			data.put("music", musicCategory);
+			data.put("dvd", dvdCategory);
+			data.put("software", softwareCategory);
+			data.put("books", booksCategory);
+			data.put("health", healthCategory);
+			data.put("camera", cameraCategory);
+			getDivider().divide(data);
+			testData = getDivider().getTestData();
+			trainingData = getDivider().getTrainingData();
+		}
+		else if (this.type == Test.Type.OUT_OF_DOMAIN) {
+			HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
+			data.put("pos", positive);
+			data.put("neg", negative);
+			
+			/*
+			 * Divide data
+			 */
+			getDivider().divide(data);
+			testData = getDivider().getTestData();
+			trainingData = getDivider().getTrainingData();
+		} 		
+		else {
+			List<List<String>> positiveTestData = env.getReader().getItemsByCategoryAndSentiment(testCategory, "pos");
+			List<List<String>> negativeTestData = env.getReader().getItemsByCategoryAndSentiment(testCategory, "neg");
+			trainingData = new HashMap<String, List<List<String>>>();
+			testData = new HashMap<String, List<List<String>>>();
+			trainingData.put("pos", positive);
+			trainingData.put("neg", negative);
+			testData.put("pos", positiveTestData);
+			testData.put("neg", negativeTestData);
+		}
+		
+		/*
+		 * Construct dictionary
+		 */
+		dictionary = getDictionaryBuilder().buildDictionary(trainingData);
+		System.out.println("Dictionary built with length: " + dictionary.size());
+		extractor.setDictionary(dictionary);
+	}
+
+	@Override
+	void train() {
+		System.out.println("Starting test: " + toString());
+		loadData();
+		List<List<Feature>> features;
+		HashMap<String, List<List<Feature>>> featureMap = new HashMap<String, List<List<Feature>>>();
+		for (Entry<String, List<List<String>>> cat : trainingData.entrySet()) {
+			features = new ArrayList<List<Feature>>();
+			for(List<String> item : cat.getValue()) {
+				features.add(extractor.extractFeatures(item));
+			}
+			featureMap.put(cat.getKey(), features);
+		}
+		getClassifier().multipleTrain(featureMap, dictionary);
+	}
+	@Override
+	public String getResults() {
+		return toString();
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		b.append(getClassifier().toString());
+		if (type == Test.Type.CATEGORY) {
+			b.append("Category Tester for category ");
+			b.append(trainingCategory);
+			b.append("\n");
+			b.append(report);
+		}
+		else if (type == Type.IN_DOMAIN) {
+			b.append("InDomain SentimentTester for category ");
+			b.append(trainingCategory);
+			b.append("\n");
+			b.append(report);
+		} else {
+			b.append("OutOfDomain SentimentTester for training category ");
+			b.append(trainingCategory);
+			b.append(" tested on ");
+			b.append(testCategory);
+			b.append("\n");
+			b.append(trainingCategory);
+		}
+		return b.toString();
+	}
+
+
+}

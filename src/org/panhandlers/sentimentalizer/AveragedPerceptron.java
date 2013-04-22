@@ -52,7 +52,7 @@ public class AveragedPerceptron implements Classifier {
 				}
 			}
 			System.err.println("Errors: " + errors);
-			if (errors == 0 || i > 2000)
+			if (errors == 0 || i > 500)
 				break;
 			i++;
 			// if(errors > previousErrors) break;
@@ -214,6 +214,14 @@ public class AveragedPerceptron implements Classifier {
 	private class TrainingItem {
 		public double[] vector;
 		public int category;
+	}
+	
+public String toString(){
+		
+		
+		return "AveragedPerceptron ";
+		
+		
 	}
 
 }

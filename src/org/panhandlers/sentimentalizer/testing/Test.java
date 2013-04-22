@@ -56,6 +56,6 @@ public abstract class Test {
 	}
 
 	public enum Type {
-		IN_DOMAIN, OUT_OF_DOMAIN;
+		IN_DOMAIN, OUT_OF_DOMAIN, CATEGORY;
 	}
 }

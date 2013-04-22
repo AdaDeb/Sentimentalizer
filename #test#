@@ -1,0 +1,12 @@
+org.panhandlers.sentimentalizer.AlternatePerceptron@4f0e921dInDomain SentimentTester for category books
+Successes: 1701 Failures: 299 Percentage: 85.05
+org.panhandlers.sentimentalizer.AlternatePerceptron@4f0e921dInDomain SentimentTester for category camera
+Successes: 1746 Failures: 253 Percentage: 87.34367183591796
+org.panhandlers.sentimentalizer.AlternatePerceptron@4f0e921dInDomain SentimentTester for category dvd
+Successes: 1723 Failures: 277 Percentage: 86.15
+org.panhandlers.sentimentalizer.AlternatePerceptron@4f0e921dInDomain SentimentTester for category health
+Successes: 1695 Failures: 305 Percentage: 84.75
+org.panhandlers.sentimentalizer.AlternatePerceptron@4f0e921dInDomain SentimentTester for category music
+Successes: 1682 Failures: 318 Percentage: 84.1
+org.panhandlers.sentimentalizer.AlternatePerceptron@4f0e921dInDomain SentimentTester for category software
+Successes: 1667 Failures: 248 Percentage: 87.04960835509138

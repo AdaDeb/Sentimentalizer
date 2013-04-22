@@ -25,14 +25,16 @@ public class TestRunner {
 	private void createTests() {
 		Test t;
 		int i = 1;
-		Classifier[] classifiers = new Classifier[]{new AlternatePerceptron()};
+		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};
 		for (Classifier classifier : classifiers) {
 			/*
 			 * Run in-domain tests
 			 */
 			for (String category : CATEGORIES) {
-				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
-				tests.add(t);
+			//	t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
+				CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
+			//	tests.add(t);
+				tests.add(categoryTest);
 //				for(; i < CATEGORIES.length; i++) {
 //					t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category, CATEGORIES[i]);
 //					tests.add(t);

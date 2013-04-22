@@ -136,6 +136,9 @@ public class AlternatePerceptron implements Classifier {
 		constructInputSet(trainingSet);
 		initWeights(dictionary.size());
 		doTrain();
+		
+		// Memory optimizations
+		inputSet = null;
 	}
 
 	private void initWeights(int size) {
@@ -206,4 +209,8 @@ public class AlternatePerceptron implements Classifier {
 		public int category;
 	}
 
+	@Override
+	public String toString(){
+		return "Non-averaged Perceptron";
+	}
 }

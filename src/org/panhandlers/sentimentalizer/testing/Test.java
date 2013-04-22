@@ -9,6 +9,7 @@ public abstract class Test {
 	private Classifier classifier;
 	private DataDivider divider;
 	private DictionaryBuilder dictionaryBuilder;
+	private double successRate;
 	
 	public void run() {
 		train();
@@ -53,6 +54,13 @@ public abstract class Test {
 	}
 	public void setDivider(DataDivider divider) {
 		this.divider = divider;
+	}
+
+	public double getSuccessRate() {
+		return successRate;
+	}
+	public void setSuccessRate(double successRate) {
+		this.successRate = successRate;
 	}
 
 	public enum Type {

@@ -219,7 +219,7 @@ public class AveragedPerceptron implements Classifier {
 public String toString(){
 		
 		
-		return "AveragedPerceptron ";
+		return "Averaged Perceptron ";
 		
 		
 	}

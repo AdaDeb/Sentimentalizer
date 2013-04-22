@@ -25,6 +25,7 @@ public class SentimentTest extends Test {
 	private HashMap<String, List<List<String>>> testData;
 	private HashMap<String, List<List<String>>> trainingData;
 	private Test.Type type;
+	private int offset;
 	private Set<String> dictionary;
 
 	public SentimentTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, String category) {
@@ -33,6 +34,12 @@ public class SentimentTest extends Test {
 		this.testCategory = this.trainingCategory = category;
 		this.report = "";
 		this.type = Test.Type.IN_DOMAIN;
+		this.offset = 0;
+	}
+	public SentimentTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, String category, int offset) {
+		this(env, classifier, ratio, dictSize, category);
+		this.offset = offset;
+		System.out.println("Ran the right constructor");
 	}
 	
 	public SentimentTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, String trainingCategory, String testCategory) {
@@ -63,6 +70,7 @@ public class SentimentTest extends Test {
 		}
 		report += ("Successes: " + successes + " Failures: " + failures);
 		double percentage = (double) successes / ((double) successes + failures);
+		setSuccessRate(percentage);
 		report += (" Percentage: " + percentage * 100);	
 		
 		/*
@@ -71,6 +79,7 @@ public class SentimentTest extends Test {
 		testData = trainingData = null;
 		extractor = null;
 		dictionary = null;
+		setClassifier(null);
 	}
 	
 	private void loadData() {
@@ -91,6 +100,7 @@ public class SentimentTest extends Test {
 			/*
 			 * Divide data
 			 */
+			getDivider().setOffset(this.offset);
 			getDivider().divide(data);
 			testData = getDivider().getTestData();
 			trainingData = getDivider().getTrainingData();

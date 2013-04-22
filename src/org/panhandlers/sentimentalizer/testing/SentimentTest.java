@@ -135,11 +135,22 @@ public class SentimentTest extends Test {
 	
 	@Override
 	public String toString() {
+		StringBuilder b = new StringBuilder();
+		b.append(getClassifier().toString());
 		if (type == Type.IN_DOMAIN) {
-			return "InDomain SentimentTester for category " + trainingCategory + "\n" + report;
+			b.append("InDomain SentimentTester for category ");
+			b.append(trainingCategory);
+			b.append("\n");
+			b.append(report);
 		} else {
-			return "OutOfDomain SentimentTester for training category " + trainingCategory + " tested on " + testCategory + "\n" + report;
+			b.append("OutOfDomain SentimentTester for training category ");
+			b.append(trainingCategory);
+			b.append(" tested on ");
+			b.append(testCategory);
+			b.append("\n");
+			b.append(trainingCategory);
 		}
+		return b.toString();
 	}
 
 }

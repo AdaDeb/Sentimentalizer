@@ -1,6 +1,5 @@
 package org.panhandlers.sentimentalizer;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -22,6 +21,12 @@ public class DictionaryBuilder {
 	public DictionaryBuilder(int max) {
 		this.max = max;
 	}
+	
+	/**
+	 * Builds a dictionary of the desired size
+	 * @param data
+	 * @return Set<String> A dictionary
+	 */
 	public Set<String> buildDictionary(HashMap<String, List<List<String>>> data) {
 		dictionary = new HashSet<String>();
 		HashMap<String, Integer> itemsWithToken = new HashMap<String, Integer>();
@@ -50,12 +55,24 @@ public class DictionaryBuilder {
 		return tdifFilter(rawFrequenciesForItem, idf(dictionary, totalItems, itemsWithToken));
 	}
 	
+	/**
+	 * Returns false for strings shorter than 3 chars and strings beginning with digits
+	 * @param token
+	 * @return boolean
+	 */
 	private boolean sane(String token) {
 		if (token.length() < 3) return false;
 		if (token.matches("\\d+.*")) return false;
 		return true;
 	}
 
+	/**
+	 * Creates a map of IDF-values for the input tokens
+	 * @param tokens the raw dictionary
+	 * @param totalItems the total number of items in the data set
+	 * @param itemsWithToken maps tokens to the number of items containing that token
+	 * @return
+	 */
 	private HashMap<String, Double> idf(Set<String> tokens, int totalItems, HashMap<String, Integer> itemsWithToken) {
 		double quota;
 		double idf;
@@ -67,6 +84,14 @@ public class DictionaryBuilder {
 		}
 		return output;
 	}
+	
+	/**
+	 * Uses raw frequencies and idf values to calculate the final tf-idf.
+	 * Then uses tf-idf values to filter out the "best" tokens.
+	 * @param rawFrequenciesForItem
+	 * @param idfValues
+	 * @return the final filtered dictionary
+	 */
 	private Set<String> tdifFilter(
 			List<HashMap<String, Integer>> rawFrequenciesForItem, 
 			HashMap<String, Double> idfValues) {
@@ -103,6 +128,12 @@ public class DictionaryBuilder {
 			sortedTokens.put(token, value + tfidfValue);
 		}
 	}
+	
+	/**
+	 * If token has no count, initialize with 1, else increment counter
+	 * @param token
+	 * @param itemsWithToken
+	 */
 	private static void updateExistenceSet(String token, HashMap<String, Integer> itemsWithToken) {
 		Integer count = itemsWithToken.get(token);
 		if (count == null) {

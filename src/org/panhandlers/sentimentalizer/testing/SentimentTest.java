@@ -79,7 +79,7 @@ public class SentimentTest extends Test {
 		testData = trainingData = null;
 		extractor = null;
 		dictionary = null;
-		setClassifier(null);
+		//setClassifier(null);
 	}
 	
 	private void loadData() {

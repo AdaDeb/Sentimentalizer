@@ -67,7 +67,7 @@ public class CategoryTest extends Test{
 		
 		List<List<String>> musicCategory = env.getReader().getItemsByCategory("music");
 		List<List<String>> dvdCategory = env.getReader().getItemsByCategory("dvd");
-		// List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
+		List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
 		List<List<String>> booksCategory = env.getReader().getItemsByCategory("books");
 		List<List<String>> healthCategory = env.getReader().getItemsByCategory("health");
 		List<List<String>> cameraCategory = env.getReader().getItemsByCategory("camera");
@@ -76,13 +76,18 @@ public class CategoryTest extends Test{
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("music", musicCategory);
 		data.put("dvd", dvdCategory);
-		// data.put("software", softwareCategory);
+		data.put("software", softwareCategory);
 		data.put("books", booksCategory);
 		data.put("health", healthCategory);
 		data.put("camera", cameraCategory);
 		getDivider().divide(data);
 		testData = getDivider().getTestData();
 		trainingData = getDivider().getTrainingData();
+		
+		
+		
+		
+		
 //		System.out.println("Length music " + trainingData.get("music").size());
 //		System.out.println("Length dvd" + trainingData.get("dvd").size());
 //		System.out.println("Length software " + trainingData.get("software").size());

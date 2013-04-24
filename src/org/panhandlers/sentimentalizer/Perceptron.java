@@ -1,20 +1,23 @@
 package org.panhandlers.sentimentalizer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 
-public class AlternatePerceptron implements Classifier {
+public class Perceptron implements Classifier {
+
 	private HashMap<String, Integer> positionMap;
 	private HashMap<String, Integer> categoryToKey;
 	private HashMap<Integer, String> keyToCategory;
+	private HashMap<Integer, double[]> categoryToWeights = new HashMap<>();
+
 	private ArrayList<TrainingItem> inputSet;
 	private double[] weights;
 	int previousErrors;
-	
-	
+
 	/*
 	 * Variables: bias, learning rate, initial weights...
 	 */
@@ -30,33 +33,42 @@ public class AlternatePerceptron implements Classifier {
 		double correction = 0;
 		int errors;
 		int i = 0;
+		int expectedOutput = 0;
+		double[] currentWeightVector;
 		while (true) {
 			errors = 0;
 			for (TrainingItem item : inputSet) {
-				errorRate = 0;
-				actualOutput = trimOutput(dotProduct(item.vector, weights));
-				// System.out.println("Category: " + item.category);
-				errorRate = item.category - actualOutput;
-				correction = (learningRate * errorRate);
-				if (Double.isNaN(correction))
-					throw new RuntimeException("SHIT WENT DOWN");
-				if (errorRate != 0.0) {
-					errors++;
-					for (int j = 0; j < weights.length; j++) {
-						weights[j] += correction * item.vector[j];
+
+				for (Entry<Integer, double[]> weightVector : categoryToWeights
+						.entrySet()) {
+					currentWeightVector = weightVector.getValue();
+					expectedOutput = weightVector.getKey() == item.category ? 1
+							: 0;
+
+					actualOutput = trimOutput(dotProduct(item.vector,
+							currentWeightVector));
+					errorRate = expectedOutput - actualOutput;
+					correction = learningRate * errorRate;
+					if (errorRate != 0.0) {
+
+						for (int j = 0; j < currentWeightVector.length; j++) {
+							currentWeightVector[j] += correction
+									* item.vector[j];
+						}
 					}
+
 				}
+				errors++;
+
 			}
-			if (GlobalConfig.DEBUG)
-				System.err.println("Errors: " + errors);
-			if (errors == 0 || i > 2000 )
+			//System.err.println("Errors: " + errors);
+			if (errors == 0 || i > 500)
 				break;
 			i++;
-			// if(errors > previousErrors) break;
 			previousErrors = errors;
 
 		}
-		System.err.println("Errors: " + errors);
+	//	System.err.println("Errors: " + errors);
 
 	}
 
@@ -106,6 +118,7 @@ public class AlternatePerceptron implements Classifier {
 	@Override
 	public ClassificationResult classify(List<Feature> features) {
 		double[] inputVector = new double[dictionary.size()];
+		ArrayList<Double> resultArray = new ArrayList<Double>();
 		zeroVector(inputVector);
 		TokenFeature feature;
 		for (Feature inputFeature : features) {
@@ -113,13 +126,31 @@ public class AlternatePerceptron implements Classifier {
 			inputVector[positionMap.get(feature.getToken())] += feature
 					.getValue();
 		}
-		double result = dotProduct(weights, inputVector); // consider bias
-															// here?!
+
+		for (Entry<Integer, double[]> weightVector : categoryToWeights
+				.entrySet()) {
+
+			resultArray.add(dotProduct(weightVector.getValue(), inputVector));
+
+		}
+
+		int posResult = getMaxPos(resultArray);
+		// keyToCategory.get(posResult);
 		// System.out.println("Result value: " + result);
-		int resultInt = result > 0 ? 1 : 0;
+		// int resultInt = result > 0 ? 1 : 0;
 		ClassificationResult resultObj = new ClassificationResult();
-		resultObj.setCategory(keyToCategory.get(resultInt));
+		resultObj.setCategory(keyToCategory.get(posResult));
 		return resultObj;
+	}
+
+	private int getMaxPos(ArrayList<Double> array) {
+		int pos = 0;
+		for (int i = 0; i < array.size(); i++) {
+			if (array.get(i) > array.get(pos))
+				pos = i;
+		}
+		return pos;
+
 	}
 
 	@Override
@@ -135,11 +166,21 @@ public class AlternatePerceptron implements Classifier {
 		constructPositionMap(dictionary);
 		constructCategoryMap(trainingSet);
 		constructInputSet(trainingSet);
-		initWeights(dictionary.size());
+		initMultipleWeights(trainingSet, dictionary.size());
+		// initWeights(dictionary.size());
 		doTrain();
-		
+
 		// Memory optimizations
 		inputSet = null;
+	}
+
+	private void initMultipleWeights(
+			HashMap<String, List<List<Feature>>> trainingData, int size) {
+		for (Entry<String, List<List<Feature>>> cat : trainingData.entrySet()) {
+			categoryToWeights.put(categoryToKey.get(cat.getKey()),
+					new double[size]);
+		}
+
 	}
 
 	private void initWeights(int size) {
@@ -209,10 +250,10 @@ public class AlternatePerceptron implements Classifier {
 		public double[] vector;
 		public int category;
 	}
-	
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return "Non-averaged Perceptron";
 	}
+
 }

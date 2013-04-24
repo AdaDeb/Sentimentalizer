@@ -38,9 +38,11 @@ public class NaiveBayes implements Classifier {
 			results.add(result);
 		}
 		Collections.sort(results, Collections.reverseOrder());
-		System.out.println("Result vector:");
-		for(ClassificationResult r : results) {
-			System.out.println(r);
+		if (GlobalConfig.DEBUG){
+			System.out.println("Result vector:");
+			for(ClassificationResult r : results) {
+				System.out.println(r);
+			}
 		}
 		return results.get(0);
 	}
@@ -48,7 +50,8 @@ public class NaiveBayes implements Classifier {
 	private double pOfFeatureGivenCategory(Feature feature, String category) {
 		double featureCount = (double) storage.getFeatureCount(category, feature);
 		if (featureCount == 0.0d) {
-			System.out.println("Feature count is zero");
+			if (GlobalConfig.DEBUG)
+				System.out.println("Feature count is zero");
 			return defaultProbability();
 		} else {
 			double categoryCount = (double) storage.getTotalFeaturesInCategoryCount(category);

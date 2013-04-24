@@ -10,9 +10,9 @@ import org.panhandlers.sentimentalizer.NaiveBayes;
 
 
 public class TestRunner {
-	private static final String[] CATEGORIES = new String[]{"books", "camera", "dvd", "health", "music", "software"};
+	private static final String[] CATEGORIES = new String[]{"books"};//, "camera", "dvd", "health", "music", "software"};
 	private static final int RATIO = 10;
-	private static final int DICTIONARY_SIZE = 500;
+	private static final int DICTIONARY_SIZE = 1500;
 	private static final int CROSS_VALIDATION_SLICES = 10;
 	private ArrayList<Test> tests;
 	private TestEnvironment env;
@@ -26,18 +26,18 @@ public class TestRunner {
 	private void createTests() {
 		Test t;
 		int i = 1;
-		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};
+		Classifier[] classifiers = new Classifier[]{new NaiveBayes(env.getStorage())};
 		for (Classifier classifier : classifiers) {
+			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
+			tests.add(categoryTest);
 			/*
 			 * Run in-domain tests
 			 */
 			for (String category : CATEGORIES) {
-			//	t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
-				CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
+//				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 			//	tests.add(t);
-			//	tests.add(categoryTest);
-				t = new CrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
-				tests.add(t);
+//				t = new CrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
+//				tests.add(t);
 //				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 //				tests.add(t);
 //				for(; i < CATEGORIES.length; i++) {

@@ -16,10 +16,8 @@ public class AveragedPerceptron implements Classifier {
 	private HashMap<Integer, String> keyToCategory;
 	private HashMap<Integer, double[]> categoryToWeights = new HashMap<Integer, double[]>();
 	private HashMap<Integer, double[]> categoryToAverageWeights = new HashMap<Integer, double[]>();
-
 	private ArrayList<TrainingItem> inputSet;
 	private double[] weights;
-	int previousErrors;
 
 	/*
 	 * Variables: bias, learning rate, initial weights...
@@ -30,9 +28,7 @@ public class AveragedPerceptron implements Classifier {
 	private Set<String> dictionary;
 
 	public void doTrain() {
-		previousErrors = Integer.MAX_VALUE;
 		double actualOutput = 0;
-		@SuppressWarnings("unused")
 		double correction = 0;
 		int errors;
 		int i = 0;
@@ -65,15 +61,12 @@ public class AveragedPerceptron implements Classifier {
 				}
 				errors++;
 			}
-			// System.err.println("Errors: " + errors);
 			if (errors == 0 || i > 400)
 				break;
 			i++;
-			previousErrors = errors;
 		}
 		for (Entry<Integer, double[]> averageWeightVector : categoryToAverageWeights
 				.entrySet()) {
-
 			for (int j = 0; j < averageWeightVector.getValue().length; j++) {
 				averageWeightVector.getValue()[j] = averageWeightVector
 						.getValue()[j] / (inputSet.size());
@@ -93,7 +86,6 @@ public class AveragedPerceptron implements Classifier {
 			product += input[i] * weight[i];
 		}
 		return product;
-
 	}
 
 	public void print() {
@@ -136,19 +128,12 @@ public class AveragedPerceptron implements Classifier {
 			inputVector[positionMap.get(feature.getToken())] += feature
 					.getValue();
 		}
-
 		for (Entry<Integer, double[]> averageWeightVector : categoryToAverageWeights
 				.entrySet()) {
-
 			resultArray.add(dotProduct(averageWeightVector.getValue(),
-					inputVector)+bias);
-
+					inputVector) + bias);
 		}
-
 		int posResult = getMaxPos(resultArray);
-		// keyToCategory.get(posResult);
-		// System.out.println("Result value: " + result);
-		// int resultInt = result > 0 ? 1 : 0;
 		ClassificationResult resultObj = new ClassificationResult();
 		resultObj.setCategory(keyToCategory.get(posResult));
 		return resultObj;
@@ -178,9 +163,7 @@ public class AveragedPerceptron implements Classifier {
 		constructCategoryMap(trainingSet);
 		constructInputSet(trainingSet);
 		initMultipleWeights(trainingSet, dictionary.size());
-		// initWeights(dictionary.size());
 		doTrain();
-
 		// Memory optimizations
 		inputSet = null;
 	}
@@ -196,20 +179,9 @@ public class AveragedPerceptron implements Classifier {
 
 	}
 
-	private void initWeights(int size) {
-		weights = new double[size];
-		zeroWeights(weights);
-	}
-
 	private void zeroVector(double[] v) {
 		for (int i = 0; i < v.length; i++) {
 			v[i] = 0d;
-		}
-	}
-
-	private void zeroWeights(double[] v) {
-		for (int i = 0; i < v.length; i++) {
-			v[i] = 0.001;
 		}
 	}
 

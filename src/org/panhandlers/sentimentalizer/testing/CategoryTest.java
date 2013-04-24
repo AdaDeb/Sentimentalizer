@@ -95,17 +95,6 @@ public class CategoryTest extends Test{
 		testData = getDivider().getTestData();
 		trainingData = getDivider().getTrainingData();
 		
-		
-		
-		
-		
-//		System.out.println("Length music " + trainingData.get("music").size());
-//		System.out.println("Length dvd" + trainingData.get("dvd").size());
-//		System.out.println("Length software " + trainingData.get("software").size());
-//		System.out.println("Length books " + trainingData.get("books").size());
-//		System.out.println("Length health " + trainingData.get("health").size());
-//		System.out.println("Length camera " + trainingData.get("camera").size());
-		
 		/*
 		 * Construct dictionary
 		 */

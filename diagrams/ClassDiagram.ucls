@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true">  
+  <interface id="1" language="java" name="org.panhandlers.sentimentalizer.features.TokenFeature" 
+    project="Sentimentalizer" file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/features/TokenFeature.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="842" y="416"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="2" language="java" name="org.panhandlers.sentimentalizer.features.ExistenceFeatureExtractor" 
+    project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/features/ExistenceFeatureExtractor.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="205" x="320" y="112"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="org.panhandlers.sentimentalizer.features.ExistenceFeature" 
+    project="Sentimentalizer" file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/features/ExistenceFeature.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="52" width="199" x="559" y="204"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="4" language="java" name="org.panhandlers.sentimentalizer.features.Feature" project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/features/Feature.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="590" y="414"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="5" language="java" name="org.panhandlers.sentimentalizer.features.OccurrenceFeature" 
+    project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/features/OccurrenceFeature.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="199" x="819" y="204"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="6" language="java" name="org.panhandlers.sentimentalizer.classifiers.Classifier" 
+    project="Sentimentalizer" file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/classifiers/Classifier.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="52" width="205" x="1142" y="204"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="7" language="java" name="org.panhandlers.sentimentalizer.GlobalConfig" project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/GlobalConfig.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="52" width="158" x="1429" y="204"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="org.panhandlers.sentimentalizer.classifiers.AlternatePerceptron.TrainingItem" 
+    project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/classifiers/AlternatePerceptron.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="205" x="1914" y="204"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="org.panhandlers.sentimentalizer.classifiers.NaiveBayes" project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/classifiers/NaiveBayes.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="205" x="1081" y="112"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="org.panhandlers.sentimentalizer.classifiers.AveragedPerceptron.TrainingItem" 
+    project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/classifiers/AveragedPerceptron.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="205" x="1627" y="204"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="org.panhandlers.sentimentalizer.DataDivider" project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/DataDivider.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="52" width="158" x="122" y="112"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="org.panhandlers.sentimentalizer.classifiers.AveragedPerceptron" 
+    project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/classifiers/AveragedPerceptron.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="205" x="1326" y="112"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="org.panhandlers.sentimentalizer.classifiers.AlternatePerceptron" 
+    project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/classifiers/AlternatePerceptron.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="205" x="1853" y="112"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="org.panhandlers.sentimentalizer.classifiers.ClassificationResult" 
+    project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/classifiers/ClassificationResult.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="205" x="1389" y="296"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="org.panhandlers.sentimentalizer.features.OccurrenceFeatureExtractor" 
+    project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/features/OccurrenceFeatureExtractor.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="52" width="217" x="779" y="112"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="16" language="java" name="org.panhandlers.sentimentalizer.features.FeatureExtractor" 
+    project="Sentimentalizer" file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/features/FeatureExtractor.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="681" y="41"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <realization id="17">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <realization id="18">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <realization id="19">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <nesting id="20">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="8"/>  
+  </nesting>  
+  <dependency id="21">    
+    <bendpoint x="1883" y="204"/>    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <realization id="22">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <dependency id="23">    
+    <bendpoint x="289" y="204"/>    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <realization id="24">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <dependency id="25">    
+    <bendpoint x="1048" y="204"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <realization id="26">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <dependency id="27">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <realization id="28">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="30">    
+    <bendpoint x="1069" y="204"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <association id="31">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="32" name="tokensToFeatures"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="34">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <association id="35">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="36" name="inputSet"/>      
+      <multiplicity id="37" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="38">    
+    <bendpoint x="1111" y="204"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="39">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <realization id="40">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <association id="41">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="42" name="tokensToFeatures"/>      
+      <multiplicity id="43" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="44">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="45">    
+    <bendpoint x="1090" y="204"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <association id="46">    
+    <bendpoint x="788" y="204"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="47" name="features"/>      
+      <multiplicity id="48" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="49">    
+    <bendpoint x="1377" y="204"/>    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <nesting id="50">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="10"/>  
+  </nesting>  
+  <realization id="51">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <dependency id="52">    
+    <bendpoint x="1862" y="204"/>    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="53">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <association id="54">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="55" name="inputSet"/>      
+      <multiplicity id="56" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="57">    
+    <bendpoint x="1398" y="204"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
+    accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

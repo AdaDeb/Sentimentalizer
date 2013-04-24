@@ -19,11 +19,18 @@ public class CategoryTest extends Test{
 	private HashMap<String, List<List<String>>> testData;
 	private HashMap<String, List<List<String>>> trainingData;
 	private Set<String> dictionary;
+	private int offset;
 
 	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize) {
 		super(env, classifier, ratio, dictSize);
 		this.extractor = new ExistenceFeatureExtractor();
 		this.report = "";
+		this.offset = 0;
+	}
+	
+	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, int offset) {
+		this(env, classifier, ratio, dictSize);
+		this.offset = offset;
 	}
 
 	@Override
@@ -49,6 +56,7 @@ public class CategoryTest extends Test{
 		report += ("Successes: " + successes + " Failures: " + failures);
 		double percentage = (double) successes / ((double) successes + failures);
 		report += (" Percentage: " + percentage * 100);	
+		setSuccessRate(percentage);
 		
 		/*
 		 * Unload data
@@ -80,6 +88,9 @@ public class CategoryTest extends Test{
 		data.put("books", booksCategory);
 		data.put("health", healthCategory);
 		data.put("camera", cameraCategory);
+		
+		// Set offset
+		getDivider().setOffset(offset);
 		getDivider().divide(data);
 		testData = getDivider().getTestData();
 		trainingData = getDivider().getTrainingData();

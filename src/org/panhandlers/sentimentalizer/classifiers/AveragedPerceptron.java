@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.panhandlers.sentimentalizer.features.Feature;
 import org.panhandlers.sentimentalizer.features.TokenFeature;
 
-public class AveragedPereceptron implements Classifier {
+public class AveragedPerceptron implements Classifier {
 
 	private HashMap<String, Integer> positionMap;
 	private HashMap<String, Integer> categoryToKey;

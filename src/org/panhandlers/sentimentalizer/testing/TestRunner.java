@@ -2,11 +2,10 @@ package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
 
-import org.panhandlers.sentimentalizer.Classifier;
-import org.panhandlers.sentimentalizer.AveragedPereceptron;
-import org.panhandlers.sentimentalizer.Perceptron;
-import org.panhandlers.sentimentalizer.NaiveBayes;
-import org.panhandlers.sentimentalizer.Perceptron;
+import org.panhandlers.sentimentalizer.classifiers.AveragedPereceptron;
+import org.panhandlers.sentimentalizer.classifiers.Classifier;
+import org.panhandlers.sentimentalizer.classifiers.Perceptron;
+import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
 
 
 

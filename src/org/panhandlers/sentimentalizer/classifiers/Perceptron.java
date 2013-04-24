@@ -1,18 +1,20 @@
-package org.panhandlers.sentimentalizer;
+package org.panhandlers.sentimentalizer.classifiers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import org.panhandlers.sentimentalizer.features.Feature;
+import org.panhandlers.sentimentalizer.features.TokenFeature;
 
 public class Perceptron implements Classifier {
 
 	private HashMap<String, Integer> positionMap;
 	private HashMap<String, Integer> categoryToKey;
 	private HashMap<Integer, String> keyToCategory;
-	private HashMap<Integer, double[]> categoryToWeights = new HashMap<>();
+	private HashMap<Integer, double[]> categoryToWeights = new HashMap<Integer, double[]>();
 
 	private ArrayList<TrainingItem> inputSet;
 	private double[] weights;

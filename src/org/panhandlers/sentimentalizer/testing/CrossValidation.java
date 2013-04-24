@@ -37,11 +37,6 @@ public class CrossValidation extends Test {
 		}
 	}
 
-	private void collectResults() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private void runTest() {
 		ArrayList<Double> successRates = new ArrayList<Double>();
 		Double sumOfSuccessRates= 0d;

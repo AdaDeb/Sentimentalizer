@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.panhandlers.sentimentalizer.ClassificationResult;
 import org.panhandlers.sentimentalizer.DataDivider;
-import org.panhandlers.sentimentalizer.DictionaryBuilder;
-import org.panhandlers.sentimentalizer.Feature;
-import org.panhandlers.sentimentalizer.NaiveBayes;
-import org.panhandlers.sentimentalizer.ExistenceFeatureExtractor;
-import org.panhandlers.sentimentalizer.OccurrenceFeatureExtractor;
+import org.panhandlers.sentimentalizer.classifiers.ClassificationResult;
+import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
+import org.panhandlers.sentimentalizer.features.ExistenceFeatureExtractor;
+import org.panhandlers.sentimentalizer.features.Feature;
+import org.panhandlers.sentimentalizer.features.OccurrenceFeatureExtractor;
+import org.panhandlers.sentimentalizer.storage.DictionaryBuilder;
 
 public class RedisBayesTester {
 	private RedisDataReader reader;

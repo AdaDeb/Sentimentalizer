@@ -1,8 +1,8 @@
 package org.panhandlers.sentimentalizer.testing;
 
-import org.panhandlers.sentimentalizer.Classifier;
 import org.panhandlers.sentimentalizer.DataDivider;
-import org.panhandlers.sentimentalizer.DictionaryBuilder;
+import org.panhandlers.sentimentalizer.classifiers.Classifier;
+import org.panhandlers.sentimentalizer.storage.DictionaryBuilder;
 
 public abstract class Test {
 	private TestEnvironment env;

@@ -1,10 +1,14 @@
-package org.panhandlers.sentimentalizer;
+package org.panhandlers.sentimentalizer.classifiers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.panhandlers.sentimentalizer.GlobalConfig;
+import org.panhandlers.sentimentalizer.features.Feature;
+import org.panhandlers.sentimentalizer.features.TokenFeature;
 
 public class AveragedPerceptron implements Classifier {
 	private HashMap<String, Integer> positionMap;

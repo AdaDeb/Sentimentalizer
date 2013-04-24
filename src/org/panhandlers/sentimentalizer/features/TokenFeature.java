@@ -1,4 +1,4 @@
-package org.panhandlers.sentimentalizer;
+package org.panhandlers.sentimentalizer.features;
 
 public interface TokenFeature {
 	public String getToken();

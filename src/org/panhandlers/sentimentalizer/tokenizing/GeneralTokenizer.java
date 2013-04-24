@@ -1,4 +1,4 @@
-package org.panhandlers.sentimentalizer;
+package org.panhandlers.sentimentalizer.tokenizing;
 
 import java.util.ArrayList;
 

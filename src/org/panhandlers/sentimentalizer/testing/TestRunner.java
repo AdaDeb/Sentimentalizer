@@ -2,17 +2,17 @@ package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
 
-import org.panhandlers.sentimentalizer.AlternatePerceptron;
-import org.panhandlers.sentimentalizer.AveragedPerceptron;
-import org.panhandlers.sentimentalizer.Classifier;
-import org.panhandlers.sentimentalizer.NaiveBayes;
+import org.panhandlers.sentimentalizer.classifiers.AlternatePerceptron;
+import org.panhandlers.sentimentalizer.classifiers.AveragedPerceptron;
+import org.panhandlers.sentimentalizer.classifiers.Classifier;
+import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
 
 
 
 public class TestRunner {
 	private static final String[] CATEGORIES = new String[]{"books"};//, "camera", "dvd", "health", "music", "software"};
 	private static final int RATIO = 10;
-	private static final int DICTIONARY_SIZE = 1500;
+	private static final int DICTIONARY_SIZE = 500;
 	private static final int CROSS_VALIDATION_SLICES = 10;
 	private ArrayList<Test> tests;
 	private TestEnvironment env;

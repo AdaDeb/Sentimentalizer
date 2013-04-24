@@ -2,7 +2,7 @@ package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
 
-import org.panhandlers.sentimentalizer.Classifier;
+import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.testing.Test.Type;
 
 public class CrossValidation extends Test {

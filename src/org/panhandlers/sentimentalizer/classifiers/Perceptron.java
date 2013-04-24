@@ -29,9 +29,7 @@ public class Perceptron implements Classifier {
 	private Set<String> dictionary;
 
 	public void doTrain() {
-		previousErrors = Integer.MAX_VALUE;
 		double actualOutput = 0;
-		@SuppressWarnings("unused")
 		double correction = 0;
 		int errors;
 		int i = 0;
@@ -40,38 +38,28 @@ public class Perceptron implements Classifier {
 		while (true) {
 			errors = 0;
 			for (TrainingItem item : inputSet) {
-
 				for (Entry<Integer, double[]> weightVector : categoryToWeights
 						.entrySet()) {
 					currentWeightVector = weightVector.getValue();
 					expectedOutput = weightVector.getKey() == item.category ? 1
 							: 0;
-
 					actualOutput = trimOutput(dotProduct(item.vector,
 							currentWeightVector));
 					errorRate = expectedOutput - actualOutput;
 					correction = learningRate * errorRate;
 					if (errorRate != 0.0) {
-
 						for (int j = 0; j < currentWeightVector.length; j++) {
 							currentWeightVector[j] += correction
 									* item.vector[j];
 						}
 					}
-
 				}
 				errors++;
-
 			}
-			//System.err.println("Errors: " + errors);
 			if (errors == 0 || i > 500)
 				break;
 			i++;
-			previousErrors = errors;
-
 		}
-	//	System.err.println("Errors: " + errors);
-
 	}
 
 	// THIS IS VERY VERY BAD HACK TO SOLVE NAN ERRORS
@@ -137,9 +125,6 @@ public class Perceptron implements Classifier {
 		}
 
 		int posResult = getMaxPos(resultArray);
-		// keyToCategory.get(posResult);
-		// System.out.println("Result value: " + result);
-		// int resultInt = result > 0 ? 1 : 0;
 		ClassificationResult resultObj = new ClassificationResult();
 		resultObj.setCategory(keyToCategory.get(posResult));
 		return resultObj;
@@ -152,7 +137,6 @@ public class Perceptron implements Classifier {
 				pos = i;
 		}
 		return pos;
-
 	}
 
 	@Override
@@ -169,7 +153,6 @@ public class Perceptron implements Classifier {
 		constructCategoryMap(trainingSet);
 		constructInputSet(trainingSet);
 		initMultipleWeights(trainingSet, dictionary.size());
-		// initWeights(dictionary.size());
 		doTrain();
 
 		// Memory optimizations
@@ -185,20 +168,9 @@ public class Perceptron implements Classifier {
 
 	}
 
-	private void initWeights(int size) {
-		weights = new double[size];
-		zeroWeights(weights);
-	}
-
 	private void zeroVector(double[] v) {
 		for (int i = 0; i < v.length; i++) {
 			v[i] = 0d;
-		}
-	}
-
-	private void zeroWeights(double[] v) {
-		for (int i = 0; i < v.length; i++) {
-			v[i] = 0.001;
 		}
 	}
 
@@ -255,7 +227,7 @@ public class Perceptron implements Classifier {
 
 	@Override
 	public String toString() {
-		return "Non-averaged Perceptron";
+		return "Non-averaged Perceptron ";
 	}
 
 }

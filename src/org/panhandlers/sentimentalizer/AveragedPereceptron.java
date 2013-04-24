@@ -21,7 +21,7 @@ public class AveragedPereceptron implements Classifier {
 	/*
 	 * Variables: bias, learning rate, initial weights...
 	 */
-	private double bias = 0.4;
+	private double bias = 0.2;
 	private double learningRate = 0.00005;
 	private double errorRate;
 	private Set<String> dictionary;
@@ -63,7 +63,7 @@ public class AveragedPereceptron implements Classifier {
 				errors++;
 			}
 			// System.err.println("Errors: " + errors);
-			if (errors == 0 || i > 500)
+			if (errors == 0 || i > 400)
 				break;
 			i++;
 			previousErrors = errors;
@@ -138,7 +138,7 @@ public class AveragedPereceptron implements Classifier {
 				.entrySet()) {
 
 			resultArray.add(dotProduct(averageWeightVector.getValue(),
-					inputVector));
+					inputVector)+bias);
 
 		}
 
@@ -263,7 +263,7 @@ public class AveragedPereceptron implements Classifier {
 
 	@Override
 	public String toString() {
-		return "Non-averaged Perceptron";
+		return "Averaged Perceptron ";
 	}
 
 }

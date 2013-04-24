@@ -253,7 +253,7 @@ public class Perceptron implements Classifier {
 
 	@Override
 	public String toString() {
-		return "Non-averaged Perceptron";
+		return "Non-averaged Perceptron ";
 	}
 
 }

@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-import org.panhandlers.sentimentalizer.ClassifierStorage;
-import org.panhandlers.sentimentalizer.Feature;
+import org.panhandlers.sentimentalizer.features.Feature;
+import org.panhandlers.sentimentalizer.storage.ClassifierStorage;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;

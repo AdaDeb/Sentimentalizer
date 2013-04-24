@@ -1,8 +1,10 @@
-package org.panhandlers.sentimentalizer;
+package org.panhandlers.sentimentalizer.classifiers;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import org.panhandlers.sentimentalizer.features.Feature;
 
 public interface Classifier {
 	/**

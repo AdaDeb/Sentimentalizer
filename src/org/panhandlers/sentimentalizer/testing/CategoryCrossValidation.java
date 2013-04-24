@@ -2,24 +2,21 @@ package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
 
-import org.panhandlers.sentimentalizer.Classifier;
+import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.testing.Test.Type;
 
-public class CrossValidation extends Test {
+public class CategoryCrossValidation extends Test {
 	private int numberOfSlices;
-	private Classifier classifier;
 	private ArrayList<Test> tests;
 	private int ratio;
 	private int dictionarySize;
-	private String category;
 	private Double averageSuccessRate;
 	
-	public CrossValidation(TestEnvironment env, Classifier classifier, int ratio, int dictionarySize, int numberOfSlices, String category) {
+	public CategoryCrossValidation(TestEnvironment env, Classifier classifier, int ratio, int dictionarySize, int numberOfSlices) {
 		super(env, classifier, ratio, dictionarySize);
 		this.dictionarySize = dictionarySize;
 		this.ratio = ratio;
 		this.numberOfSlices = numberOfSlices;
-		this.category = category;
 	}
 
 	@Override
@@ -29,10 +26,10 @@ public class CrossValidation extends Test {
 	}
 
 	private void buildTest() {
-		SentimentTest test;
+		CategoryTest test;
 		tests = new ArrayList<Test>(numberOfSlices);
 		for(int i = 0; i< numberOfSlices; i++) {
-			test = new SentimentTest(getEnv(), getClassifier(), this.ratio, this.dictionarySize, this.category, i);
+			test = new CategoryTest(getEnv(), getClassifier(), this.ratio, this.dictionarySize, i);
 			tests.add(test);
 		}
 	}
@@ -63,8 +60,8 @@ public class CrossValidation extends Test {
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClassifier().toString());
-		b.append("CrossValidation for category ");
-		b.append(category);
+		b.append("CrossValidation of ");
+		b.append(tests.get(0).toString());
 		b.append(", divided data into ");
 		b.append(numberOfSlices);
 		b.append(" slices.");

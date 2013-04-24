@@ -1,4 +1,4 @@
-package org.panhandlers.sentimentalizer;
+package org.panhandlers.sentimentalizer.classifiers;
 
 public class ClassificationResult implements Comparable<ClassificationResult> {
 	private double p;

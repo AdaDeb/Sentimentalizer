@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.panhandlers.sentimentalizer.ClassificationResult;
-import org.panhandlers.sentimentalizer.Classifier;
-import org.panhandlers.sentimentalizer.ExistenceFeatureExtractor;
-import org.panhandlers.sentimentalizer.Feature;
+import org.panhandlers.sentimentalizer.classifiers.ClassificationResult;
+import org.panhandlers.sentimentalizer.classifiers.Classifier;
+import org.panhandlers.sentimentalizer.features.ExistenceFeatureExtractor;
+import org.panhandlers.sentimentalizer.features.Feature;
 
 /**
  * Conducts a test on one classifier on sentiment.

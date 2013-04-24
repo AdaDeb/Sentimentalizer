@@ -8,8 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.panhandlers.sentimentalizer.GeneralTokenizer;
-import org.panhandlers.sentimentalizer.LuceneTokenizer;
+import org.panhandlers.sentimentalizer.tokenizing.GeneralTokenizer;
+import org.panhandlers.sentimentalizer.tokenizing.LuceneTokenizer;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Response;

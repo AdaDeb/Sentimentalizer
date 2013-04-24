@@ -2,11 +2,10 @@ package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
 
-import org.panhandlers.sentimentalizer.Classifier;
-import org.panhandlers.sentimentalizer.AveragedPereceptron;
-import org.panhandlers.sentimentalizer.Perceptron;
-import org.panhandlers.sentimentalizer.NaiveBayes;
-import org.panhandlers.sentimentalizer.Perceptron;
+import org.panhandlers.sentimentalizer.classifiers.AveragedPerceptron;
+import org.panhandlers.sentimentalizer.classifiers.Classifier;
+import org.panhandlers.sentimentalizer.classifiers.Perceptron;
+import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
 
 
 
@@ -27,9 +26,10 @@ public class TestRunner {
 	private void createTests() {
 		Test t;
 		int i = 1;
-		Classifier[] classifiers = new Classifier[]{new AveragedPereceptron()};
+		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};
 		for (Classifier classifier : classifiers) {
-			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
+//			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
+			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
 			tests.add(categoryTest);
 			/*
 			 * Run in-domain tests

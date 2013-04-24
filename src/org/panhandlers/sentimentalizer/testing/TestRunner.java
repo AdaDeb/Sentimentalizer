@@ -37,7 +37,7 @@ public class TestRunner {
 //				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 			//	tests.add(t);
 //				t = new CrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
-//				tests.add(t);
+				//tests.add(t);
 //				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 //				tests.add(t);
 //				for(; i < CATEGORIES.length; i++) {

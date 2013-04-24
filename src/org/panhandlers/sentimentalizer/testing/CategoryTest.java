@@ -10,34 +10,20 @@ import org.panhandlers.sentimentalizer.ClassificationResult;
 import org.panhandlers.sentimentalizer.Classifier;
 import org.panhandlers.sentimentalizer.ExistenceFeatureExtractor;
 import org.panhandlers.sentimentalizer.Feature;
-import org.panhandlers.sentimentalizer.testing.Test.Type;
+import org.panhandlers.sentimentalizer.GlobalConfig;
 
 public class CategoryTest extends Test{
 	
 	private String report;
-	private String testCategory;
-	private String trainingCategory;
 	private ExistenceFeatureExtractor extractor;
 	private HashMap<String, List<List<String>>> testData;
 	private HashMap<String, List<List<String>>> trainingData;
-	private Test.Type type;
 	private Set<String> dictionary;
 
-	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, String category) {
+	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize) {
 		super(env, classifier, ratio, dictSize);
 		this.extractor = new ExistenceFeatureExtractor();
-		this.testCategory = this.trainingCategory = category;
 		this.report = "";
-		this.type = Test.Type.IN_DOMAIN;
-	}
-	
-	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, String trainingCategory, String testCategory) {
-		super(env, classifier, ratio, dictSize);
-		this.extractor = new ExistenceFeatureExtractor();
-		this.testCategory = testCategory; 
-		this.trainingCategory = trainingCategory;
-		this.report = "";
-		this.type = Test.Type.IN_DOMAIN;
 	}
 
 	@Override
@@ -51,8 +37,11 @@ public class CategoryTest extends Test{
 				features = extractor.extractFeatures(item);
 				result = getClassifier().classify(features);
 				if (result.getCategory().equals(cat.getKey())) {
+					
+					System.out.println("Succeeded for category " + cat.getKey());
 					successes++;
 				} else {
+					System.out.println("Failed for category: " + cat.getKey());
 					failures++;
 				}
 			}
@@ -76,51 +65,30 @@ public class CategoryTest extends Test{
 		TestEnvironment env = getEnv();
 		env.getStorage().reset();
 		
-		List<List<String>> positive = env.getReader().getItemsByCategoryAndSentiment(trainingCategory, "pos");
-		List<List<String>> negative = env.getReader().getItemsByCategoryAndSentiment(trainingCategory, "neg");
-		
 		List<List<String>> musicCategory = env.getReader().getItemsByCategory("music");
 		List<List<String>> dvdCategory = env.getReader().getItemsByCategory("dvd");
-		List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
+		// List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
 		List<List<String>> booksCategory = env.getReader().getItemsByCategory("books");
 		List<List<String>> healthCategory = env.getReader().getItemsByCategory("health");
 		List<List<String>> cameraCategory = env.getReader().getItemsByCategory("camera");
 
-		
-		if (this.type == Test.Type.CATEGORY) {
-			HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
-			data.put("music", musicCategory);
-			data.put("dvd", dvdCategory);
-			data.put("software", softwareCategory);
-			data.put("books", booksCategory);
-			data.put("health", healthCategory);
-			data.put("camera", cameraCategory);
-			getDivider().divide(data);
-			testData = getDivider().getTestData();
-			trainingData = getDivider().getTrainingData();
-		}
-		else if (this.type == Test.Type.OUT_OF_DOMAIN) {
-			HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
-			data.put("pos", positive);
-			data.put("neg", negative);
-			
-			/*
-			 * Divide data
-			 */
-			getDivider().divide(data);
-			testData = getDivider().getTestData();
-			trainingData = getDivider().getTrainingData();
-		} 		
-		else {
-			List<List<String>> positiveTestData = env.getReader().getItemsByCategoryAndSentiment(testCategory, "pos");
-			List<List<String>> negativeTestData = env.getReader().getItemsByCategoryAndSentiment(testCategory, "neg");
-			trainingData = new HashMap<String, List<List<String>>>();
-			testData = new HashMap<String, List<List<String>>>();
-			trainingData.put("pos", positive);
-			trainingData.put("neg", negative);
-			testData.put("pos", positiveTestData);
-			testData.put("neg", negativeTestData);
-		}
+		System.out.println("music length " + musicCategory.size());
+		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
+		data.put("music", musicCategory);
+		data.put("dvd", dvdCategory);
+		// data.put("software", softwareCategory);
+		data.put("books", booksCategory);
+		data.put("health", healthCategory);
+		data.put("camera", cameraCategory);
+		getDivider().divide(data);
+		testData = getDivider().getTestData();
+		trainingData = getDivider().getTrainingData();
+//		System.out.println("Length music " + trainingData.get("music").size());
+//		System.out.println("Length dvd" + trainingData.get("dvd").size());
+//		System.out.println("Length software " + trainingData.get("software").size());
+//		System.out.println("Length books " + trainingData.get("books").size());
+//		System.out.println("Length health " + trainingData.get("health").size());
+//		System.out.println("Length camera " + trainingData.get("camera").size());
 		
 		/*
 		 * Construct dictionary
@@ -154,25 +122,9 @@ public class CategoryTest extends Test{
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 		b.append(getClassifier().toString());
-		if (type == Test.Type.CATEGORY) {
-			b.append("Category Tester for category ");
-			b.append(trainingCategory);
-			b.append("\n");
-			b.append(report);
-		}
-		else if (type == Type.IN_DOMAIN) {
-			b.append("InDomain SentimentTester for category ");
-			b.append(trainingCategory);
-			b.append("\n");
-			b.append(report);
-		} else {
-			b.append("OutOfDomain SentimentTester for training category ");
-			b.append(trainingCategory);
-			b.append(" tested on ");
-			b.append(testCategory);
-			b.append("\n");
-			b.append(trainingCategory);
-		}
+		b.append("Category Tester  ");
+		b.append("\n");
+		b.append(report);
 		return b.toString();
 	}
 

@@ -15,10 +15,7 @@ public class Perceptron implements Classifier {
 	private HashMap<String, Integer> categoryToKey;
 	private HashMap<Integer, String> keyToCategory;
 	private HashMap<Integer, double[]> categoryToWeights = new HashMap<Integer, double[]>();
-
 	private ArrayList<TrainingItem> inputSet;
-	private double[] weights;
-	int previousErrors;
 
 	/*
 	 * Variables: bias, learning rate, initial weights...
@@ -78,10 +75,13 @@ public class Perceptron implements Classifier {
 
 	public void print() {
 		StringBuilder b = new StringBuilder();
-		b.append("Weight-vector:\n");
-		for (int i = 0; i < weights.length; i++) {
-			b.append(weights[i]);
-			b.append(", ");
+		b.append("Weight-vector(s):\n");
+		for (Entry<Integer, double[]> weightVector : categoryToWeights
+				.entrySet()) {
+			for (int i = 0; i < weightVector.getValue().length; i++) {
+				b.append(weightVector.getValue()[i]);
+				b.append(", ");
+			}
 		}
 		System.out.println(b);
 	}

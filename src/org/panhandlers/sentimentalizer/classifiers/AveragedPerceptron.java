@@ -17,7 +17,6 @@ public class AveragedPerceptron implements Classifier {
 	private HashMap<Integer, double[]> categoryToWeights = new HashMap<Integer, double[]>();
 	private HashMap<Integer, double[]> categoryToAverageWeights = new HashMap<Integer, double[]>();
 	private ArrayList<TrainingItem> inputSet;
-	private double[] weights;
 
 	/*
 	 * Variables: bias, learning rate, initial weights...
@@ -90,10 +89,13 @@ public class AveragedPerceptron implements Classifier {
 
 	public void print() {
 		StringBuilder b = new StringBuilder();
-		b.append("Weight-vector:\n");
-		for (int i = 0; i < weights.length; i++) {
-			b.append(weights[i]);
-			b.append(", ");
+		b.append("Weight-vector(s):\n");
+		for (Entry<Integer, double[]> weightVector : categoryToWeights
+				.entrySet()) {
+			for (int i = 0; i < weightVector.getValue().length; i++) {
+				b.append(weightVector.getValue()[i]);
+				b.append(", ");
+			}
 		}
 		System.out.println(b);
 	}

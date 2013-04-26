@@ -21,7 +21,7 @@ public class Perceptron implements Classifier {
 	 * Variables: bias, learning rate, initial weights...
 	 */
 	private double bias = 0.4;
-	private double learningRate = 0.00001;
+	private double learningRate = 0.0001;// 0.00001;
 	private double errorRate;
 	private Set<String> dictionary;
 
@@ -32,6 +32,7 @@ public class Perceptron implements Classifier {
 		int i = 0;
 		int expectedOutput = 0;
 		double[] currentWeightVector;
+		double N = 0;
 		while (true) {
 			errors = 0;
 			for (TrainingItem item : inputSet) {
@@ -40,28 +41,27 @@ public class Perceptron implements Classifier {
 					currentWeightVector = weightVector.getValue();
 					expectedOutput = weightVector.getKey() == item.category ? 1
 							: 0;
-					actualOutput = trimOutput(dotProduct(item.vector,
-							currentWeightVector));
+					actualOutput = dotProduct(item.vector, currentWeightVector);
 					errorRate = expectedOutput - actualOutput;
 					correction = learningRate * errorRate;
 					if (errorRate != 0.0) {
+						N = 0;
 						for (int j = 0; j < currentWeightVector.length; j++) {
-							currentWeightVector[j] += correction
-									* item.vector[j];
+							currentWeightVector[j] += correction * item.vector[j];
+							N += Math.pow(currentWeightVector[j], 2);
+						}
+						// Normalizing vector to avoid NaN errors
+						for (int j = 0; j < currentWeightVector.length; j++) {
+							currentWeightVector[j] /= Math.sqrt(N);
 						}
 					}
 				}
 				errors++;
 			}
-			if (errors == 0 || i > 500)
+			if (errors == 0 || i > 350)
 				break;
 			i++;
 		}
-	}
-
-	// THIS IS VERY VERY BAD HACK TO SOLVE NAN ERRORS
-	private double trimOutput(double value) {
-		return Double.parseDouble(String.valueOf(value).substring(0, 3)) + bias;
 	}
 
 	private double dotProduct(double[] input, double[] weight) {
@@ -70,7 +70,6 @@ public class Perceptron implements Classifier {
 			product += input[i] * weight[i];
 		}
 		return product;
-
 	}
 
 	public void print() {

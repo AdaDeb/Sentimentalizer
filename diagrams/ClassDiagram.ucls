@@ -104,8 +104,9 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="org.panhandlers.sentimentalizer.DataDivider" project="Sentimentalizer" 
-    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/DataDivider.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="11" language="java" name="org.panhandlers.sentimentalizer.storage.DataDivider" project="Sentimentalizer" 
+    file="/Sentimentalizer/src/org/panhandlers/sentimentalizer/storage/DataDivider.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="52" width="158" x="122" y="112"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" accessors="true" 
       visibility="true">      

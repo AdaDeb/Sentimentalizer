@@ -1,8 +1,8 @@
 package org.panhandlers.sentimentalizer.testing;
 
-import org.panhandlers.sentimentalizer.DataDivider;
 import org.panhandlers.sentimentalizer.redis.RedisDataReader;
 import org.panhandlers.sentimentalizer.redis.RedisStorage;
+import org.panhandlers.sentimentalizer.storage.DataDivider;
 import org.panhandlers.sentimentalizer.storage.DictionaryBuilder;
 
 public class TestEnvironment {

@@ -1,6 +1,7 @@
 package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.panhandlers.sentimentalizer.classifiers.AveragedPerceptron;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
@@ -10,7 +11,7 @@ import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
 
 
 public class TestRunner {
-	private static final String[] CATEGORIES = new String[]{"software"};//, "camera", "dvd", "health", "music", "software"};
+	private static final String[] CATEGORIES = new String[]{"books", "software", "health", "dvd", "music", "camera"};
 	private static final int RATIO = 10;
 	private static final int DICTIONARY_SIZE = 500;
 	private static final int CROSS_VALIDATION_SLICES = 10;
@@ -28,7 +29,7 @@ public class TestRunner {
 		int i = 1;
 		
 		// KNN INDOMAIN Sentiment Test
-		KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", 4);
+		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", 4);
 		
 		// KNN OUTOFDOMAIN Sentiment Test
 		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", "books", 4);
@@ -36,22 +37,23 @@ public class TestRunner {
 		// KNN CATEGORY Test
 		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 150); // takes time
 
-		knn.train();
-		knn.test();
+		//knn.train(); //Train KNN
+		//knn.test();  //Test KNN
 		
-		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};
+		Classifier[] classifiers = new Classifier[]{new Perceptron()};//new NaiveBayes(env.getStorage())};
 		for (Classifier classifier : classifiers) {
 //			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
-			//CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
-			//tests.add(categoryTest);
+			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
+			categoryTest.setCategories(Arrays.asList(CATEGORIES));
+			tests.add(categoryTest);
 			/*
 			 * Run in-domain tests
 			 */
 			for (String category : CATEGORIES) {
-				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
+				//t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 				//tests.add(t);
-//				t = new CrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
-				//tests.add(t);
+//				t = new SentimentCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
+//				tests.add(t);
 //				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 //				tests.add(t);
 //				for(; i < CATEGORIES.length; i++) {
@@ -66,6 +68,7 @@ public class TestRunner {
 		for (Test t : tests) {
 			t.run();
 		}
+		System.out.println("Test run complete");
 		for (Test t : tests) {
 			System.out.println(t.toString());
 		}

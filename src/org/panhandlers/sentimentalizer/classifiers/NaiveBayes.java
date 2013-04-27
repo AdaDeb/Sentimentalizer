@@ -14,6 +14,7 @@ import org.panhandlers.sentimentalizer.storage.ClassifierStorage;
 
 public class NaiveBayes implements Classifier {
 	private ClassifierStorage storage;
+	private HashMap<String, Integer> emptyFeatureCounts;
 	
 	public NaiveBayes() {
 		storage = new RedisStorage();
@@ -21,6 +22,9 @@ public class NaiveBayes implements Classifier {
 	
 	public NaiveBayes(ClassifierStorage storage) {
 		this.storage = storage;
+		if (GlobalConfig.DEBUG) {
+			emptyFeatureCounts = new HashMap<String, Integer>();
+		}
 	}
 	
 	@Override
@@ -46,6 +50,10 @@ public class NaiveBayes implements Classifier {
 			for(ClassificationResult r : results) {
 				System.out.println(r);
 			}
+			System.out.println("Empty features per category: ");
+			for(Entry<String, Integer> entry : emptyFeatureCounts.entrySet()) {
+				System.out.println(entry.getKey() + " : " + entry.getValue());
+			}
 		}
 		return results.get(0);
 	}
@@ -53,8 +61,10 @@ public class NaiveBayes implements Classifier {
 	private double pOfFeatureGivenCategory(Feature feature, String category) {
 		double featureCount = (double) storage.getFeatureCount(category, feature);
 		if (featureCount == 0.0d) {
-			if (GlobalConfig.DEBUG)
-				System.out.println("Feature count is zero");
+			if (GlobalConfig.DEBUG) {
+				System.out.println("Feature count is zero for feature: " + feature + " and category: " + category);
+				incrementEmptyFeatureCount(category);
+			}
 			return defaultProbability();
 		} else {
 			double categoryCount = (double) storage.getTotalFeaturesInCategoryCount(category);
@@ -62,6 +72,15 @@ public class NaiveBayes implements Classifier {
 		}
 	}
 	
+private void incrementEmptyFeatureCount(String category) {
+		Integer n = emptyFeatureCounts.get(category);
+		if (n == null) {
+			emptyFeatureCounts.put(category, 1);
+		} else {
+			emptyFeatureCounts.put(category, n + 1);
+		}
+	}
+
 	private double defaultProbability() {
 		return 0.5d / ((double) storage.getTotalCount() / 2);
 	}

@@ -1,7 +1,7 @@
 package org.panhandlers.sentimentalizer.testing;
 
-import org.panhandlers.sentimentalizer.DataDivider;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
+import org.panhandlers.sentimentalizer.storage.DataDivider;
 import org.panhandlers.sentimentalizer.storage.DictionaryBuilder;
 
 public abstract class Test {

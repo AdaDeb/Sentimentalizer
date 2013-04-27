@@ -14,10 +14,13 @@ import org.panhandlers.sentimentalizer.features.Feature;
 
 public class CategoryTest extends Test{
 	
+	private List<String> categories;
 	private String report;
 	private ExistenceFeatureExtractor extractor;
 	private HashMap<String, List<List<String>>> testData;
 	private HashMap<String, List<List<String>>> trainingData;
+	private HashMap<String, Integer> successRates;
+	private HashMap<String, Integer> failureRates;
 	private Set<String> dictionary;
 	private int offset;
 
@@ -26,6 +29,8 @@ public class CategoryTest extends Test{
 		this.extractor = new ExistenceFeatureExtractor();
 		this.report = "";
 		this.offset = 0;
+		this.successRates = new HashMap<String, Integer>();
+		this.failureRates = new HashMap<String, Integer>();
 	}
 	
 	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, int offset) {
@@ -46,9 +51,11 @@ public class CategoryTest extends Test{
 				if (result.getCategory().equals(cat.getKey())) {
 					
 					System.out.println("Succeeded for category " + cat.getKey());
+					registerSuccess(cat.getKey());
 					successes++;
 				} else {
 					System.out.println("Failed for category: " + cat.getKey());
+					registerFailure(cat.getKey());
 					failures++;
 				}
 			}
@@ -57,6 +64,21 @@ public class CategoryTest extends Test{
 		double percentage = (double) successes / ((double) successes + failures);
 		report += (" Percentage: " + percentage * 100);	
 		setSuccessRate(percentage);
+		// Print individual successrates
+		if (categories != null) {
+			int failure;
+			int success;
+			double rate;
+			for (String category : getCategories()) {
+				if (failureRates.get(category) != null) {
+					failure = failureRates.get(category);
+					success = successRates.get(category);
+					rate = (double) success / ((double) success + failure);
+					report += "\n";
+					report += "Success rate for " + category + ": " + rate + "\n";
+				}
+			}
+		}
 		
 		/*
 		 * Unload data
@@ -66,6 +88,24 @@ public class CategoryTest extends Test{
 		dictionary = null;
 	}
 	
+	private void registerFailure(String key) {
+		Integer n = successRates.get(key);
+		if(n == null) {
+			successRates.put(key, 1);
+		} else {
+			successRates.put(key, n + 1);
+		}
+	}
+
+	private void registerSuccess(String key) {
+		Integer n = failureRates.get(key);
+		if(n == null) {
+			failureRates.put(key, 1);
+		} else {
+			failureRates.put(key, n + 1);
+		}
+	}
+
 	private void loadData() {
 		/*
 		 * Load data
@@ -84,7 +124,7 @@ public class CategoryTest extends Test{
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("music", musicCategory);
 		data.put("dvd", dvdCategory);
-		data.put("software", softwareCategory);
+//		data.put("software", softwareCategory);
 		data.put("books", booksCategory);
 		data.put("health", healthCategory);
 		data.put("camera", cameraCategory);
@@ -131,6 +171,14 @@ public class CategoryTest extends Test{
 		b.append("\n");
 		b.append(report);
 		return b.toString();
+	}
+
+	public List<String> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<String> categories2) {
+		this.categories = categories2;
 	}
 
 

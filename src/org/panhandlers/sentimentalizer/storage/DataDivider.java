@@ -1,4 +1,4 @@
-package org.panhandlers.sentimentalizer;
+package org.panhandlers.sentimentalizer.storage;
 
 import java.util.ArrayList;
 import java.util.HashMap;

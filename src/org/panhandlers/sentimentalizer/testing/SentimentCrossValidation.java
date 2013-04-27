@@ -62,14 +62,21 @@ public class SentimentCrossValidation extends Test {
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
+		b.append("==================================");
 		b.append(getClassifier().toString());
 		b.append("CrossValidation of ");
 		b.append(tests.get(0).toString());
 		b.append(", divided data into ");
 		b.append(numberOfSlices);
 		b.append(" slices.");
+		for( Test t : tests) {
+			b.append("\n");
+			b.append(t.toString());
+			b.append("\n");
+		}
 		b.append("\nAverage success rate is ");
 		b.append(averageSuccessRate);
+		b.append("==================================");
 		return b.toString();
 	}
 

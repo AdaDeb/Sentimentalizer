@@ -1,6 +1,7 @@
 package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.panhandlers.sentimentalizer.classifiers.AveragedPerceptron;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
@@ -10,9 +11,9 @@ import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
 
 
 public class TestRunner {
-	private static final String[] CATEGORIES = new String[]{"dvd"};//, "camera", "dvd", "health", "music", "software"};
+	private static final String[] CATEGORIES = new String[]{"books", "software", "health", "dvd", "music", "camera"};
 	private static final int RATIO = 10;
-	private static final int DICTIONARY_SIZE = 1500;
+	private static final int DICTIONARY_SIZE = 500;
 	private static final int CROSS_VALIDATION_SLICES = 10;
 	private ArrayList<Test> tests;
 	private TestEnvironment env;
@@ -26,10 +27,11 @@ public class TestRunner {
 	private void createTests() {
 		Test t;
 		int i = 1;
-		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};
+		Classifier[] classifiers = new Classifier[]{new Perceptron()};//new NaiveBayes(env.getStorage())};
 		for (Classifier classifier : classifiers) {
 //			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
 			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
+			categoryTest.setCategories(Arrays.asList(CATEGORIES));
 			tests.add(categoryTest);
 			/*
 			 * Run in-domain tests
@@ -37,8 +39,8 @@ public class TestRunner {
 			for (String category : CATEGORIES) {
 				//t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 				//tests.add(t);
-//				t = new CrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
-				//tests.add(t);
+//				t = new SentimentCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
+//				tests.add(t);
 //				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 //				tests.add(t);
 //				for(; i < CATEGORIES.length; i++) {
@@ -53,6 +55,7 @@ public class TestRunner {
 		for (Test t : tests) {
 			t.run();
 		}
+		System.out.println("Test run complete");
 		for (Test t : tests) {
 			System.out.println(t.toString());
 		}

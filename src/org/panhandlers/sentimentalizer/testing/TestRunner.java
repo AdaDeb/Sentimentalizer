@@ -26,6 +26,19 @@ public class TestRunner {
 	private void createTests() {
 		Test t;
 		int i = 1;
+		
+		// KNN INDOMAIN Sentiment Test
+		KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", 4);
+		
+		// KNN OUTOFDOMAIN Sentiment Test
+		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", "books", 4);
+		
+		// KNN CATEGORY Test
+		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 150); // takes time
+
+		knn.train();
+		knn.test();
+		
 		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};
 		for (Classifier classifier : classifiers) {
 //			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
@@ -36,7 +49,7 @@ public class TestRunner {
 			 */
 			for (String category : CATEGORIES) {
 				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
-				tests.add(t);
+				//tests.add(t);
 //				t = new CrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
 				//tests.add(t);
 //				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
@@ -59,6 +72,8 @@ public class TestRunner {
 	}
 	
 	public static void main(String[] args) {
+		
+		
 		TestRunner runner = new TestRunner();
 		runner.runTests();
 	}

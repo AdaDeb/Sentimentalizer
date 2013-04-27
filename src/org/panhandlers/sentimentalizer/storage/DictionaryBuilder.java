@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.panhandlers.sentimentalizer.tokenizing.StopWords;
+
 public class DictionaryBuilder {
 	private static int DEFAULT_MAX = 2000;
 	private Set<String> dictionary;
@@ -63,6 +65,7 @@ public class DictionaryBuilder {
 	private boolean sane(String token) {
 		if (token.length() < 3) return false;
 		if (token.matches("\\d+.*")) return false;
+		if (StopWords.set.contains(token)) return false;
 		return true;
 	}
 

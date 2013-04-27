@@ -21,8 +21,8 @@ public class AveragedPerceptron implements Classifier {
 	/*
 	 * Variables: bias, learning rate, initial weights...
 	 */
-	private double bias = 0.2;
-	private double learningRate = 0.00005;
+	private double bias = 0.0;
+	private double learningRate = 0.0001;
 	private double errorRate;
 	private Set<String> dictionary;
 
@@ -34,10 +34,11 @@ public class AveragedPerceptron implements Classifier {
 		int expectedOutput = 0;
 		double[] currentWeightVector;
 		double[] currentAverageWeightVector;
+		double N = 0;
+		double averageN = 0;
 		while (true) {
 			errors = 0;
 			for (TrainingItem item : inputSet) {
-
 				for (Entry<Integer, double[]> weightVector : categoryToWeights
 						.entrySet()) {
 					currentWeightVector = weightVector.getValue();
@@ -45,22 +46,30 @@ public class AveragedPerceptron implements Classifier {
 							.get(weightVector.getKey());
 					expectedOutput = weightVector.getKey() == item.category ? 1
 							: 0;
-					actualOutput = trimOutput(dotProduct(item.vector,
-							currentWeightVector));
+					actualOutput = dotProduct(item.vector, currentWeightVector);
 					errorRate = expectedOutput - actualOutput;
 					correction = learningRate * errorRate;
 					if (errorRate != 0.0) {
+						N = 0;
+						averageN = 0;
 						for (int j = 0; j < currentWeightVector.length; j++) {
 							currentWeightVector[j] += correction
 									* item.vector[j];
 							currentAverageWeightVector[j] += currentWeightVector[j];
+							N += Math.pow(currentWeightVector[j], 2);
+							averageN += Math.pow(currentWeightVector[j], 2);
+						}
+						
+						// Normalizing vector to avoid NaN errors
+						for (int j = 0; j < currentWeightVector.length; j++) {
+							currentWeightVector[j] /= Math.sqrt(N);
+							currentAverageWeightVector[j] /= Math.sqrt(averageN);
 						}
 					}
-
 				}
 				errors++;
 			}
-			if (errors == 0 || i > 400)
+			if (errors == 0 || i > 350)
 				break;
 			i++;
 		}
@@ -72,11 +81,6 @@ public class AveragedPerceptron implements Classifier {
 			}
 
 		}
-	}
-
-	// THIS IS VERY VERY BAD HACK TO SOLVE NAN ERRORS
-	private double trimOutput(double value) {
-		return Double.parseDouble(String.valueOf(value).substring(0, 3)) + bias;
 	}
 
 	private double dotProduct(double[] input, double[] weight) {

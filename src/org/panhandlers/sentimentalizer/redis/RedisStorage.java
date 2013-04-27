@@ -12,6 +12,9 @@ import redis.clients.jedis.Pipeline;
 
 public class RedisStorage implements ClassifierStorage {
 	private static final String FEATURE = "bayes:feature:";
+	// Counts the total amount of features in a category. Is a hash.
+	// Example: HGET bayes:category_feature_counts category
+	// => 104
 	private static final String CATEGORY_FEATURE_COUNTS = "bayes:category_feature_counts";
 	private static final String CATEGORY_ITEM_COUNTS = "bayes:category_item_counts";
 	private static final String TOTAL_ITEM_COUNT = "bayes:total_item_count";
@@ -26,8 +29,11 @@ public class RedisStorage implements ClassifierStorage {
 	public void addItem(String category, List<Feature> features) {
 		Pipeline p = jedis.pipelined();
 		for (Feature feature : features) {
+			// Increment the number of features in the category
 			p.hincrBy(CATEGORY_FEATURE_COUNTS, category, 1);
+			// Increment the count for this features in the category
 			p.hincrBy(getFeatureCountKey(category), feature.toString(), 1);
+			// Add feature to the set of all features
 			p.sadd(ALL_FEATURES, feature.toString());
 		}
 		p.incr(TOTAL_ITEM_COUNT);
@@ -35,6 +41,10 @@ public class RedisStorage implements ClassifierStorage {
 		p.sync();
 	}
 	
+	// Returns a key that can be used to fetch the counts of individual features a category
+	// Example: getFeatureCountKey("music") => "bayes:category_feature_counts"
+	// This can be used to get the number of items that contain a certain features:
+	// HGET bayes:category_feature_counts existencegood1 => 10
 	private String getFeatureCountKey(String category) {
 		return FEATURE_COUNTS + category;
 	}
@@ -44,6 +54,9 @@ public class RedisStorage implements ClassifierStorage {
 		return Integer.parseInt(jedis.hget(CATEGORY_FEATURE_COUNTS, category));
 	}
 
+	/**
+	 * Returns the number of items with a particular feature in a particular category
+	 */
 	@Override
 	public int getFeatureCount(String category, Feature feature) {
 		String output = jedis.hget(getFeatureCountKey(category), feature.toString());
@@ -53,7 +66,10 @@ public class RedisStorage implements ClassifierStorage {
 			return Integer.parseInt(output);
 		}
 	}
-
+	
+	/**
+	 * Get the total amount of registered feature occurrences.
+	 */
 	@Override
 	public int getTotalCount() {
 		return (int) new BigDecimal(jedis.scard(ALL_FEATURES)).intValueExact();

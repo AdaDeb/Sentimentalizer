@@ -27,12 +27,25 @@ public class TestRunner {
 	private void createTests() {
 		Test t;
 		int i = 1;
-		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};//new NaiveBayes(env.getStorage())};
+		
+		// KNN INDOMAIN Sentiment Test
+		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "health", 4);
+		
+		// KNN OUTOFDOMAIN Sentiment Test
+		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", "books", 4);
+		
+		// KNN CATEGORY Test
+		KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 4); // takes time
+
+		knn.train(); //Train KNN
+		knn.test();  //Test KNN
+		
+		Classifier[] classifiers = new Classifier[]{new Perceptron()};//new NaiveBayes(env.getStorage())};
 		for (Classifier classifier : classifiers) {
 //			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
 			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
 			categoryTest.setCategories(Arrays.asList(CATEGORIES));
-			tests.add(categoryTest);
+			//tests.add(categoryTest);
 			/*
 			 * Run in-domain tests
 			 */
@@ -62,6 +75,8 @@ public class TestRunner {
 	}
 	
 	public static void main(String[] args) {
+		
+		
 		TestRunner runner = new TestRunner();
 		runner.runTests();
 	}

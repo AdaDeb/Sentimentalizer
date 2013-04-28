@@ -58,8 +58,7 @@ public class AveragedPerceptron implements Classifier {
 							currentAverageWeightVector[j] += currentWeightVector[j];
 							N += Math.pow(currentWeightVector[j], 2);
 							averageN += Math.pow(currentWeightVector[j], 2);
-						}
-						
+						}				
 						// Normalizing vector to avoid NaN errors
 						for (int j = 0; j < currentWeightVector.length; j++) {
 							currentWeightVector[j] /= Math.sqrt(N);

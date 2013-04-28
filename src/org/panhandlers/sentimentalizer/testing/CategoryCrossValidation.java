@@ -1,24 +1,28 @@
 package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
+import org.panhandlers.sentimentalizer.testing.CategoryTest;
 import org.panhandlers.sentimentalizer.testing.Test.Type;
 
 public class CategoryCrossValidation extends Test {
 	private int numberOfSlices;
-	private ArrayList<Test> tests;
+	private ArrayList<CategoryTest> tests;
 	private int ratio;
 	private int dictionarySize;
 	private Double averageSuccessRate;
 	private List<String> categories;
+	private HashMap<String, Test> testsPerCategory;
 	
 	public CategoryCrossValidation(TestEnvironment env, Classifier classifier, int ratio, int dictionarySize, int numberOfSlices) {
 		super(env, classifier, ratio, dictionarySize);
 		this.dictionarySize = dictionarySize;
 		this.ratio = ratio;
 		this.numberOfSlices = numberOfSlices;
+		testsPerCategory = new HashMap<String, Test>();
 	}
 
 	@Override
@@ -29,7 +33,7 @@ public class CategoryCrossValidation extends Test {
 
 	private void buildTest() {
 		CategoryTest test;
-		tests = new ArrayList<Test>(numberOfSlices);
+		tests = new ArrayList<CategoryTest>(numberOfSlices);
 		for(int i = 0; i< numberOfSlices; i++) {
 			test = new CategoryTest(getEnv(), getClassifier(), this.ratio, this.dictionarySize, i);
 			if(categories != null) {
@@ -42,7 +46,7 @@ public class CategoryCrossValidation extends Test {
 	private void runTest() {
 		ArrayList<Double> successRates = new ArrayList<Double>();
 		Double sumOfSuccessRates= 0d;
-		for (Test test : tests) {
+		for (CategoryTest test : tests) {
 			test.run();
 			successRates.add(test.getSuccessRate());
 			sumOfSuccessRates += test.getSuccessRate();
@@ -73,10 +77,19 @@ public class CategoryCrossValidation extends Test {
 		b.append("\nAverage success rate is ");
 		b.append(averageSuccessRate);
 		b.append("\nIndividual results:\n");
-		for (Test t : tests) {
-			b.append(t);
+		for (String category : categories) {
+			b.append(averageSuccessRateForCategory(category));
 		}
 		return b.toString();
+	}
+
+	private String averageSuccessRateForCategory(String category) {
+		Double total = 0d;
+		for (CategoryTest test : tests) {
+			total += test.successRateForCategory(category);
+		}
+		Double average = total / (double) tests.size();
+		return "Average success rate for " + category + " is " + average + "\n";
 	}
 
 	public List<String> getCategories() {

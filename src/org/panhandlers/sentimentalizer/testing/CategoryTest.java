@@ -19,8 +19,8 @@ public class CategoryTest extends Test{
 	private ExistenceFeatureExtractor extractor;
 	private HashMap<String, List<List<String>>> testData;
 	private HashMap<String, List<List<String>>> trainingData;
-	private HashMap<String, Integer> successRates;
-	private HashMap<String, Integer> failureRates;
+	private HashMap<String, Integer> successesForCategory;
+	private HashMap<String, Integer> failureForCategory;
 	private Set<String> dictionary;
 	private int offset;
 
@@ -29,8 +29,8 @@ public class CategoryTest extends Test{
 		this.extractor = new ExistenceFeatureExtractor();
 		this.report = "";
 		this.offset = 0;
-		this.successRates = new HashMap<String, Integer>();
-		this.failureRates = new HashMap<String, Integer>();
+		this.successesForCategory = new HashMap<String, Integer>();
+		this.failureForCategory = new HashMap<String, Integer>();
 	}
 	
 	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, int offset) {
@@ -70,9 +70,9 @@ public class CategoryTest extends Test{
 			int success;
 			double rate;
 			for (String category : getCategories()) {
-				if (failureRates.get(category) != null) {
-					failure = failureRates.get(category);
-					success = successRates.get(category);
+				if (failureForCategory.get(category) != null) {
+					failure = failureForCategory.get(category);
+					success = successesForCategory.get(category);
 					rate = (double) success / ((double) success + failure);
 					report += "\n";
 					report += "Success rate for " + category + ": " + rate + "\n";
@@ -88,21 +88,31 @@ public class CategoryTest extends Test{
 		dictionary = null;
 	}
 	
-	private void registerFailure(String key) {
-		Integer n = successRates.get(key);
-		if(n == null) {
-			successRates.put(key, 1);
+	public Double successRateForCategory(String category) {
+		Integer successes = successesForCategory.get(category);
+		Integer failures = failureForCategory.get(category);
+		if (successes != null && failures != null) {
+			return ((double) successes / ((double) successes + (double) failures));
 		} else {
-			successRates.put(key, n + 1);
+			return 0d;
+		}
+	}
+	
+	private void registerSuccess(String key) {
+		Integer n = successesForCategory.get(key);
+		if(n == null) {
+			successesForCategory.put(key, 1);
+		} else {
+			successesForCategory.put(key, n + 1);
 		}
 	}
 
-	private void registerSuccess(String key) {
-		Integer n = failureRates.get(key);
+	private void registerFailure(String key) {
+		Integer n = failureForCategory.get(key);
 		if(n == null) {
-			failureRates.put(key, 1);
+			failureForCategory.put(key, 1);
 		} else {
-			failureRates.put(key, n + 1);
+			failureForCategory.put(key, n + 1);
 		}
 	}
 

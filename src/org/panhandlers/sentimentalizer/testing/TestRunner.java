@@ -27,7 +27,7 @@ public class TestRunner {
 	private void createTests() {
 		Test t;
 		int i = 1;
-		Classifier[] classifiers = new Classifier[]{new Perceptron()};//new NaiveBayes(env.getStorage())};
+		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};//new NaiveBayes(env.getStorage())};
 		for (Classifier classifier : classifiers) {
 //			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
 			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);

@@ -29,28 +29,29 @@ public class TestRunner {
 		int i = 1;
 		
 		// KNN INDOMAIN Sentiment Test
-		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "health", 4);
+		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "dvd", 7);
 		
 		// KNN OUTOFDOMAIN Sentiment Test
 		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", "books", 4);
 		
 		// KNN CATEGORY Test
-		KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 4); // takes time
+		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 4); // takes time
 
-		knn.train(); //Train KNN
-		knn.test();  //Test KNN
+		//knn.train(); //Train KNN
+		//knn.test();  //Test KNN
+		//knn.crossValidation();
 		
-		Classifier[] classifiers = new Classifier[]{new Perceptron()};//new NaiveBayes(env.getStorage())};
+		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};//new NaiveBayes(env.getStorage())};
 		for (Classifier classifier : classifiers) {
-//			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
+			//CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
 			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
-			categoryTest.setCategories(Arrays.asList(CATEGORIES));
-			//tests.add(categoryTest);
+			//categoryTest.setCategories(Arrays.asList(CATEGORIES));
+			tests.add(categoryTest);
 			/*
 			 * Run in-domain tests
 			 */
 			for (String category : CATEGORIES) {
-				//t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
+			//	t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
 				//tests.add(t);
 //				t = new SentimentCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
 //				tests.add(t);

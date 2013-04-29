@@ -22,13 +22,18 @@ import net.sf.javaml.classification.KNearestNeighbors;
 import net.sf.javaml.classification.evaluation.EvaluateDataset;
 import net.sf.javaml.classification.evaluation.PerformanceMeasure;
 import net.sf.javaml.core.Dataset;
-import net.sf.javaml.core.Instance;
 import net.sf.javaml.tools.data.FileHandler;
 
 public class KNearestNeighbor extends Test{
 	
-    Classifier knn;
-
+	/**
+	 * This class is responsible for running the K-Nearest Neighbors algorithm
+	 * It uses the Java-ML library to run the actual tests, we only supply the features
+	 * in 2 files (one for training and one for testing).
+	 */
+	
+    private Classifier knn;
+    private Dataset dataForClassification = null;
 	private HashMap<String, List<List<String>>> testData;
 	private HashMap<String, List<List<String>>> trainingData;
 	private ExistenceFeatureExtractor extractor;
@@ -39,6 +44,9 @@ public class KNearestNeighbor extends Test{
 	private int offset;
 	private int neighbors;
 	
+	/*
+	 * Used for In domain sentiment test on a single category
+	 */
 	public KNearestNeighbor(TestEnvironment env, int ratio,
 			int dictSize, String category, int neighbors) {
 		super(env, null, ratio, dictSize);
@@ -51,6 +59,9 @@ public class KNearestNeighbor extends Test{
 		loadData();
 	}
 	
+	/*
+	 * Used for out of domain sentiment test
+	 */
 	public KNearestNeighbor(TestEnvironment env, int ratio,
 			int dictSize, String trainingCategory, String testCategory, int neighbors) {
 		super(env, null, ratio, dictSize);
@@ -62,6 +73,9 @@ public class KNearestNeighbor extends Test{
 		loadData();
 	}
 	
+	/*
+	 * Used for running category tests
+	 */
 	public KNearestNeighbor(TestEnvironment env, int ratio,
 			int dictSize, int neighbors) {
 		super(env, null, ratio, dictSize);
@@ -73,71 +87,74 @@ public class KNearestNeighbor extends Test{
 		loadData();
 	}
 	
-	
-	
+	/*
+	 * This method is used to write features to files and
+	 * save them on the local hdd. The outputted contains a feature vector per line
+	 * where each value is seperated by a comma and the last value is the 
+	 * expected output.  
+	 */
 	private void writeData(String fileName, HashMap<String, List<List<String>>> dataSet) {
 			List<List<Feature>> features;
-			HashMap<String, List<List<Feature>>> featureMap = new HashMap<String, List<List<Feature>>>();
+			HashMap<String, List<List<Feature>>> featureMap = new HashMap<String, List<List<Feature>>>(); // contains all features
 			File file = new File(fileName);
 			BufferedWriter output = null;
 			try {
 				output = new BufferedWriter(new FileWriter(file));
-				for (Entry<String, List<List<String>>> cat : dataSet.entrySet()) {
+				for (Entry<String, List<List<String>>> cat : dataSet.entrySet()) { // looping through all features vectors
 					features = new ArrayList<List<Feature>>();
 					for (List<String> item : cat.getValue()) {
-						features.add(extractor.extractFeatures(item));
+						features.add(extractor.extractFeatures(item)); // extract feature element
 					}
 					String line = "";
-					for (int j = 0; j < features.size(); j++) {
-						for (int i = 0; i < features.get(j).size(); i++) {
+					// start looping through all features and construct line
+					// in each iteration
+					for (int j = 0; j < features.size(); j++) { // loop for features 
+						for (int i = 0; i < features.get(j).size(); i++) { //loop for each feature element
 							ExistenceFeature feat = (ExistenceFeature) features
 									.get(j).get(i);
 							line = line.concat(Integer.toString(feat.getValue())
-									+ ",");
+									+ ","); // add value to current line
 						}
-						line = line.concat(cat.getKey());
-						output.write(line);
-						output.write("\n");
-						line = "";
+						line = line.concat(cat.getKey()); // add category name (expected output) to current line
+						output.write(line); // write line to file
+						output.write("\n"); 
+						line = ""; // reset line for next iteration
 					}
 					featureMap.put(cat.getKey(), features);
 				}
-				output.close();
-				
-
+				output.close(); // close stream of output file
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
-
 		}
 	
-	
-	
+	/*
+	 * This method is similar to other loadData methods in SentimentTest class and CategoryTest class
+	 * It divides the data into testing and training data depending on what kind of test
+	 * we are running
+	 */
 	private void loadData() {
 		/*
 		 * Load data
 		 */
 		TestEnvironment env = getEnv();
-		env.getStorage().reset();
+		env.getStorage().reset(); //reset redis storage
 
 		List<List<String>> positive = env.getReader()
 				.getItemsByCategoryAndSentiment(trainingCategory, "pos");
 		List<List<String>> negative = env.getReader()
 				.getItemsByCategoryAndSentiment(trainingCategory, "neg");
 
-		if (this.type == Test.Type.IN_DOMAIN) {
+		if (this.type == Test.Type.IN_DOMAIN) { // In domain sentiment testing
 			HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
-			data.put("pos", positive);
-			data.put("neg", negative);
-
-			/*
-			 * Divide data
-			 */
+			data.put("pos", positive); // positive reviews
+			data.put("neg", negative); // negative reviews
+			// divide data
 			getDivider().setOffset(this.offset);
 			getDivider().divide(data);
 			testData = getDivider().getTestData();
 			trainingData = getDivider().getTrainingData();
-		} else if (this.type == Test.Type.OUT_OF_DOMAIN) {
+		} else if (this.type == Test.Type.OUT_OF_DOMAIN) { // out of domain test type
 			List<List<String>> positiveTestData = env.getReader()
 					.getItemsByCategoryAndSentiment(testCategory, "pos");
 			List<List<String>> negativeTestData = env.getReader()
@@ -148,7 +165,8 @@ public class KNearestNeighbor extends Test{
 			trainingData.put("neg", negative);
 			testData.put("pos", positiveTestData);
 			testData.put("neg", negativeTestData);
-		} else {
+		} else { // Category test type
+			// load all categories from data reader
 			List<List<String>> musicCategory = env.getReader().getItemsByCategory("music");
 			List<List<String>> dvdCategory = env.getReader().getItemsByCategory("dvd");
 			List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
@@ -156,8 +174,8 @@ public class KNearestNeighbor extends Test{
 			List<List<String>> healthCategory = env.getReader().getItemsByCategory("health");
 			List<List<String>> cameraCategory = env.getReader().getItemsByCategory("camera");
 
-			System.out.println("music length " + musicCategory.size());
 			HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
+			// add all categories to the data hash map
 			data.put("music", musicCategory);
 			data.put("dvd", dvdCategory);
 			data.put("software", softwareCategory);
@@ -165,7 +183,7 @@ public class KNearestNeighbor extends Test{
 			data.put("health", healthCategory);
 			data.put("camera", cameraCategory);
 			
-			// Set offset
+			// Set offset and divide data into training and testing sets
 			getDivider().setOffset(offset);
 			getDivider().divide(data);
 			testData = getDivider().getTestData();
@@ -180,7 +198,7 @@ public class KNearestNeighbor extends Test{
 				.println("Dictionary built with length: " + dictionary.size());
 		extractor.setDictionary(dictionary);
 		
-		
+		// write test and train data to files for the KNN algorithm to use
 		writeData("train.data", trainingData);
 		writeData("test.data", testData);
 	}
@@ -191,64 +209,48 @@ public class KNearestNeighbor extends Test{
 		return null;
 	}
 
+	/*
+	 * The code in this method was not written by us so we take no credit for it,
+	 * we use the same code found on the guides on the Java-ML website
+	 * http://java-ml.sourceforge.net/content/evaluate-classifier-dataset
+	 */
 	@Override
 	public void test() {
-		  /*
-         * Load a data set for evaluation, this can be a different one, but we
-         * will use the same one.
+	    /*
+         * Load a data set for evaluation
          */
-        Dataset dataForClassification = null;
 		try {
 			dataForClassification = FileHandler.loadDataset(new File("test.data"), dictionary.size(), ",");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
       
-		
-		//dataForClassification = FileHandler.loadDataset(new File("devtools/data/iris.data"), 4, ",");
-
         Map<Object, PerformanceMeasure> pm = EvaluateDataset.testDataset(knn, dataForClassification);
         for (Object o : pm.keySet())
             System.out.println(o + ": " + pm.get(o).getAccuracy());
-		
-		
-//		/* Counters for correct and wrong predictions. */
-//        int correct = 0, wrong = 0;
-//        /* Classify all instances and check with the correct class values */
-//        for (Instance inst : dataForClassification) {
-//            Object predictedClassValue = knn.classify(inst);
-//            Object realClassValue = inst.classValue();
-//            if (predictedClassValue.equals(realClassValue))
-//                correct++;
-//            else
-//                wrong++;
-//        }
-//        System.out.println("Correct predictions  " + correct);
-//        System.out.println("Wrong predictions " + wrong);
 	
 	}
 
+	/*
+	 * The code in this method was not written by us so we take no credit for it,
+	 * we use the same code found on the guides on the Java-ML website
+	 * http://java-ml.sourceforge.net/content/load-data-file
+	 */
 	@Override
 	public void train() {
 		Dataset data = null;
 		try {
 			data = FileHandler.loadDataset(new File("train.data"), dictionary.size(), ",");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
         /*
-         * Contruct a KNN classifier that uses 5 neighbors to make a decision.
+         * Contruct a KNN classifier 
          */
         knn.buildClassifier(data);
 		
 		
 	}
-
-	
-	
-
 }
 

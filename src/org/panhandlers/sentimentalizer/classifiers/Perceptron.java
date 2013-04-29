@@ -288,5 +288,10 @@ public class Perceptron implements Classifier {
 	public String toString() {
 		return "Non-averaged Perceptron ";
 	}
+	
+	@Override
+	public String getName() {
+		return "Non-averaged Perceptron";
+	}
 
 }

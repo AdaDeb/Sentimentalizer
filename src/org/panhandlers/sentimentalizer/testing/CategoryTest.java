@@ -81,11 +81,15 @@ public class CategoryTest extends Test{
 			double rate;
 			for (String category : getCategories()) {
 				if (failureForCategory.get(category) != null) {
-					failure = failureForCategory.get(category);
-					success = successesForCategory.get(category);
-					rate = (double) success / ((double) success + failure);
-					report += "\n";
-					report += "Success rate for " + category + ": " + rate + "\n";
+					try {
+						failure = failureForCategory.get(category);
+						success = successesForCategory.get(category);
+						rate = (double) success / ((double) success + failure);
+						report += "\n";
+						report += "Success rate for " + category + ": " + rate + "\n";
+					} catch (Exception e) {
+						report += "\n Error printing result for category " + category;
+					}
 				}
 			}
 		}

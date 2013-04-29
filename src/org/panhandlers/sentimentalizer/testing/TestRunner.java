@@ -39,7 +39,6 @@ public class TestRunner {
 
 		//knn.train(); //Train KNN
 		//knn.test();  //Test KNN
-		//knn.crossValidation();
 		
 		Classifier[] classifiers = new Classifier[]{new AveragedPerceptron()};//new NaiveBayes(env.getStorage())};
 		for (Classifier classifier : classifiers) {

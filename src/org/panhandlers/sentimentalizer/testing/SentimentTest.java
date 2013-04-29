@@ -1,9 +1,5 @@
 package org.panhandlers.sentimentalizer.testing;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +8,8 @@ import java.util.Map.Entry;
 
 import org.panhandlers.sentimentalizer.classifiers.ClassificationResult;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
-import org.panhandlers.sentimentalizer.features.ExistenceFeature;
 import org.panhandlers.sentimentalizer.features.ExistenceFeatureExtractor;
 import org.panhandlers.sentimentalizer.features.Feature;
-import org.panhandlers.sentimentalizer.features.TokenFeature;
 
 /**
  * Conducts a test on one classifier on sentiment.

@@ -71,11 +71,15 @@ public class CategoryTest extends Test{
 			double rate;
 			for (String category : getCategories()) {
 				if (failureForCategory.get(category) != null) {
-					failure = failureForCategory.get(category);
-					success = successesForCategory.get(category);
-					rate = (double) success / ((double) success + failure);
-					report += "\n";
-					report += "Success rate for " + category + ": " + rate + "\n";
+					try {
+						failure = failureForCategory.get(category);
+						success = successesForCategory.get(category);
+						rate = (double) success / ((double) success + failure);
+						report += "\n";
+						report += "Success rate for " + category + ": " + rate + "\n";
+					} catch (Exception e) {
+						report += "\n Error printing result for category " + category;
+					}
 				}
 			}
 		}
@@ -134,7 +138,7 @@ public class CategoryTest extends Test{
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("music", musicCategory);
 		data.put("dvd", dvdCategory);
-//		data.put("software", softwareCategory);
+		data.put("software", softwareCategory);
 		data.put("books", booksCategory);
 		data.put("health", healthCategory);
 		data.put("camera", cameraCategory);

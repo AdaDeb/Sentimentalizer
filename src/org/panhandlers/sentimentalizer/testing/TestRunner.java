@@ -29,7 +29,7 @@ public class TestRunner {
 		int i = 1;
 		
 		// KNN INDOMAIN Sentiment Test
-		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "health", 4);
+		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "dvd", 7);
 		
 		// KNN OUTOFDOMAIN Sentiment Test
 		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", "books", 4);

@@ -1,11 +1,14 @@
 package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.panhandlers.sentimentalizer.Pair;
+import org.panhandlers.sentimentalizer.Utilities;
 import org.panhandlers.sentimentalizer.classifiers.ClassificationResult;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.features.ExistenceFeatureExtractor;
@@ -77,12 +80,18 @@ public class MultipleSentimentTester extends Test {
 	@Override
 	public void train() {
 		loadData();
+		debug("Data loaded");
 		HashMap<String, List<List<Feature>>> featureMap = extractFeatures(trainingData);
 		for (Classifier classifier : classifiers) {
+			debug("Training " + classifier.getName());
 			classifier.multipleTrain(featureMap, dictionary);
 		}
 	}
 	
+	private void debug(String string) {
+		System.out.println("MultipleSentimentTester debug: " + string);
+	}
+
 	private HashMap<String, List<List<Feature>>> extractFeatures(HashMap<String, List<List<String>>> inputData) {
 		List<List<Feature>> features;
 		HashMap<String, List<List<Feature>>> featureMap = new HashMap<String, List<List<Feature>>>();
@@ -102,13 +111,18 @@ public class MultipleSentimentTester extends Test {
 		 * Create out-of-domain mcnemars
 		 */
 		for (String testCategory : categories) {
-			for (Classifier firstClassifier : classifiers) {
-				for (Classifier secondClassifier : classifiers) {
-					if (firstClassifier != secondClassifier) {
-						McNemar mcnemar = new McNemar(trainingCategory, testCategory, firstClassifier, secondClassifier);
-						mcNemars.add(mcnemar);
-					}
-				}
+//			for (Classifier firstClassifier : classifiers) {
+//				for (Classifier secondClassifier : classifiers) {
+//					if (firstClassifier != secondClassifier) {
+//						McNemar mcnemar = new McNemar(trainingCategory, testCategory, firstClassifier, secondClassifier);
+//						mcNemars.add(mcnemar);
+//					}
+//				}
+//			}
+			debug("Performing tests for " + testCategory);
+			for (Pair<Classifier> pair : Utilities.combinations(Arrays.asList(classifiers))) {
+				McNemar mcnemar = new McNemar(trainingCategory, testCategory, pair.first, pair.other);
+				mcNemars.add(mcnemar);
 			}
 		}
 		for (McNemar nemar : mcNemars) {

@@ -11,7 +11,7 @@ import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
 
 
 public class TestRunner {
-	private static final String[] CATEGORIES = new String[]{"books", "software", "dvd", "health", "music", "camera"};
+	private static final String[] CATEGORIES = new String[]{"books", "software", "dvd"};//, "health", "music", "camera"};
 	private static final int RATIO = 10;
 	private static final int DICTIONARY_SIZE = 500;
 	private static final int CROSS_VALIDATION_SLICES = 10;

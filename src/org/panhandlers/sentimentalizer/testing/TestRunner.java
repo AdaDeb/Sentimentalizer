@@ -8,9 +8,14 @@ import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.classifiers.Perceptron;
 import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
 
-
-
 public class TestRunner {
+	
+	/*
+	 * This acts as the main entry point to the program,
+	 * it runs different types of tests (in domain, out of domain, category)
+	 * and cross validation tests. It also runs the KNN tests. 
+	 */
+	
 	private static final String[] CATEGORIES = new String[]{"books", "software", "health", "dvd", "music", "camera"};
 	private static final int RATIO = 10;
 	private static final int DICTIONARY_SIZE = 500;
@@ -24,6 +29,10 @@ public class TestRunner {
 		createTests();
 	}
 	
+	/*
+	 * This method constructs the tests for each classifier
+	 * that we want to run
+	 */
 	private void createTests() {
 		Test t;
 		int i = 1;
@@ -64,6 +73,9 @@ public class TestRunner {
 		}
 	}
 
+	/*
+	 * Loops through the tests and runs each of them
+	 */
 	public void runTests() {
 		for (Test t : tests) {
 			t.run();
@@ -75,8 +87,6 @@ public class TestRunner {
 	}
 	
 	public static void main(String[] args) {
-		
-		
 		TestRunner runner = new TestRunner();
 		runner.runTests();
 	}

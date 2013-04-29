@@ -1,6 +1,13 @@
 package org.panhandlers.sentimentalizer.features;
 
 public class OccurrenceFeature implements Feature, TokenFeature {
+	
+	/*
+	 * This class represents an occurrence feature object which
+	 * is composed of a token (string) and how many times that 
+	 * token occurs 
+	 */
+	
 	private String token;
 	private int occurrences;
 	public OccurrenceFeature(int n) {

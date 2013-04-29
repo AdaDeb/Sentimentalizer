@@ -1,8 +1,13 @@
 package org.panhandlers.sentimentalizer.classifiers;
 
 public class ClassificationResult implements Comparable<ClassificationResult> {
-	private double p;
-	private String category;
+	
+	/*
+	 * Represents a classification result object
+	 */
+	
+	private double p; // probability p used by Naive Bayes algorithm
+	private String category; // Category name used by all 3 algorithms
 
 	public ClassificationResult() {
 	}
@@ -52,7 +57,7 @@ public class ClassificationResult implements Comparable<ClassificationResult> {
 		result = prime * result + (int) Double.doubleToLongBits(p);
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

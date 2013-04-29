@@ -12,6 +12,11 @@ import java.util.TreeMap;
 import org.panhandlers.sentimentalizer.tokenizing.StopWords;
 
 public class DictionaryBuilder {
+	
+	/*
+	 * This class is responsible for building the dictionary 
+	 */
+	
 	private static int DEFAULT_MAX = 2000;
 	private Set<String> dictionary;
 	private HashMap<String, Integer> itemsWithToken;

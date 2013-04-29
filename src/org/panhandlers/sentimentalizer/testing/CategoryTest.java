@@ -14,6 +14,11 @@ import org.panhandlers.sentimentalizer.features.Feature;
 
 public class CategoryTest extends Test{
 	
+	/*
+	 * This class is used to run category tests for
+	 * different algorithms (except KNN)
+	 */
+	
 	private List<String> categories;
 	private String report;
 	private ExistenceFeatureExtractor extractor;
@@ -38,18 +43,23 @@ public class CategoryTest extends Test{
 		this.offset = offset;
 	}
 
+	/*
+	 * Test method used to classify the test data, each classification
+	 * is checked with the expected output. If the classification is correct
+	 * then we increment the number of successes otherwise we increment the
+	 * failures
+	 */
 	@Override
 	void test() {
 		ClassificationResult result;
 		List<Feature> features;
 		int successes = 0;
 		int failures = 0;
-		for (Entry<String, List<List <String>>> cat : testData.entrySet()) {
+		for (Entry<String, List<List <String>>> cat : testData.entrySet()) { // loop through test data
 			for (List<String> item : cat.getValue()) {
 				features = extractor.extractFeatures(item);
-				result = getClassifier().classify(features);
-				if (result.getCategory().equals(cat.getKey())) {
-					
+				result = getClassifier().classify(features); 
+				if (result.getCategory().equals(cat.getKey())) { // check if classification is correct	
 					System.out.println("Succeeded for category " + cat.getKey());
 					registerSuccess(cat.getKey());
 					successes++;
@@ -64,7 +74,7 @@ public class CategoryTest extends Test{
 		double percentage = (double) successes / ((double) successes + failures);
 		report += (" Percentage: " + percentage * 100);	
 		setSuccessRate(percentage);
-		// Print individual successrates
+		// Print individual success rates
 		if (categories != null) {
 			int failure;
 			int success;
@@ -88,6 +98,9 @@ public class CategoryTest extends Test{
 		dictionary = null;
 	}
 	
+	/*
+	 * Calculates the success rate for a specific category
+	 */
 	public Double successRateForCategory(String category) {
 		Integer successes = successesForCategory.get(category);
 		Integer failures = failureForCategory.get(category);
@@ -98,6 +111,9 @@ public class CategoryTest extends Test{
 		}
 	}
 	
+	/*
+	 * Record the success of a classification test
+	 */
 	private void registerSuccess(String key) {
 		Integer n = successesForCategory.get(key);
 		if(n == null) {
@@ -107,6 +123,9 @@ public class CategoryTest extends Test{
 		}
 	}
 
+	/*
+	 * Record the failure of a classification test
+	 */
 	private void registerFailure(String key) {
 		Integer n = failureForCategory.get(key);
 		if(n == null) {
@@ -115,7 +134,11 @@ public class CategoryTest extends Test{
 			failureForCategory.put(key, n + 1);
 		}
 	}
-
+	
+	/*
+	 * This method loads the data and divides it to training and 
+	 * testing data
+	 */
 	private void loadData() {
 		/*
 		 * Load data
@@ -123,6 +146,7 @@ public class CategoryTest extends Test{
 		TestEnvironment env = getEnv();
 		env.getStorage().reset();
 		
+		// Load data from each category without considering pos/neg
 		List<List<String>> musicCategory = env.getReader().getItemsByCategory("music");
 		List<List<String>> dvdCategory = env.getReader().getItemsByCategory("dvd");
 		List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
@@ -130,17 +154,17 @@ public class CategoryTest extends Test{
 		List<List<String>> healthCategory = env.getReader().getItemsByCategory("health");
 		List<List<String>> cameraCategory = env.getReader().getItemsByCategory("camera");
 
-		System.out.println("music length " + musicCategory.size());
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("music", musicCategory);
 		data.put("dvd", dvdCategory);
-//		data.put("software", softwareCategory);
+		data.put("software", softwareCategory);
 		data.put("books", booksCategory);
 		data.put("health", healthCategory);
 		data.put("camera", cameraCategory);
 		
 		// Set offset
 		getDivider().setOffset(offset);
+		// Divide data
 		getDivider().divide(data);
 		testData = getDivider().getTestData();
 		trainingData = getDivider().getTrainingData();
@@ -154,19 +178,25 @@ public class CategoryTest extends Test{
 	}
 
 	@Override
+	/*
+	 * Main method that train the algorithm using the training data
+	 * Here we extract the existence features of before sending them in to 
+	 * the classifier algorithm 
+	 */
 	void train() {
 		System.out.println("Starting test: " + toString());
 		loadData();
 		List<List<Feature>> features;
 		HashMap<String, List<List<Feature>>> featureMap = new HashMap<String, List<List<Feature>>>();
-		for (Entry<String, List<List<String>>> cat : trainingData.entrySet()) {
+		for (Entry<String, List<List<String>>> cat : trainingData.entrySet()) { // loop through training data
 			features = new ArrayList<List<Feature>>();
 			for(List<String> item : cat.getValue()) {
-				features.add(extractor.extractFeatures(item));
+				features.add(extractor.extractFeatures(item)); // extract feature
 			}
 			featureMap.put(cat.getKey(), features);
 		}
-		getClassifier().multipleTrain(featureMap, dictionary);
+		// send input to the classifier to train
+		getClassifier().multipleTrain(featureMap, dictionary); 
 	}
 	@Override
 	public String getResults() {

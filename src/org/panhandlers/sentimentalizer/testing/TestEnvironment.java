@@ -6,6 +6,12 @@ import org.panhandlers.sentimentalizer.storage.DataDivider;
 import org.panhandlers.sentimentalizer.storage.DictionaryBuilder;
 
 public class TestEnvironment {
+	
+	/*
+	 * This class sets up the test environment for 
+	 * running the tests 
+	 */
+	
 	private RedisDataReader reader;
 	private RedisStorage storage;
 	

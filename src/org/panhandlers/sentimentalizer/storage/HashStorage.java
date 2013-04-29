@@ -7,6 +7,13 @@ import java.util.Set;
 import org.panhandlers.sentimentalizer.features.Feature;
 
 public class HashStorage implements ClassifierStorage {
+	
+	/*
+	 * This class implements a simple hash storage data 
+	 * structure along with other trivial data access
+	 * and look up methods
+	 */
+	
 	private HashMap<String, Integer> featuresInCategoryCount;
 	private HashMap<String,HashMap<Feature, Integer>> featureCount;
 	private int totalCount;
@@ -26,7 +33,6 @@ public class HashStorage implements ClassifierStorage {
 		try {
 			setFeatureCount(category, feature);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -104,18 +110,15 @@ public class HashStorage implements ClassifierStorage {
 		for (Feature feature : features) {
 			addFeature(category, feature);
 		}
-		
 	}
 
 	@Override
 	public int getItemsInCategoryCount(String category) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getTotalItemsCount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

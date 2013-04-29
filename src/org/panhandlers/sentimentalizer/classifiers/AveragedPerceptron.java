@@ -246,4 +246,10 @@ public class AveragedPerceptron implements Classifier {
 		return "Averaged Perceptron ";
 	}
 
+	@Override
+	public String getName() {
+		return "AveragedPerceptron";
+	}
+
+	
 }

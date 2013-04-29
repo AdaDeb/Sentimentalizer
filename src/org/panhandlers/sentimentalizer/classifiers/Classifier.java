@@ -25,4 +25,6 @@ public interface Classifier {
 	 * Train the classifier on multiple items
 	 */
 	public void multipleTrain(HashMap<String, List<List<Feature>>> trainingSet, Set<String> dictionary);
+
+	public String getName();
 }

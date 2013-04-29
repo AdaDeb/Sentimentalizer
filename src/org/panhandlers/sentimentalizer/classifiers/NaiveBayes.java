@@ -116,5 +116,9 @@ private void incrementEmptyFeatureCount(String category) {
 		return "NaiveBayes";
 	}
 	
+	@Override
+	public String getName() {
+		return "NaiveBayes";
+	}
 
 }

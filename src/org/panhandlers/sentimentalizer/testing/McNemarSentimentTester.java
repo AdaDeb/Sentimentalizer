@@ -14,7 +14,7 @@ import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.features.ExistenceFeatureExtractor;
 import org.panhandlers.sentimentalizer.features.Feature;
 
-public class MultipleSentimentTester extends Test {
+public class McNemarSentimentTester extends Test {
 	private Classifier[] classifiers;
 	private String[] categories;
 	private String trainingCategory;
@@ -24,7 +24,7 @@ public class MultipleSentimentTester extends Test {
 	private HashMap<String, HashMap<String, List<List<String>>>> testData;
 	private List<McNemar> mcNemars;
 	
-	public MultipleSentimentTester(TestEnvironment env,
+	public McNemarSentimentTester(TestEnvironment env,
 			int ratio, int dictionarySize, Classifier[] classifiers, String[] categories, String trainingCategory) {
 		super(env, null, ratio, dictionarySize);
 		this.classifiers = classifiers;

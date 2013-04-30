@@ -66,7 +66,6 @@ public class McNemarSentimentTester extends Test {
 				dataForCategory.put("neg", tempData);
 				testData.put(category,dataForCategory);
 			}
-
 		}
 		/*
 		 * Construct dictionary

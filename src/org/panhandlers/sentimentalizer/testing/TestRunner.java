@@ -69,34 +69,30 @@ public class TestRunner {
 //				}
 //			}
 //		}
+	
+		// You can add new classifier to this array
+		Classifier[] classifiers = new Classifier[] {new AveragedPerceptron(), new AveragedPerceptron()};
 		
-		
-		
-		
-		
-		
-		
-//		knn.train(); //Train KNN
-//		knn.test();  //Test KNN
-		
-		Classifier[] classifiers = new Classifier[] {new Perceptron(), new AveragedPerceptron()};//new NaiveBayes(new HashStorage())};
+		//Uncomment below to run multiple sentiment tests
 //		MultipleSentimentTester t = new MultipleSentimentTester(env,
 //				RATIO, DICTIONARY_SIZE, classifiers, CATEGORIES, "dvd");
 //		tests.add(t);
 		for (Classifier classifier : classifiers) {
-////			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
+			// Used to run category test for each classifier (not KNN)
+			//CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
 //			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
 //			categoryTest.setCategories(Arrays.asList(CATEGORIES));
-//			tests.add(categoryTest);
+			//tests.add(categoryTest);
+			
 //			/*
 //			 * Run in-domain tests
 //			 */
 			for (String category : CATEGORIES) {
-				MultiSentimentAnalyzer t = new MultiSentimentAnalyzer(env,
-						RATIO, DICTIONARY_SIZE, classifier, CATEGORIES, category);
-				tests.add(t);
-//				Test t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
-//				tests.add(t);
+				//MultiSentimentAnalyzer t = new MultiSentimentAnalyzer(env,
+				//	RATIO, DICTIONARY_SIZE, classifier, CATEGORIES, category);
+				//tests.add(t);
+				//Test t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
+				//tests.add(t);
 ////				t = new SentimentCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
 ////				tests.add(t);
 ////				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);

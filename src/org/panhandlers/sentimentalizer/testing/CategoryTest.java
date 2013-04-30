@@ -28,18 +28,22 @@ public class CategoryTest extends Test{
 	private HashMap<String, Integer> failureForCategory;
 	private Set<String> dictionary;
 	private int offset;
+	private boolean includeSoftware; 
 
-	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize) {
+	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio,
+			int dictSize, boolean includeSOftware) {
 		super(env, classifier, ratio, dictSize);
 		this.extractor = new ExistenceFeatureExtractor();
 		this.report = "";
 		this.offset = 0;
 		this.successesForCategory = new HashMap<String, Integer>();
 		this.failureForCategory = new HashMap<String, Integer>();
+		this.includeSoftware = includeSoftware;
 	}
 	
-	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, int offset) {
-		this(env, classifier, ratio, dictSize);
+	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, 
+			int offset, boolean includeSoftware) {
+		this(env, classifier, ratio, dictSize, includeSoftware);
 		this.offset = offset;
 	}
 

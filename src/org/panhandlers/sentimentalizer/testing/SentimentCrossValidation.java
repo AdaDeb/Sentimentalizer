@@ -2,6 +2,7 @@ package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
 
+import org.panhandlers.sentimentalizer.Utilities;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.testing.Test.Type;
 
@@ -19,6 +20,7 @@ public class SentimentCrossValidation extends Test {
 	private int dictionarySize;
 	private String category;
 	private Double averageSuccessRate;
+	private Double standardDeviation;
 	
 	public SentimentCrossValidation(TestEnvironment env, Classifier classifier, int ratio, int dictionarySize, int numberOfSlices, String category) {
 		super(env, classifier, ratio, dictionarySize);
@@ -60,6 +62,7 @@ public class SentimentCrossValidation extends Test {
 			sumOfSuccessRates += test.getSuccessRate();
 		}
 		averageSuccessRate = sumOfSuccessRates / successRates.size();
+		standardDeviation = Utilities.standardDeviation(successRates);
 	}
 
 	@Override
@@ -80,7 +83,7 @@ public class SentimentCrossValidation extends Test {
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("==================================");
+		b.append("\n==================================\n");
 		b.append(getClassifier().toString());
 		b.append("CrossValidation of ");
 		b.append(tests.get(0).toString());
@@ -94,7 +97,9 @@ public class SentimentCrossValidation extends Test {
 		}
 		b.append("\nAverage success rate is ");
 		b.append(averageSuccessRate);
-		b.append("==================================");
+		b.append("\nStandard devation is ");
+		b.append(standardDeviation);
+		b.append("\n==================================\n");
 		return b.toString();
 	}
 

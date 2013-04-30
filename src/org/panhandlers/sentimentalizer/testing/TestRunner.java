@@ -55,8 +55,8 @@ public class TestRunner {
 		for (Classifier classifier : classifiers) {
 ////			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
 			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
-//			categoryTest.setCategories(Arrays.asList(CATEGORIES));
-//			tests.add(categoryTest);
+			categoryTest.setCategories(Arrays.asList(CATEGORIES));
+			tests.add(categoryTest);
 //			/*
 //			 * Run in-domain tests
 //			 */

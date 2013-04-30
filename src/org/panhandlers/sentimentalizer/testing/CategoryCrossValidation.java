@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.panhandlers.sentimentalizer.Utilities;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.testing.CategoryTest;
 import org.panhandlers.sentimentalizer.testing.Test.Type;
@@ -20,6 +21,7 @@ public class CategoryCrossValidation extends Test {
 	private int ratio;
 	private int dictionarySize;
 	private Double averageSuccessRate;
+	private Double standardDeviation;
 	private List<String> categories;
 	private HashMap<String, Test> testsPerCategory;
 	
@@ -66,6 +68,7 @@ public class CategoryCrossValidation extends Test {
 			sumOfSuccessRates += test.getSuccessRate();
 		}
 		averageSuccessRate = sumOfSuccessRates / successRates.size();
+		standardDeviation = Utilities.standardDeviation(successRates);
 	}
 
 	@Override
@@ -93,11 +96,25 @@ public class CategoryCrossValidation extends Test {
 		b.append(" slices.");
 		b.append("\nAverage success rate is ");
 		b.append(averageSuccessRate);
+		b.append("\nStandard deviation is ");
+		b.append(standardDeviation);
 		b.append("\nIndividual results:\n");
 		for (String category : categories) {
 			b.append(averageSuccessRateForCategory(category));
 		}
+		for (String category : categories) {
+			b.append(standardDevationForCategory(category));
+		}
 		return b.toString();
+	}
+
+	private String standardDevationForCategory(String category) {
+		ArrayList<Double> successRates = new ArrayList<Double>();
+		for (CategoryTest test : tests) {
+			successRates.add(test.successRateForCategory(category));
+		}
+		Double sd = Utilities.standardDeviation(successRates);
+		return "Standard deviation for " + category + " is " + sd + "\n";
 	}
 
 	/*

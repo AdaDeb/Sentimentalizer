@@ -12,26 +12,43 @@ import org.panhandlers.sentimentalizer.features.Feature;
 import org.panhandlers.sentimentalizer.redis.RedisStorage;
 import org.panhandlers.sentimentalizer.storage.ClassifierStorage;
 
+/**
+ * An implementation of NaiveBayes text classification.
+ * @author jesjos
+ *
+ */
 public class NaiveBayes implements Classifier {
 	private ClassifierStorage storage;
 	private HashMap<String, Integer> emptyFeatureCounts;
 	
+	/**
+	 * The default constructor uses Redis storage
+	 */
 	public NaiveBayes() {
 		storage = new RedisStorage();
 	}
 	
 	public NaiveBayes(ClassifierStorage storage) {
 		this.storage = storage;
+		// In debug mode we count occurrences of unknown features in the classification input
 		if (GlobalConfig.DEBUG) {
 			emptyFeatureCounts = new HashMap<String, Integer>();
 		}
 	}
 	
+	/**
+	 * Train the algorithm for one item
+	 */
 	@Override
 	public void train(String category, List<Feature> features) {
 		storage.addItem(category, features);
 	}
 
+	/**
+	 * Classification involves calculating the probability of
+	 * the input set given all known categories and then choosing
+	 * the category with the highest probability.
+	 */
 	@Override
 	public ClassificationResult classify(List<Feature> features) {
 		Set<String> categories = storage.getCategories();
@@ -44,6 +61,7 @@ public class NaiveBayes implements Classifier {
 			result = new ClassificationResult(category, prob);
 			results.add(result);
 		}
+		// Reverse order sorting is equal to descending order.
 		Collections.sort(results, Collections.reverseOrder());
 		if (GlobalConfig.DEBUG){
 			System.out.println("Result vector:");
@@ -57,7 +75,13 @@ public class NaiveBayes implements Classifier {
 		}
 		return results.get(0);
 	}
-
+	
+	/**
+	 * Calculate the probability of a single feature occurring in category
+	 * @param feature
+	 * @param category
+	 * @return the probability
+	 */
 	private double pOfFeatureGivenCategory(Feature feature, String category) {
 		double featureCount = (double) storage.getFeatureCount(category, feature);
 		if (featureCount == 0.0d) {
@@ -72,7 +96,11 @@ public class NaiveBayes implements Classifier {
 		}
 	}
 	
-private void incrementEmptyFeatureCount(String category) {
+	/**
+	 * Increment the counter of empty features in a certain category
+	 * @param category
+	 */
+	private void incrementEmptyFeatureCount(String category) {
 		Integer n = emptyFeatureCounts.get(category);
 		if (n == null) {
 			emptyFeatureCounts.put(category, 1);
@@ -80,7 +108,11 @@ private void incrementEmptyFeatureCount(String category) {
 			emptyFeatureCounts.put(category, n + 1);
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @return
+	 */
 	private double defaultProbability() {
 		return 0.5d / ((double) storage.getTotalCount() / 2);
 	}

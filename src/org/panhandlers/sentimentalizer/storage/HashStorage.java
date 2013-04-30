@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.panhandlers.sentimentalizer.GlobalConfig;
 import org.panhandlers.sentimentalizer.features.Feature;
 
 public class HashStorage implements ClassifierStorage {
@@ -16,20 +17,21 @@ public class HashStorage implements ClassifierStorage {
 	
 	private HashMap<String, Integer> featuresInCategoryCount;
 	private HashMap<String,HashMap<Feature, Integer>> featureCount;
-	private int totalCount;
+	private int totalFeatureCount;
+	private int totalItemCount;
 	private HashMap<String, Integer> itemCount;
 	
 	public HashStorage() {
 		featuresInCategoryCount = new HashMap<String, Integer>();
 		featureCount = new HashMap<String, HashMap<Feature, Integer>>();
 		itemCount = new HashMap<String, Integer>();
-		totalCount = 0;
+		totalFeatureCount = 0;
+		totalItemCount = 0;
 	}
 	
 	public void addFeature(String category, Feature feature) {
-		setCategoryCount(category);
-		setItemCount(category);
-		totalCount++;
+		setTotalFeaturesInCategoryCount(category);
+		totalFeatureCount++;
 		try {
 			setFeatureCount(category, feature);
 		} catch (Exception e) {
@@ -53,13 +55,13 @@ public class HashStorage implements ClassifierStorage {
 		}
 		if (mapForCategory.containsKey(feature)) {
 			int newCount = mapForCategory.get(feature);
-			mapForCategory.put(feature, newCount);
+			mapForCategory.put(feature, newCount + 1);
 		} else {
 			mapForCategory.put(feature, 1);
 		}
 	}
 
-	private void setCategoryCount(String category) {
+	private void setTotalFeaturesInCategoryCount(String category) {
 		if (featuresInCategoryCount.containsKey(category)) {
 			int newCount = featuresInCategoryCount.get(category) + 1;
 			featuresInCategoryCount.put(category, newCount);
@@ -78,6 +80,8 @@ public class HashStorage implements ClassifierStorage {
 		if (featuresInCategoryCount.containsKey(category)) {
 			return featuresInCategoryCount.get(category);
 		} else {
+			if (GlobalConfig.DEBUG)
+				System.out.println("Could not get total features in category count");
 			return 0;
 		}
 	}
@@ -87,17 +91,15 @@ public class HashStorage implements ClassifierStorage {
 		if (featureCount.containsKey(category) && featureCount.get(category).containsKey(feature)){
 			return featureCount.get(category).get(feature);
 		} else {
+			if (GlobalConfig.DEBUG)
+				System.out.println("Could not get feature count");
 			return 0;
 		}
 	}
 
 	@Override
 	public int getTotalCount() {
-		int sum = 0;
-		for(Integer value: featuresInCategoryCount.values()) {
-			sum += value; 
-		}
-		return sum;
+		return totalFeatureCount;
 	}
 
 	@Override
@@ -107,6 +109,8 @@ public class HashStorage implements ClassifierStorage {
 
 	@Override
 	public void addItem(String category, List<Feature> features) {
+		totalItemCount++;
+		setItemCount(category);
 		for (Feature feature : features) {
 			addFeature(category, feature);
 		}
@@ -114,12 +118,19 @@ public class HashStorage implements ClassifierStorage {
 
 	@Override
 	public int getItemsInCategoryCount(String category) {
-		return 0;
+		Integer count = itemCount.get(category);
+		if (itemCount != null) {
+			return count;
+		} else {
+			if (GlobalConfig.DEBUG)
+				System.out.println("Could not get items in category count");
+			return 0;
+		}
 	}
 
 	@Override
 	public int getTotalItemsCount() {
-		return 0;
+		return totalItemCount;
 	}
 
 }

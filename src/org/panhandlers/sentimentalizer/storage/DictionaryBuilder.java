@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.panhandlers.sentimentalizer.GlobalConfig;
 import org.panhandlers.sentimentalizer.tokenizing.StopWords;
 
 public class DictionaryBuilder {
@@ -122,8 +123,11 @@ public class DictionaryBuilder {
 			token = it.next();
 			dictionary.add(token);			
 		}
-		for (Entry<Double, String> entry : sortedMap.descendingMap().entrySet()) {
-			System.out.println(entry.getKey() + " => " + entry.getValue());
+		if (GlobalConfig.DEBUG) {
+			for (Entry<Double, String> entry : sortedMap.descendingMap()
+					.entrySet()) {
+				System.out.println(entry.getKey() + " => " + entry.getValue());
+			}
 		}
 		return dictionary;
 	}

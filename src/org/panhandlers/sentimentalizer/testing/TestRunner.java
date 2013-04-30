@@ -36,15 +36,43 @@ public class TestRunner {
 //		Test t;
 		int i = 1;
 		
-		// KNN INDOMAIN Sentiment Test
-		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "dvd", 7);
+		//Uncomment below to run category tests for KNN
+//		KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 4);
+//		knn.train();
+//		knn.test();
+//		knn.categoryCrossValidation(); // // Use this to run cross validation but comment train and test above.
+
+		// Uncomment below loop to run in domain for KNN
+//		for(i = 0; i < CATEGORIES.length; i++) {
+//			System.out.println("Testing category:" + CATEGORIES[i]);
+//			KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, CATEGORIES[i], 4);
+//			knn.train();
+//			knn.test();
+//			knn.inDomainCrossValidation(); // Use this to run cross validation but comment train and test above.
+//		}
 		
-		// KNN OUTOFDOMAIN Sentiment Test
-		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", "books", 4);
+		//Uncomment the code below to run out of domain for KNN
+//		for (i = 0; i < CATEGORIES.length; i++) {
+//			String currentCategory = CATEGORIES[i];
+//			for (int j = 0; j < CATEGORIES.length; j++) {
+//				if (!currentCategory.equals(CATEGORIES[j])) {
+//					System.out.println("Training on category:"
+//							+ currentCategory + " and testing on "
+//							+ CATEGORIES[j]);
+//					KNearestNeighbor knn = new KNearestNeighbor(env, RATIO,
+//							DICTIONARY_SIZE, currentCategory, CATEGORIES[j], 4);
+//					knn.train();
+//					knn.test();
+//				}
+//			}
+//		}
 		
-		// KNN CATEGORY Test
-//		KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 4); // takes time
-//
+		
+		
+		
+		
+		
+		
 //		knn.train(); //Train KNN
 //		knn.test();  //Test KNN
 		

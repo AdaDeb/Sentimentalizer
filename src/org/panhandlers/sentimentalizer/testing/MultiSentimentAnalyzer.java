@@ -1,21 +1,18 @@
 package org.panhandlers.sentimentalizer.testing;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.panhandlers.sentimentalizer.GlobalConfig;
-import org.panhandlers.sentimentalizer.Pair;
-import org.panhandlers.sentimentalizer.Utilities;
 import org.panhandlers.sentimentalizer.classifiers.ClassificationResult;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.features.ExistenceFeatureExtractor;
 import org.panhandlers.sentimentalizer.features.Feature;
 
-public class NewSentimentAnalyzer extends Test {
+public class MultiSentimentAnalyzer extends Test {
 	private Classifier classifier;
 	private String[] categories;
 	private String trainingCategory;
@@ -25,7 +22,7 @@ public class NewSentimentAnalyzer extends Test {
 	private HashMap<String, HashMap<String, List<List<String>>>> testData;
 	private List<SentimentAnalysisResult> results;
 	
-	public NewSentimentAnalyzer(TestEnvironment env,
+	public MultiSentimentAnalyzer(TestEnvironment env,
 			int ratio, int dictionarySize, Classifier classifier, String[] categories, String trainingCategory) {
 		super(env, null, ratio, dictionarySize);
 		this.classifier = classifier;
@@ -116,27 +113,6 @@ public class NewSentimentAnalyzer extends Test {
 		return featureMap;
 	}
 	
-//	private void performMcNemar(McNemar mcnemar) {
-//		HashMap<String, List<List<Feature>>> features = extractFeatures(testData.get(mcnemar.getTestCategory()));
-//		ClassificationResult first;
-//		ClassificationResult second;
-//		boolean firstCorrect;
-//		boolean secondCorrect;
-//		int firstResult;
-//		int secondResult;
-//		for(Entry<String, List<List<Feature>>> itemsInCategory : features.entrySet()) {
-//			for(List<Feature> item : itemsInCategory.getValue()) {
-//				first = mcnemar.getFirstClassifier().classify(item);
-//				second = mcnemar.getSecondClassifier().classify(item);
-//				firstCorrect = first.getCategory().equals(itemsInCategory.getKey());
-//				secondCorrect = second.getCategory().equals(itemsInCategory.getKey());
-//				firstResult = firstCorrect ? 1 : 0;
-//				secondResult = secondCorrect ? 1 : 0;
-//				mcnemar.setPairResult(firstResult, secondResult);
-//			}
-//		}
-//		
-//	}
 	@Override
 	public void test() {
 		HashMap<String, List<List<Feature>>> itemsAsFeaturesBySentiment;
@@ -177,7 +153,6 @@ public class NewSentimentAnalyzer extends Test {
 		return toString();
 	}
 	private class SentimentAnalysisResult {
-		public String classifierName;
 		public String trainingCategory;
 		public String testingCategory;
 		public int successes;

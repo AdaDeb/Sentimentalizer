@@ -64,7 +64,7 @@ public class TestRunner {
 //			 * Run in-domain tests
 //			 */
 			for (String category : CATEGORIES) {
-				NewSentimentAnalyzer t = new NewSentimentAnalyzer(env,
+				MultiSentimentAnalyzer t = new MultiSentimentAnalyzer(env,
 						RATIO, DICTIONARY_SIZE, classifier, CATEGORIES, category);
 				tests.add(t);
 //				Test t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);

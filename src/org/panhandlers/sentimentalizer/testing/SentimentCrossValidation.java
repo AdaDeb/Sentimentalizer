@@ -6,6 +6,12 @@ import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.testing.Test.Type;
 
 public class SentimentCrossValidation extends Test {
+	
+	/*
+	 * This class is used to run cross validation tests 
+	 * for in and out of domain sentiment classification
+	 */
+	
 	private int numberOfSlices;
 	private Classifier classifier;
 	private ArrayList<Test> tests;
@@ -28,6 +34,10 @@ public class SentimentCrossValidation extends Test {
 		runTest();
 	}
 
+	/*
+	 * Builds a list of tests to run depending on the
+	 * number of slices desired
+	 */
 	private void buildTest() {
 		SentimentTest test;
 		tests = new ArrayList<Test>(numberOfSlices);
@@ -37,6 +47,10 @@ public class SentimentCrossValidation extends Test {
 		}
 	}
 
+	/*
+	 * Runs each test that was previously built and 
+	 * records the results and success rate
+	 */
 	private void runTest() {
 		ArrayList<Double> successRates = new ArrayList<Double>();
 		Double sumOfSuccessRates= 0d;
@@ -59,6 +73,10 @@ public class SentimentCrossValidation extends Test {
 		return toString();
 	}
 	
+	/*
+	 * Prints out the results of cross validation tests
+	 * in an easy to read manner
+	 */
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();

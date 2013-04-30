@@ -27,7 +27,7 @@ public class Perceptron implements Classifier {
 	 * Variables: bias, learning rate, initial weights...
 	 */
 	private double bias = 0.4;
-	private double learningRate = 0.0001;// 0.00001;
+	private double learningRate = 0.0001;
 	private double errorRate;
 	private Set<String> dictionary;
 

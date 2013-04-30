@@ -9,6 +9,12 @@ import org.panhandlers.sentimentalizer.testing.CategoryTest;
 import org.panhandlers.sentimentalizer.testing.Test.Type;
 
 public class CategoryCrossValidation extends Test {
+	
+	/*
+	 * Responsible with running cross validation 
+	 * tests for category tests
+	 */
+	
 	private int numberOfSlices;
 	private ArrayList<CategoryTest> tests;
 	private int ratio;
@@ -31,6 +37,10 @@ public class CategoryCrossValidation extends Test {
 		runTest();
 	}
 
+	/*
+	 * Builds a list of tests to run depending on the
+	 * number of slices desired
+	 */
 	private void buildTest() {
 		CategoryTest test;
 		tests = new ArrayList<CategoryTest>(numberOfSlices);
@@ -42,7 +52,11 @@ public class CategoryCrossValidation extends Test {
 			tests.add(test);
 		}
 	}
-
+	
+	/*
+	 * Runs each test that was previously built and 
+	 * records the results and success rate
+	 */
 	private void runTest() {
 		ArrayList<Double> successRates = new ArrayList<Double>();
 		Double sumOfSuccessRates= 0d;
@@ -57,7 +71,6 @@ public class CategoryCrossValidation extends Test {
 	@Override
 	void train() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -65,6 +78,10 @@ public class CategoryCrossValidation extends Test {
 		return toString();
 	}
 	
+	/*
+	 * Prints out the results of cross validation tests
+	 * in an easy to read manner
+	 */
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -83,6 +100,10 @@ public class CategoryCrossValidation extends Test {
 		return b.toString();
 	}
 
+	/*
+	 * Calculates the average success rate of a cross validation 
+	 * test for a specific category
+	 */
 	private String averageSuccessRateForCategory(String category) {
 		Double total = 0d;
 		for (CategoryTest test : tests) {

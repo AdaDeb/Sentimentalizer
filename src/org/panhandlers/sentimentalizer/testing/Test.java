@@ -5,6 +5,12 @@ import org.panhandlers.sentimentalizer.storage.DataDivider;
 import org.panhandlers.sentimentalizer.storage.DictionaryBuilder;
 
 public abstract class Test {
+	
+	/*
+	 * This class offers some abstract methods 
+	 * related to running a test
+	 */
+	
 	private TestEnvironment env;
 	private Classifier classifier;
 	private DataDivider divider;

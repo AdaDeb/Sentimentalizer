@@ -8,10 +8,14 @@ import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.classifiers.Perceptron;
 import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
 
-
-
 public class TestRunner {
-	private static final String[] CATEGORIES = new String[]{"books", "software", "dvd"};//, "health", "music", "camera"};
+	/*
+	 * This acts as the main entry point to the program,
+	 * it runs different types of tests (in domain, out of domain, category)
+	 * and cross validation tests. It also runs the KNN tests. 
+	 */
+	
+	private static final String[] CATEGORIES = new String[]{"books", "software", "dvd", "health", "music", "camera"};
 	private static final int RATIO = 10;
 	private static final int DICTIONARY_SIZE = 500;
 	private static final int CROSS_VALIDATION_SLICES = 10;
@@ -24,6 +28,10 @@ public class TestRunner {
 		createTests();
 	}
 	
+	/*
+	 * This method constructs the tests for each classifier
+	 * that we want to run
+	 */
 	private void createTests() {
 //		Test t;
 		int i = 1;
@@ -40,13 +48,13 @@ public class TestRunner {
 //		knn.train(); //Train KNN
 //		knn.test();  //Test KNN
 		
-		Classifier[] classifiers = new Classifier[] {new Perceptron(), new AveragedPerceptron(), new NaiveBayes(env.getStorage())};
-		MultipleSentimentTester t = new MultipleSentimentTester(env,
-				RATIO, DICTIONARY_SIZE, classifiers, CATEGORIES, "dvd");
-		tests.add(t);
-//		for (Classifier classifier : classifiers) {
+		Classifier[] classifiers = new Classifier[] {new Perceptron()};//, new AveragedPerceptron(), new NaiveBayes(env.getStorage())};
+//		MultipleSentimentTester t = new MultipleSentimentTester(env,
+//				RATIO, DICTIONARY_SIZE, classifiers, CATEGORIES, "dvd");
+//		tests.add(t);
+		for (Classifier classifier : classifiers) {
 ////			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
-//			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
+			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
 //			categoryTest.setCategories(Arrays.asList(CATEGORIES));
 //			tests.add(categoryTest);
 //			/*
@@ -64,9 +72,12 @@ public class TestRunner {
 ////					tests.add(t);
 ////				}
 //			}
-//		}
+		}
 	}
 
+	/*
+	 * Loops through the tests and runs each of them
+	 */
 	public void runTests() {
 		for (Test t : tests) {
 			t.run();
@@ -78,8 +89,6 @@ public class TestRunner {
 	}
 	
 	public static void main(String[] args) {
-		
-		
 		TestRunner runner = new TestRunner();
 		runner.runTests();
 	}

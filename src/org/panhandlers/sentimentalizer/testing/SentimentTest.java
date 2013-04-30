@@ -18,6 +18,11 @@ import org.panhandlers.sentimentalizer.features.Feature;
  * 
  */
 public class SentimentTest extends Test {
+	
+	/*
+	 * This class is used to run in domain and out of domain
+	 * tests for different algorithms (not KNN)
+	 */
 
 	private String report;
 	private String testCategory;
@@ -29,6 +34,7 @@ public class SentimentTest extends Test {
 	private int offset;
 	private Set<String> dictionary;
 
+	// Constructor for in domain sentiment test
 	public SentimentTest(TestEnvironment env, Classifier classifier, int ratio,
 			int dictSize, String category) {
 		super(env, classifier, ratio, dictSize);
@@ -39,13 +45,14 @@ public class SentimentTest extends Test {
 		this.offset = 0;
 	}
 
+	// Constructor for running tests and dividing data with a specific offset
 	public SentimentTest(TestEnvironment env, Classifier classifier, int ratio,
 			int dictSize, String category, int offset) {
 		this(env, classifier, ratio, dictSize, category);
 		this.offset = offset;
-		System.out.println("Ran the right constructor");
 	}
 
+	// Constrcutor for running out of domain tests
 	public SentimentTest(TestEnvironment env, Classifier classifier, int ratio,
 			int dictSize, String trainingCategory, String testCategory) {
 		super(env, classifier, ratio, dictSize);
@@ -56,23 +63,28 @@ public class SentimentTest extends Test {
 		this.type = Test.Type.OUT_OF_DOMAIN;
 	}
 
+	/*
+	 * Test method used to classify the test data, each classification
+	 * is checked with the expected output. If the classification is correct
+	 * then we increment the number of successes otherwise we increment the
+	 * failures
+	 */
 	@Override
 	void test() {
 		ClassificationResult result;
 		List<Feature> features;
 		int successes = 0;
 		int failures = 0;
-		for (Entry<String, List<List<String>>> cat : testData.entrySet()) {
+		for (Entry<String, List<List<String>>> cat : testData.entrySet()) { // loop through test data
 			for (List<String> item : cat.getValue()) {
-				features = extractor.extractFeatures(item);
-				result = getClassifier().classify(features);
-				if (result.getCategory().equals(cat.getKey())) {
+				features = extractor.extractFeatures(item); 	
+				result = getClassifier().classify(features); //  expected output 
+				if (result.getCategory().equals(cat.getKey())) { // check if classification is correct 
 					successes++;
 				} else {
 					failures++;
 				}
 			}
-
 		}
 		report += ("Successes: " + successes + " Failures: " + failures);
 		double percentage = (double) successes
@@ -89,8 +101,10 @@ public class SentimentTest extends Test {
 		// setClassifier(null);
 	}
 
-	
-
+	/*
+	 * This method loads the data and divides it to training and 
+	 * testing data
+	 */
 	private void loadData() {
 		/*
 		 * Load data
@@ -115,7 +129,7 @@ public class SentimentTest extends Test {
 			getDivider().divide(data);
 			testData = getDivider().getTestData();
 			trainingData = getDivider().getTrainingData();
-		} else {
+		} else { // out of domain tests
 			List<List<String>> positiveTestData = env.getReader()
 					.getItemsByCategoryAndSentiment(testCategory, "pos");
 			List<List<String>> negativeTestData = env.getReader()
@@ -137,6 +151,11 @@ public class SentimentTest extends Test {
 		extractor.setDictionary(dictionary);
 	}
 
+	/*
+	 * Main method that train the algorithm using the training data
+	 * Here we extract the existence features of before sending them in to 
+	 * the classifier algorithm 
+	 */
 	@Override
 	void train() {
 		System.out.println("Starting test: " + toString());
@@ -150,6 +169,7 @@ public class SentimentTest extends Test {
 			}
 			featureMap.put(cat.getKey(), features);
 		}
+		// Send input to classifier
 		getClassifier().multipleTrain(featureMap, dictionary);
 
 	}

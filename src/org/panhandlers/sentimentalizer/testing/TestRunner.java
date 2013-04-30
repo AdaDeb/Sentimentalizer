@@ -9,6 +9,7 @@ import org.panhandlers.sentimentalizer.classifiers.AveragedPerceptron;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.classifiers.Perceptron;
 import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
+import org.panhandlers.sentimentalizer.storage.HashStorage;
 
 public class TestRunner {
 	/*
@@ -17,7 +18,7 @@ public class TestRunner {
 	 * and cross validation tests. It also runs the KNN tests. 
 	 */
 	
-	private static final String[] CATEGORIES = new String[]{"books", "software", "dvd", "health", "music", "camera"};
+	private static final String[] CATEGORIES = new String[]{"books", "dvd", "health", "music", "camera", "software"};
 	private static final int RATIO = 10;
 	private static final int DICTIONARY_SIZE = 500;
 	private static final int CROSS_VALIDATION_SLICES = 5;
@@ -50,21 +51,24 @@ public class TestRunner {
 //		knn.train(); //Train KNN
 //		knn.test();  //Test KNN
 		
-		Classifier[] classifiers = new Classifier[] {new AveragedPerceptron(), new NaiveBayes(env.getStorage())};
+		Classifier[] classifiers = new Classifier[] {new Perceptron(), new AveragedPerceptron()};//new NaiveBayes(new HashStorage())};
 //		MultipleSentimentTester t = new MultipleSentimentTester(env,
 //				RATIO, DICTIONARY_SIZE, classifiers, CATEGORIES, "dvd");
 //		tests.add(t);
 		for (Classifier classifier : classifiers) {
 ////			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
-			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
-			categoryTest.setCategories(Arrays.asList(CATEGORIES));
-			tests.add(categoryTest);
+//			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
+//			categoryTest.setCategories(Arrays.asList(CATEGORIES));
+//			tests.add(categoryTest);
 //			/*
 //			 * Run in-domain tests
 //			 */
-//			for (String category : CATEGORIES) {
-//				//t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
-//				//tests.add(t);
+			for (String category : CATEGORIES) {
+				NewSentimentAnalyzer t = new NewSentimentAnalyzer(env,
+						RATIO, DICTIONARY_SIZE, classifier, CATEGORIES, category);
+				tests.add(t);
+//				Test t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
+//				tests.add(t);
 ////				t = new SentimentCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
 ////				tests.add(t);
 ////				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
@@ -73,7 +77,7 @@ public class TestRunner {
 ////					t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category, CATEGORIES[i]);
 ////					tests.add(t);
 ////				}
-//			}
+			}
 		}
 	}
 

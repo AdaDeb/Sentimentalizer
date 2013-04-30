@@ -92,6 +92,11 @@ public class NaiveBayes implements Classifier {
 			return defaultProbability();
 		} else {
 			double categoryCount = (double) storage.getTotalFeaturesInCategoryCount(category);
+			if (GlobalConfig.DEBUG) {
+				if (featureCount == 1.0d) {
+					System.out.println("Feature count is one for " + feature);
+				}
+			}
 			return featureCount/categoryCount;
 		}
 	}
@@ -126,7 +131,7 @@ public class NaiveBayes implements Classifier {
 	 * @return
 	 */
 	private double pOfFeaturesGivenCategory(String category, List<Feature> features) {
-		double sum = 1f;
+		double sum = 0D;
 		double probability;
 		for (Feature feature : features) {
 			probability = pOfFeatureGivenCategory(feature, category);

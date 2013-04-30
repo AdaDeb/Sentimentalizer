@@ -106,10 +106,14 @@ public class CategoryTest extends Test{
 	 * Calculates the success rate for a specific category
 	 */
 	public Double successRateForCategory(String category) {
+		if (category == "software") {
+			System.out.println("Hey");
+		}
 		Integer successes = successesForCategory.get(category);
 		Integer failures = failureForCategory.get(category);
 		if (successes != null && failures != null) {
-			return ((double) successes / ((double) successes + (double) failures));
+			Double rate = ((double) successes / ((double) successes + (double) failures));
+			return rate;
 		} else {
 			return 0d;
 		}
@@ -166,6 +170,7 @@ public class CategoryTest extends Test{
 		data.put("health", healthCategory);
 		data.put("camera", cameraCategory);
 		
+		
 		// Set offset
 		getDivider().setOffset(offset);
 		// Divide data
@@ -198,6 +203,9 @@ public class CategoryTest extends Test{
 				features.add(extractor.extractFeatures(item)); // extract feature
 			}
 			featureMap.put(cat.getKey(), features);
+			// Initialize counter maps
+			successesForCategory.put(cat.getKey(), 0);
+			failureForCategory.put(cat.getKey(), 0);
 		}
 		// send input to the classifier to train
 		getClassifier().multipleTrain(featureMap, dictionary); 

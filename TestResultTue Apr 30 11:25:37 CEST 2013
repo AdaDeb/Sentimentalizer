@@ -1,0 +1,30 @@
+Non-averaged Perceptron CrossValidation of Non-averaged Perceptron Category Tester  
+Successes: 1016 Failures: 176 Percentage: 85.23489932885906
+Success rate for books: 0.87
+
+Success rate for software: 0.8125
+
+Success rate for dvd: 0.875
+
+Success rate for health: 0.895
+
+Success rate for music: 0.835
+
+Success rate for camera: 0.825
+, divided data into 5 slices.
+Average success rate is 0.8572147651006711
+Standard deviation is 0.0050725558583325355
+Individual results:
+Average success rate for books is 0.885
+Average success rate for software is 0.80625
+Average success rate for dvd is 0.859
+Average success rate for health is 0.891
+Average success rate for music is 0.867
+Average success rate for camera is 0.833
+Standard deviation for books is 0.015165750888103116
+Standard deviation for software is 0.020412414523193145
+Standard deviation for dvd is 0.02200000000000002
+Standard deviation for health is 0.0037416573867739447
+Standard deviation for music is 0.021587033144922923
+Standard deviation for camera is 0.015362291495737231
+

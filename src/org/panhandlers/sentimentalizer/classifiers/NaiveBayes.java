@@ -110,30 +110,45 @@ public class NaiveBayes implements Classifier {
 	}
 	
 	/**
-	 * 
+	 * Returns a default probability that is used when an encountered feature isn't present
+	 * in the vocabulary
 	 * @return
 	 */
 	private double defaultProbability() {
 		return 0.5d / ((double) storage.getTotalCount() / 2);
 	}
 	
+	/**
+	 * Calculate the probability of a set of features given a category
+	 * Values are logarithmized to avoid running out of precision
+	 * @param category
+	 * @param features
+	 * @return
+	 */
 	private double pOfFeaturesGivenCategory(String category, List<Feature> features) {
 		double sum = 1f;
 		double probability;
 		for (Feature feature : features) {
 			probability = pOfFeatureGivenCategory(feature, category);
 			sum += Math.log(probability);
-			// System.out.println("Sum is" + sum);
 		}
 		return sum;
 	}
 	
+	/**
+	 * Calculate the probability of encountering an item from the given category
+	 * @param category
+	 * @return
+	 */
 	private double pOfCategory(String category) {
 		double categoryCount = (double) storage.getItemsInCategoryCount(category);
 		double totalCount = (double) storage.getTotalItemsCount();
 		return categoryCount/totalCount;
 	}
 
+	/**
+	 * Train on multiple items sequentially.
+	 */
 	@Override
 	public void multipleTrain(HashMap<String, List<List<Feature>>> trainingSet, Set<String> dictionary) {
 		for(Entry<String, List<List<Feature>>> entry : trainingSet.entrySet()) {

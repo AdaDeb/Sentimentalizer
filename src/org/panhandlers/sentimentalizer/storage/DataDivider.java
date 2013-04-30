@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 
 /**
  * The DataDivider divides data into to training data and test data.
+ * Offset can be used to provide cross-validation
+ * Works by looping through data set and choosing data where i % ratio is offset.
  * @author jesjos
  *
  */

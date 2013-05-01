@@ -1,5 +1,6 @@
 *.class
 TestResult*
+failures*
 # Package Files #
 *.jar
 *.war

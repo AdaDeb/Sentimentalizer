@@ -1,12 +1,17 @@
 package org.panhandlers.sentimentalizer.testing;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
 import org.panhandlers.sentimentalizer.GlobalConfig;
+import org.panhandlers.sentimentalizer.Utilities;
 import org.panhandlers.sentimentalizer.classifiers.ClassificationResult;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
 import org.panhandlers.sentimentalizer.features.ExistenceFeatureExtractor;
@@ -28,6 +33,7 @@ public class CategoryTest extends Test{
 	private HashMap<String, Integer> failureForCategory;
 	private Set<String> dictionary;
 	private int offset;
+	private PrintWriter printWriter;
 
 	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize) {
 		super(env, classifier, ratio, dictSize);
@@ -36,6 +42,11 @@ public class CategoryTest extends Test{
 		this.offset = 0;
 		this.successesForCategory = new HashMap<String, Integer>();
 		this.failureForCategory = new HashMap<String, Integer>();
+		try {
+			this.printWriter = new PrintWriter("failures_"+ classifier.getName() + "_" + Utilities.normalize(new Date().toString()), "UTF8");
+		} catch (Exception e) {
+			System.out.println("Could not enable debug print");
+		}
 	}
 	
 	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, int offset) {
@@ -60,16 +71,21 @@ public class CategoryTest extends Test{
 				features = extractor.extractFeatures(item);
 				result = getClassifier().classify(features); 
 				if (result.getCategory().equals(cat.getKey())) { // check if classification is correct	
-					System.out.println("Succeeded for category " + cat.getKey());
+					if (GlobalConfig.DEBUG)
+						System.out.println("Succeeded for category " + cat.getKey());
 					registerSuccess(cat.getKey());
 					successes++;
 				} else {
-					System.out.println("Failed for category: " + cat.getKey());
+					if (GlobalConfig.DEBUG) {
+						System.out.println("Failed for category: " + cat.getKey());
+						printWriter.println("Category " + cat.getKey() + " " + Utilities.detokenize(item));
+					}
 					registerFailure(cat.getKey());
 					failures++;
 				}
 			}
 		}
+		printWriter.close();
 		report += ("Successes: " + successes + " Failures: " + failures);
 		double percentage = (double) successes / ((double) successes + failures);
 		report += (" Percentage: " + percentage * 100);	

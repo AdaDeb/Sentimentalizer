@@ -26,14 +26,14 @@ public class NaiveBayes implements Classifier {
 	 */
 	public NaiveBayes() {
 		storage = new RedisStorage();
-	}
-	
-	public NaiveBayes(ClassifierStorage storage) {
-		this.storage = storage;
 		// In debug mode we count occurrences of unknown features in the classification input
 		if (GlobalConfig.DEBUG) {
 			emptyFeatureCounts = new HashMap<String, Integer>();
 		}
+	}
+	
+	public NaiveBayes(ClassifierStorage storage) {
+		this.storage = storage;
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class NaiveBayes implements Classifier {
 		double prob;
 		for (String category : categories)
 		{
-			prob = pOfFeaturesGivenCategory(category, features) * pOfCategory(category);
+			prob = pOfFeaturesGivenCategory(category, features) + pOfCategory(category);
 			result = new ClassificationResult(category, prob);
 			results.add(result);
 		}
@@ -148,7 +148,7 @@ public class NaiveBayes implements Classifier {
 	private double pOfCategory(String category) {
 		double categoryCount = (double) storage.getItemsInCategoryCount(category);
 		double totalCount = (double) storage.getTotalItemsCount();
-		return categoryCount/totalCount;
+		return Math.log(categoryCount/totalCount);
 	}
 
 	/**

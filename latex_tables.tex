@@ -136,3 +136,91 @@ Naive Bayes & yes & 0 & 0 & 0 & 0 & 0 & 0\\
 \label{default}
 \end{table}
 
+\begin{table}[htdp]
+\caption*{Table 7: amount of unknown features encountered by category, for Naive Bayes}
+\begin{center}
+\begin{tabular}{ | l | p{3cm} | }
+\hline
+Category & Unknown features encountered \\ \hline
+dvd & 2646 \\
+books & 3735 \\
+music & 5271 \\
+software & 9513 \\
+camera & 13587 \\
+health & 16316 \\ \hline
+
+\end{tabular}
+\end{center}
+\label{default}
+\end{table}
+
+
+
+\begin{table}[htdp]
+\caption*{Table 8: McNemar test - Perceptron vs Naive Bayes trained on health with 1 degree of freedom}
+\begin{center}
+\begin{tabular}{ | l | l | l | l | l | l | l |}
+
+\hline
+& \multicolumn{6}{|c|}{Statistics}\\
+\hline
+Testing category &books &dvd &health  &music &camera  &software \\
+\hline
+Chi-squared & 3,1802 & 1,0535 & 13,0863  & 0,8929 & 3,2716 & 3,8345 \\
+p-value & 0,07454 & 0,3047  & 0,0002975 & 0,3447 & 0,07049  & 0,05021 \\
+alpha  & 0,05 & 0,05 & 0,05  & 0,05 & 0,05  & 0,05 \\
+Statistically different & no & no  & yes & no & no & no \\
+alpha  & 0,01  & 0,01 & 0,01 & 0,01 & 0,01 & 0,01 \\
+Statistically different  & no & no  & yes & no & no & no \\
+\hline
+
+\end{tabular}
+\end{center}
+\label{default}
+\end{table}
+
+\begin{table}[htdp]
+\caption*{Table 9: McNemar test - Averaged Perceptron vs Naive Bayes trained on health with 1 degree of freedom}
+\begin{center}
+\begin{tabular}{ | l | l | l | l | l | l | l |}
+
+\hline
+& \multicolumn{6}{|c|}{Statistics}\\
+\hline
+Testing category &books &dvd &health  &music &camera  &software \\
+\hline
+Chi-squared & 4,1434 & 0,27 & 6,8878 & 0,3 & 5,2089 & 1,3885 \\
+p-value & 0,0418 & 0,6033  & 0,008679 & 0,5839 & 0,02247  & 0,2387 \\
+alpha & 0,05 & 0,05 & 0,05  & 0,05 & 0,05  & 0,05 \\
+Statistically different & yes & no  & yes & no & yes & no \\
+alpha  & 0,01  & 0,01 & 0,01 & 0,01 & 0,01 & 0,01 \\
+Statistically different  & no & no & yes & no & no & no \\
+\hline
+
+\end{tabular}
+\end{center}
+\label{default}
+\end{table}
+
+\begin{table}[htdp]
+\caption*{Table 10: McNemar test - Perceptron vs Averaged Perceptron trained on health with 1 degree of freedom}
+\begin{center}
+\begin{tabular}{ | l | l | l | l | l | l | l |}
+
+\hline
+& \multicolumn{6}{|c|}{Statistics}\\
+\hline
+Testing category &books &dvd &health  &music &camera  &software \\
+\hline
+Chi-squared & 0,1607 & 14,881 & 6,1132  & 0,5 & 0,7059 & 3,0179 \\
+p-value & 0,6885 & 0,0001145  & 0,01342 & 0,4795 & 0,4008  & 0,08235 \\
+alpha  0,05 & 0,05 & 0,05  & 0,05 & 0,05  & 0,05 \\
+Statistically different & no & yes  & yes & no & no & no \\
+alpha  & 0,01  & 0,01 & 0,01 & 0,01 & 0,01 & 0,01 \\
+Statistically different  & no & yes & no & no & no & no \\
+\hline
+
+\end{tabular}
+\end{center}
+\label{default}
+\end{table}

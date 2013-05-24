@@ -11,6 +11,7 @@ import org.panhandlers.sentimentalizer.GlobalConfig;
 import org.panhandlers.sentimentalizer.features.Feature;
 import org.panhandlers.sentimentalizer.redis.RedisStorage;
 import org.panhandlers.sentimentalizer.storage.ClassifierStorage;
+import org.panhandlers.sentimentalizer.storage.HashStorage;
 
 /**
  * An implementation of NaiveBayes text classification.
@@ -22,10 +23,10 @@ public class NaiveBayes implements Classifier {
 	private HashMap<String, Integer> emptyFeatureCounts;
 	
 	/**
-	 * The default constructor uses Redis storage
+	 * The default constructor uses HashStorage
 	 */
 	public NaiveBayes() {
-		storage = new RedisStorage();
+		storage = new HashStorage();
 		// In debug mode we count occurrences of unknown features in the classification input
 		if (GlobalConfig.DEBUG) {
 			emptyFeatureCounts = new HashMap<String, Integer>();

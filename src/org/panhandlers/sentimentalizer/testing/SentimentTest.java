@@ -118,8 +118,8 @@ public class SentimentTest extends Test {
 				.getItemsByCategoryAndSentiment(trainingCategory, "neg");
 		
 		
-		List<List<String>> positive = new ArrayList<>();
-		List<List<String>> negative = new ArrayList<>();
+		List<List<String>> positive = new ArrayList<List<String>>();
+		List<List<String>> negative = new ArrayList<List<String>>();
 
 		for (int i = 0; i < positiveNew.size()/10; i++){
 			positive.add(positiveNew.get(i));

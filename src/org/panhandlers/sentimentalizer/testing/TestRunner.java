@@ -51,7 +51,7 @@ public class TestRunner {
 //		knn.train(); //Train KNN
 //		knn.test();  //Test KNN
 		
-		Classifier[] classifiers = new Classifier[] {new Perceptron(), new AveragedPerceptron()};//new NaiveBayes(new HashStorage())};
+		Classifier[] classifiers = new Classifier[] {new NaiveBayes()};// new Perceptron()};
 //		MultipleSentimentTester t = new MultipleSentimentTester(env,
 //				RATIO, DICTIONARY_SIZE, classifiers, CATEGORIES, "dvd");
 //		tests.add(t);

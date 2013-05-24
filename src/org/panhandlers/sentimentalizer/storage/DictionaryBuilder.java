@@ -123,9 +123,11 @@ public class DictionaryBuilder {
 			token = it.next();
 			dictionary.add(token);			
 		}
-		for (Entry<Double, String> entry : sortedMap.descendingMap().entrySet()) {
-			if (GlobalConfig.DEBUG)
+		if (GlobalConfig.DEBUG) {
+			for (Entry<Double, String> entry : sortedMap.descendingMap()
+					.entrySet()) {
 				System.out.println(entry.getKey() + " => " + entry.getValue());
+			}
 		}
 		return dictionary;
 	}

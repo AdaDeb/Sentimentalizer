@@ -34,8 +34,10 @@ public class CategoryTest extends Test{
 	private Set<String> dictionary;
 	private int offset;
 	private PrintWriter printWriter;
+	private boolean includeSoftware; 
 
-	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize) {
+	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio,
+			int dictSize, boolean includeSoftware) {
 		super(env, classifier, ratio, dictSize);
 		this.extractor = new ExistenceFeatureExtractor();
 		this.report = "";
@@ -47,10 +49,12 @@ public class CategoryTest extends Test{
 		} catch (Exception e) {
 			System.out.println("Could not enable debug print");
 		}
+		this.includeSoftware = includeSoftware;
 	}
 	
-	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, int offset) {
-		this(env, classifier, ratio, dictSize);
+	public CategoryTest(TestEnvironment env, Classifier classifier, int ratio, int dictSize, 
+			int offset, boolean includeSoftware) {
+		this(env, classifier, ratio, dictSize, includeSoftware);
 		this.offset = offset;
 	}
 
@@ -173,7 +177,6 @@ public class CategoryTest extends Test{
 		// Load data from each category without considering pos/neg
 		List<List<String>> musicCategory = env.getReader().getItemsByCategory("music");
 		List<List<String>> dvdCategory = env.getReader().getItemsByCategory("dvd");
-		List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
 		List<List<String>> booksCategory = env.getReader().getItemsByCategory("books");
 		List<List<String>> healthCategory = env.getReader().getItemsByCategory("health");
 		List<List<String>> cameraCategory = env.getReader().getItemsByCategory("camera");
@@ -181,10 +184,14 @@ public class CategoryTest extends Test{
 		HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 		data.put("music", musicCategory);
 		data.put("dvd", dvdCategory);
-		data.put("software", softwareCategory);
 		data.put("books", booksCategory);
 		data.put("health", healthCategory);
 		data.put("camera", cameraCategory);
+		
+		if (this.includeSoftware) {
+			List<List<String>> softwareCategory = env.getReader().getItemsByCategory("software");
+			data.put("software", softwareCategory);
+		}
 		
 		
 		// Set offset

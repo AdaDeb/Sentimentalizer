@@ -2,14 +2,10 @@ package org.panhandlers.sentimentalizer.testing;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import org.panhandlers.sentimentalizer.classifiers.AveragedPerceptron;
 import org.panhandlers.sentimentalizer.classifiers.Classifier;
-import org.panhandlers.sentimentalizer.classifiers.Perceptron;
-import org.panhandlers.sentimentalizer.classifiers.NaiveBayes;
-import org.panhandlers.sentimentalizer.storage.HashStorage;
 
 public class TestRunner {
 	/*
@@ -39,36 +35,60 @@ public class TestRunner {
 //		Test t;
 		int i = 1;
 		
-		// KNN INDOMAIN Sentiment Test
-		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "dvd", 7);
+		//Uncomment below to run category tests for KNN
+//		KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 4);
+//		knn.train();
+//		knn.test();
+//		knn.categoryCrossValidation(); // // Use this to run cross validation but comment train and test above.
+
+		// Uncomment below loop to run in domain for KNN
+//		for(i = 0; i < CATEGORIES.length; i++) {
+//			System.out.println("Testing category:" + CATEGORIES[i]);
+//			KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, CATEGORIES[i], 4);
+//			knn.train();
+//			knn.test();
+//			knn.inDomainCrossValidation(); // Use this to run cross validation but comment train and test above.
+//		}
 		
-		// KNN OUTOFDOMAIN Sentiment Test
-		//KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, "music", "books", 4);
+		//Uncomment the code below to run out of domain for KNN
+//		for (i = 0; i < CATEGORIES.length; i++) {
+//			String currentCategory = CATEGORIES[i];
+//			for (int j = 0; j < CATEGORIES.length; j++) {
+//				if (!currentCategory.equals(CATEGORIES[j])) {
+//					System.out.println("Training on category:"
+//							+ currentCategory + " and testing on "
+//							+ CATEGORIES[j]);
+//					KNearestNeighbor knn = new KNearestNeighbor(env, RATIO,
+//							DICTIONARY_SIZE, currentCategory, CATEGORIES[j], 4);
+//					knn.train();
+//					knn.test();
+//				}
+//			}
+//		}
+	
+		// You can add new classifier to this array
+		Classifier[] classifiers = new Classifier[] {new AveragedPerceptron(), new AveragedPerceptron()};
 		
-		// KNN CATEGORY Test
-//		KNearestNeighbor knn = new KNearestNeighbor(env, RATIO, DICTIONARY_SIZE, 4); // takes time
-//
-//		knn.train(); //Train KNN
-//		knn.test();  //Test KNN
-		
-		Classifier[] classifiers = new Classifier[] {new NaiveBayes()};// new Perceptron()};
+		//Uncomment below to run multiple sentiment tests
 //		MultipleSentimentTester t = new MultipleSentimentTester(env,
 //				RATIO, DICTIONARY_SIZE, classifiers, CATEGORIES, "dvd");
 //		tests.add(t);
 		for (Classifier classifier : classifiers) {
-////			CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
+			// Used to run category test for each classifier (not KNN)
+			//CategoryTest categoryTest = new CategoryTest(env, classifier, RATIO, DICTIONARY_SIZE);
 //			CategoryCrossValidation categoryTest = new CategoryCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES);
 //			categoryTest.setCategories(Arrays.asList(CATEGORIES));
-//			tests.add(categoryTest);
+			//tests.add(categoryTest);
+			
 //			/*
 //			 * Run in-domain tests
 //			 */
 			for (String category : CATEGORIES) {
-				MultiSentimentAnalyzer t = new MultiSentimentAnalyzer(env,
-						RATIO, DICTIONARY_SIZE, classifier, CATEGORIES, category);
-				tests.add(t);
-//				Test t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
-//				tests.add(t);
+				//MultiSentimentAnalyzer t = new MultiSentimentAnalyzer(env,
+				//	RATIO, DICTIONARY_SIZE, classifier, CATEGORIES, category);
+				//tests.add(t);
+				//Test t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);
+				//tests.add(t);
 ////				t = new SentimentCrossValidation(env, classifier, RATIO, DICTIONARY_SIZE, CROSS_VALIDATION_SLICES, category);
 ////				tests.add(t);
 ////				t = new SentimentTest(env, classifier, RATIO, DICTIONARY_SIZE, category);

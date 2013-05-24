@@ -126,9 +126,6 @@ public class CategoryTest extends Test{
 	 * Calculates the success rate for a specific category
 	 */
 	public Double successRateForCategory(String category) {
-		if (category == "software") {
-			System.out.println("Hey");
-		}
 		Integer successes = successesForCategory.get(category);
 		Integer failures = failureForCategory.get(category);
 		if (successes != null && failures != null) {

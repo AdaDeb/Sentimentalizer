@@ -47,7 +47,7 @@ public class CategoryCrossValidation extends Test {
 		CategoryTest test;
 		tests = new ArrayList<CategoryTest>(numberOfSlices);
 		for(int i = 0; i< numberOfSlices; i++) {
-			test = new CategoryTest(getEnv(), getClassifier(), this.ratio, this.dictionarySize, i, false);
+			test = new CategoryTest(getEnv(), getClassifier(), this.ratio, this.dictionarySize, i, true);
 			if(categories != null) {
 				test.setCategories(categories);
 			}

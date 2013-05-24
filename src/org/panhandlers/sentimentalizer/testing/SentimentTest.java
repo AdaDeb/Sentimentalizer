@@ -112,42 +112,23 @@ public class SentimentTest extends Test {
 		TestEnvironment env = getEnv();
 		env.getStorage().reset();
 
-		List<List<String>> positiveNew = env.getReader()
+		List<List<String>> positive = env.getReader()
 				.getItemsByCategoryAndSentiment(trainingCategory, "pos");
-		List<List<String>> negativeNew = env.getReader()
+		List<List<String>> negative = env.getReader()
 				.getItemsByCategoryAndSentiment(trainingCategory, "neg");
-		
-		
-		List<List<String>> positive = new ArrayList<List<String>>();
-		List<List<String>> negative = new ArrayList<List<String>>();
 
-		for (int i = 0; i < positiveNew.size()/10; i++){
-			positive.add(positiveNew.get(i));
-			
-		}
-		
-		for (int i = 0; i < negativeNew.size()/10; i++){
-			positive.add(negativeNew.get(i));
-		}
-		
-		
 		if (this.type == Test.Type.IN_DOMAIN) {
 			HashMap<String, List<List<String>>> data = new HashMap<String, List<List<String>>>();
 			data.put("pos", positive);
 			data.put("neg", negative);
-			trainingData = data;
-			
-			HashMap<String, List<List<String>>> dataforTest = new HashMap<String, List<List<String>>>();
-			dataforTest.put("pos", positiveNew);
-			dataforTest.put("neg", negativeNew);
+
 			/*
 			 * Divide data
 			 */
 			getDivider().setOffset(this.offset);
-			getDivider().divide(dataforTest);
+			getDivider().divide(data);
 			testData = getDivider().getTestData();
-			
-			//trainingData = getDivider().getTrainingData();
+			trainingData = getDivider().getTrainingData();
 		} else { // out of domain tests
 			List<List<String>> positiveTestData = env.getReader()
 					.getItemsByCategoryAndSentiment(testCategory, "pos");
@@ -168,6 +149,7 @@ public class SentimentTest extends Test {
 		System.out
 				.println("Dictionary built with length: " + dictionary.size());
 		extractor.setDictionary(dictionary);
+
 	}
 
 	/*
